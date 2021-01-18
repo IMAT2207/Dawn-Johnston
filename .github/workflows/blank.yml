@@ -26,4 +26,4 @@ jobs:
     - uses: actions/upload-artifact@v1
       with:
         name: Build
-        path: bin/Debug/netcoreapp3.1/*
+        path: bin/Debug/netcoreapp3.1/Dawn-Johnston.dll
