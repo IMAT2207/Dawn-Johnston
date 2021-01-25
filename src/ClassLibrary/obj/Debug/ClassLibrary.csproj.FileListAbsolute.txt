@@ -1,0 +1,2 @@
+C:\Delme\Skeleton\ClassLibrary\obj\Debug\ClassLibrary.csprojAssemblyReference.cache
+C:\Delme\Skeleton\ClassLibrary\obj\Debug\ClassLibrary.csproj.CoreCompileInputs.cache
