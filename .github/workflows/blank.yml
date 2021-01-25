@@ -16,6 +16,10 @@ jobs:
       uses: auycro/netframework-action-template@v0.0.2
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build --file Dockerfile.msbuild --tag auycro/msbuild .   
+    - name: Run the Docker image
+      run: docker run --rm auycro/msbuild --version
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
