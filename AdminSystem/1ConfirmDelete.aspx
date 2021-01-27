@@ -9,7 +9,6 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <span onmousedown="ClassLibrary.test.onTestDown">yeet</span>
         </div>
     </form>
 </body>
