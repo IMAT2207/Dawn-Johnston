@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace ASPXUpdater
 {
@@ -16,8 +17,7 @@ namespace ASPXUpdater
     {
         private static bool DEBUG => Debugger.IsAttached;
         private static String EXE_RELATIVE => DEBUG ? "./" : "../../../../";
-        private static readonly String BOOTSTRAP_DESIGN     = EXE_RELATIVE + "BSD/";
-        private static readonly String BOOTSTRAP_HTML       = BOOTSTRAP_DESIGN + "HTML/";
+        private static readonly String BOOTSTRAP_LOC        = EXE_RELATIVE + "BSD/";
         private static readonly String ASPX                 = EXE_RELATIVE + "AdminSystem/";
         private static readonly String SLN                  = EXE_RELATIVE + "Skeleton.sln";
         private static readonly String GEN_COMMENT          = "\n\n<!-- " +
@@ -29,15 +29,23 @@ namespace ASPXUpdater
 
         [Obsolete]
         private static readonly String ASSETS = "assets/";
-        private static readonly String ASSETS_INPUT = BOOTSTRAP_DESIGN + ASSETS;
+        private static readonly String ASSETS_INPUT = BOOTSTRAP_LOC + ASSETS;
         private static readonly String ASSETS_OUTPUT = ASPX + ASSETS;
+        private static readonly List<String> Logs = new List<string>();
+        private static readonly String LOG_LOC = "./ASPX UPDATER LASTEST.log";
 
         private class ASPXGenException : Exception { public ASPXGenException(String message) : base("Failed to generate ASPX: " + message) { } }
 
-        static void Info(String s) => Console.WriteLine("[INFO] " + s);
-        static void Error(String s) => Console.WriteLine("[ERR] " + s);
-        static void Success(String s) => Console.WriteLine("[PASS] " + s);
-        static void Bar(String s) => Console.WriteLine(BR + "==================" + s +"===================" + BR);
+        static void LogAndWrite(String s)
+        {
+            Logs.Add(s);
+            Console.WriteLine(s);
+        }
+
+        static void Info(String s) => LogAndWrite("[INFO] " + s);
+        static void Error(String s) => LogAndWrite("[ERR] " + s);
+        static void Success(String s) => LogAndWrite("[PASS] " + s);
+        static void Bar(String s) => LogAndWrite(BR + "==================" + s +"===================" + BR);
         static String BR => "\n\n";
 
         static String ABS(String s) => Path.GetFullPath(s);
@@ -67,6 +75,7 @@ namespace ASPXUpdater
             }
             Bar("Idle. Press any key to Halt.");
             Console.ReadKey();
+            WriteLog();
         }
 
         /// <summary>
@@ -75,8 +84,8 @@ namespace ASPXUpdater
         private static void UpdateAllASPX()
         {
             Info("Getting all HTML and ASPX files..");
-            string[] HTMLFiles = Directory.GetFiles(BOOTSTRAP_HTML);
-            Success("Loaded " + HTMLFiles.Length + " files from " + ABS(BOOTSTRAP_HTML));
+            string[] HTMLFiles = GetAllHTML();
+            Success("Loaded " + HTMLFiles.Length + " files from " + ABS(BOOTSTRAP_LOC));
 
             string[] ASPXFiles = GetAllASPX();
             Success("Loaded " + ASPXFiles.Length + " files from " + ABS(ASPX));
@@ -85,7 +94,7 @@ namespace ASPXUpdater
             Compare(HTMLFiles, ASPXFiles, "HTML", "has no matching ASPX. It will fail, and be ignored.", ASPX, "aspx");
 
             Bar("Checking ASPX");
-            Compare(ASPXFiles, HTMLFiles, "ASPX", "has no matching HTML in the design. It will not be updated.", BOOTSTRAP_HTML, "html");
+            Compare(ASPXFiles, HTMLFiles, "ASPX", "has no matching HTML in the design. It will not be updated.", BOOTSTRAP_LOC, "html");
 
 
             Bar("Begin ASPX gen");
@@ -238,14 +247,18 @@ namespace ASPXUpdater
             }
         }
 
-        static String[] GetAllASPX()
-        {
-            String[] paths = Directory.GetFiles(ABS(ASPX));
-            ArrayList ASPXPaths = new ArrayList();
-            foreach (String s in paths)
-                if (s.EndsWith(".aspx")) ASPXPaths.Add(s);
+        static String[] GetAllASPX() => GetAllByExtention(ASPX, "aspx");
+        static String[] GetAllHTML() => GetAllByExtention(BOOTSTRAP_LOC, "html");
+        
 
-            return (String[]) ASPXPaths.ToArray(typeof(String));
+        static String[] GetAllByExtention(String path, String Extention)
+        {
+            String[] paths = Directory.GetFiles(ABS(path));
+            ArrayList Paths = new ArrayList();
+            foreach (String s in paths)
+                if (s.EndsWith('.' + Extention)) Paths.Add(s);
+
+            return (String[]) Paths.ToArray(typeof(String));
         }
 
         static void Compare(String[] IN, String[] OUT, String preMsg, String postMsg, String outURI, String outExtention)
@@ -261,6 +274,17 @@ namespace ASPXUpdater
                 if (ABS(s).Equals(el)) return true;
 
             return false;
+        }
+
+        static void WriteLog() => File.WriteAllText(LOG_LOC, ArrayToString((String[])Logs.ToArray()));
+
+        static String ArrayToString(String[] arr)
+        {
+            String line =  "";
+            foreach (String s in arr)
+                line += s + '\n';
+
+            return line;
         }
     }
 }
