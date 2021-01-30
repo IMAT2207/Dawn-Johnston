@@ -4,4 +4,4 @@ SET b=%a%ASPXUpdater.exe
 cd /d %a%
 cd ..\
 start %b%
-exit
+pause
