@@ -39,8 +39,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AdminSystem", "AdminSystem\
 		StartServerOnDebug = "true"
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPXUpdater", "ASPXUpdater\ASPXUpdater.csproj", "{EC0BDB7B-2020-49B6-9B20-94237F4E87F3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,10 +77,6 @@ Global
 		{452F0A25-A23F-4FED-90A2-BDC9E42CEA1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{452F0A25-A23F-4FED-90A2-BDC9E42CEA1C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{452F0A25-A23F-4FED-90A2-BDC9E42CEA1C}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{EC0BDB7B-2020-49B6-9B20-94237F4E87F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC0BDB7B-2020-49B6-9B20-94237F4E87F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC0BDB7B-2020-49B6-9B20-94237F4E87F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC0BDB7B-2020-49B6-9B20-94237F4E87F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
