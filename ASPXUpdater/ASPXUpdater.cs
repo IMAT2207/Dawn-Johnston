@@ -51,6 +51,7 @@ namespace ASPXUpdater
         static String ABS(String s) => Path.GetFullPath(s);
         static void Main(string[] args)
         {
+            HTMLToASPConverter.runTest();
             Bar("Startup");
             if (DEBUG) Info("Debugger attached!\n Will work in debug directory!\n Real project will not be modified!");
            
@@ -128,7 +129,7 @@ namespace ASPXUpdater
                 throw new ASPXGenException("'" + HTMLFile + "' had no corresponding ASPX file to update. Generate one in Visual Studio, or check file names and paths.");
             }
 
-            File.WriteAllText(ASPXFile, CompileASPX(ReadASPXMeta(ASPXContent), HTMLFile));
+            File.WriteAllText(ASPXFile, HTMLToASPConverter.parse(CompileASPX(ReadASPXMeta(ASPXContent), HTMLFile)));
         }
 
         /// <summary>
@@ -286,5 +287,89 @@ namespace ASPXUpdater
 
             return line;
         }
+    }
+
+    class HTMLToASPConverter
+    {
+        public static void runTest()
+        {
+            String s = "<label class=\"col - form - label\" >[myLabel:This Is A Label]</label>" +
+                "<label class=\"col - form - label\" >[myLabel:This Is A Label]</label>" +
+                "<label class=\"col - form - label\" >[myLabel1:This Is Not a Label ;)]</label>" +
+                "<label class=\"col - form - label\" >[myLabel2:This Is Also A Label]</label>" +
+                "<p>[myLabel3:This a paragraph label]</p>";
+            String r = parse(s);
+        }
+        static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
+        static readonly String ID_PATTERN = "__ID__";
+        static readonly String TEXT_PATTERN = "__TEXT__";
+        static volatile String current_tag_pattern = "";
+        static volatile String current_replace_pattern = "";
+        static readonly MatchEvaluator TagEvaluator = new MatchEvaluator(ReplaceTag);
+
+        static readonly String[][] TagPatterns = new String[][]
+        {
+           new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },
+           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Button>" },
+           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" }
+           // <div class="form-check"> <input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>
+        };
+
+        public static string parse(String s)
+        {
+            String content = s;
+            foreach (String[] patts in TagPatterns)
+            {
+                current_tag_pattern = patts[0];
+                current_replace_pattern = patts[1];
+                content = Regex.Replace(content, current_tag_pattern, TagEvaluator);
+            }
+
+            return content;
+        }
+
+        public static string ReplaceTag(Match m)
+        {
+            String line = m.Value;
+            String[] ValID = GetTextID(line);
+            String current_ID = ValID[0];
+            String current_text = ValID[1];
+
+            String newLine = current_replace_pattern;
+            newLine = Regex.Replace(newLine, ID_PATTERN, current_ID);
+            newLine = Regex.Replace(newLine, TEXT_PATTERN, current_text);
+
+            return newLine;
+        }
+
+
+        private static String[] GetTextID(String s)
+        {
+            String TextID = Regex.Match(s, ID_TEXT_PATTERN).Value;
+            String ID = Regex.Match(TextID, "[[].*:").Value;
+            ID = ID.Substring(1, ID.Length - 2);
+
+            String Text = Regex.Match(TextID, ":.*]").Value;
+            Text = Text.Substring(1, Text.Length - 2);
+
+            return new String[] { ID, Text };
+        }
+
+
+        static readonly String LabelStyleTag = "<label [^>]*>[^<]*</label>|<label[^/]*/>";
+        static readonly String LabelStyleReplace = "<asp:Label ID=\"__ID__\" runat=\"server\" Text=__TEXT__\"\"></asp:Label>";
+        private static String[] generateLabelStyleTag(String component)
+        {
+            String replace = Regex.Replace(LabelStyleReplace, "Label", component);
+            return new string[]
+            {
+                Regex.Replace(LabelStyleTag, "label", component).ToLower()
+                ,
+                replace.Substring(0,1).ToUpper() + replace.Substring(1).ToLower()
+            };
+
+        }
+
+
     }
 }
