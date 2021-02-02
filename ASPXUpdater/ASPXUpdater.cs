@@ -131,8 +131,8 @@ namespace ASPXUpdater
             foreach (String s in Errors)
                 Info(s);
             Info(BR);
-            Success(FilesPassed + " SUCCESSFUL TRANSLATIONS");
-            Error(" " + FilesFailed + " FAILED TRANSLATIONS");
+            Success("✓✓✓ " + FilesPassed + " SUCCESSFUL TRANSLATIONS ✓✓✓");
+            Error(" XXX " + FilesFailed + " FAILED TRANSLATIONS     XXX");
 
         }
 
@@ -367,7 +367,7 @@ namespace ASPXUpdater
     {
         public static void runTest()
         {
-            String s = "<form><button class=\"btn btn-primary\" type =\"button\" >[shittyButton:This Is A Button]</button></form>";
+            String s = "<div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" id=\"formCheck-1\"><label class=\"form-check-label\" for=\"formCheck-1\">[yeet:fdsagfd yes m9]</label></div>";
             String r = parse(s);
         }
         static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
@@ -377,14 +377,39 @@ namespace ASPXUpdater
         static volatile String current_replace_pattern = "";
         static readonly MatchEvaluator TagEvaluator = new MatchEvaluator(ReplaceTag);
 
+        /// <summary>
+        /// The all important list of patterns which defines the HTML to ASP tag translation.
+        /// 
+        /// Each entry has two patterns, the input and the output. Before and after. The input is a standard REGEX which captures the elements to replace.
+        /// The second value is the string it will be replaced with. It may contain placeholders for the ID and value provided in the [ID:TEXT] standard from the HTML source. 
+        /// __ID__ will be replaced with the supplied ID. If an __ID__ placeholder is present, but no ID is provided, an error is thrown.
+        /// __TEXT__ will be replaced with the text value provided. This is always optional. Empty if nothing is provided.
+        /// 
+        /// an error is produced if an HTML input string does not contain the [ID:TEXT].
+        /// </summary>
         static readonly String[][] TagPatterns = new String[][]
         {
-           new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },
-           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>" },
-           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" },
+           // Patterns containing a labels.
+           // They must be before the lable pattern.
+           new String[]{ "<div class=\"form-check\">[\\s?]*<input class=\"form-check-input\" type=\"checkbox\" id=\".*\">[\\s?]*<label class=\"form-check-label\" for=\".*\">" + ID_TEXT_PATTERN + "</label>[\\s?]*</div>", "<asp:CheckBox ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\" OnCheckedChanged=\"__ID___CheckedChanged\"/>" },
 
-           new String[]{ "<form>", "<form action=\" / \" method =\"post\" runat=\"server\">" }
-           // <div class="form-check"> <input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>
+
+
+           new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },                      // ASP label. Nothing too special, has an id and text. 
+           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>" },    // button. ID and text, also adds an 'on click' with the id, too.
+           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" },                                           // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
+
+           new String[]{ "<form>", "<form action=\" / \" method =\"post\" runat=\"server\">" }                                                                                      // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
+           // TODO check above, add on select or whatever the equiv is
+
+
+           // TODO
+           // <div class="form-check"> <input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>       
+           // <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
+           // 
+           // <asp:ListBox ID="ListBox1" runat="server"></asp:ListBox>
+           // <asp:RadioButtonList ID="RadioButtonList1" runat="server"></asp:RadioButtonList>
+
         };
 
         public static string parse(String s)
@@ -452,7 +477,5 @@ namespace ASPXUpdater
             };
 
         }
-
-
     }
 }
