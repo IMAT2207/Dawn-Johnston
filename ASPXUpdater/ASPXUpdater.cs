@@ -33,9 +33,12 @@ namespace ASPXUpdater
         private static readonly String ASSETS_INPUT = BOOTSTRAP_LOC + ASSETS;
         private static readonly String ASSETS_OUTPUT = ASPX + ASSETS;
         private static readonly List<String> Logs = new List<string>();
+        private static readonly List<String> Errors = new List<string>();
+        private static int FilesFailed = 0;
+        private static int FilesPassed = 0;
         private static readonly String LOG_LOC = "./ASPX UPDATER LASTEST.log";
 
-        private class ASPXGenException : Exception { public ASPXGenException(String message) : base("Failed to generate ASPX: " + message) { } }
+        public class ASPXGenException : Exception { public ASPXGenException(String message) : base("Failed to generate ASPX: " + message) { } }
 
         static void LogAndWrite(String s) => LogAndWrite(s, false);
 
@@ -43,13 +46,17 @@ namespace ASPXUpdater
         {
             Logs.Add(s);
             if (IsError)
+            {
                 Console.Error.WriteLine(s);
+                Errors.Add(s);
+            }
             else
                 Console.WriteLine(s);
         }
 
         static void Info(String s) => LogAndWrite("[INFO] " + s);
-        static void Error(String s) => LogAndWrite("[ERR] " + s);
+        static void Error(String s) => LogAndWrite("[ERR] " + s, true);
+        static void Error(String s, bool logError) => LogAndWrite("[ERR] " + s, logError);
         static void Success(String s) => LogAndWrite("[PASS] " + s);
         static void Bar(String s) => LogAndWrite(BR + "================== " + s +" ===================" + BR);
         static String BR => "\n\n";
@@ -57,7 +64,8 @@ namespace ASPXUpdater
         static String ABS(String s) => Path.GetFullPath(s);
         static void Main(string[] args)
         {
-            
+            try { Console.SetWindowSize(250, 50); } catch (Exception ignored) { }
+
             Bar("Startup");
             if (DEBUG)
             {
@@ -78,31 +86,54 @@ namespace ASPXUpdater
             UpdateAssets();
 
             Success("Finished!");
-            if (DEBUG)
+
+            DumpErrors();
+            WriteLog();
+
+            /*          
+                        if (DEBUG)
+                        {
+                            Bar("Paused for debug");
+                            Info("Attached to debugger. Press 'continue' or 'stop' in Visual Studio.");
+                            Debugger.Break();
+                            Info("Continue!");
+                        }
+            */
+
+            if (Errors.Count > 0)
             {
-                Bar("Paused for debug");
-                Info("Attached to debugger. Press 'continue' or 'stop' in Visual Studio.");
-                Debugger.Break();
-                Info("Continue!");
+                Bar("Finished with errors. Will not auto close.");
+                goto HALT_INTERRUPT;
             }
 
-            Bar("Finished. Will auto close in 5 seconds, unless interrupted.");
+            Bar("Finished with no errors. Will auto close in 5 seconds, unless interrupted.");
             for (int i = 0; i < 5; i++)
             {
                 if (Console.KeyAvailable)
-                {
-                    Bar("Interrupted. Now idle. Press any key to Halt.");
-                    Thread.Sleep(1000);
-                    while (Console.KeyAvailable)
-                        Console.ReadKey(false);     // skips previous input chars, or waits if user is still holding a char. Effectively, this clears the input buffer to read from fresh.
-                    Console.ReadKey();
-                    break;
-                }   
+                    goto HALT_INTERRUPT;
                 else
                     Thread.Sleep(1000);
                 Info("Will auto halt in " + (5-i) + " seconds. Hold any key to cancel.");
             }
-            WriteLog();
+
+            HALT_INTERRUPT:
+            Info("Interrupted. Now idle. Press any key to Halt.");
+            Thread.Sleep(1000);
+            while (Console.KeyAvailable)
+                Console.ReadKey(false);     // skips previous input chars, or waits if user is still holding a char. Effectively, this clears the input buffer to read from fresh.
+            Console.ReadKey();
+        }
+
+        private static void DumpErrors()
+        {
+            Bar("Report:");
+            Info("All errors logged:");
+            foreach (String s in Errors)
+                Info(s);
+            Info(BR);
+            Success(FilesPassed + " SUCCESSFUL TRANSLATIONS");
+            Error(" " + FilesFailed + " FAILED TRANSLATIONS");
+
         }
 
         /// <summary>
@@ -130,7 +161,7 @@ namespace ASPXUpdater
                 try
                 {
                     ProcessFile(HTMLFile);
-                    Success("Updated ASPX for " + HTMLFile);
+                    Success("Updated ASPX for " + HTMLFile + BR);
                 }
                 catch (Exception e)
                 {
@@ -144,18 +175,35 @@ namespace ASPXUpdater
 
         private static void ProcessFile(String HTMLFile)
         {
-            String ASPXFile = ASPX + Path.GetFileNameWithoutExtension(HTMLFile) + ".aspx";
-            String ASPXContent;
+            String name = Path.GetFileName(HTMLFile);
             try
             {
-                ASPXContent = File.ReadAllText(ASPXFile);
-            }
-            catch (FileNotFoundException)
+                Info("Processing " + name  + "...");
+                String ASPXFile = ASPX + Path.GetFileNameWithoutExtension(HTMLFile) + ".aspx";
+                String ASPXContent;
+                try
+                {
+                    Info("Reading corresponding ASPX...");
+                    ASPXContent = File.ReadAllText(ASPXFile);
+                }
+                catch (FileNotFoundException)
+                {
+                    Info("Unable!");
+                    throw new ASPXGenException("'" + HTMLFile + "' had no corresponding ASPX file to update. Generate one in Visual Studio, or check file names and paths.");
+                }
+                Info("Compiling ASPX content...");
+                ASPXContent = CompileASPX(ReadASPXMeta(ASPXContent), HTMLFile);
+                Info("Translating HTML tags to ASP...");
+                ASPXContent = HTMLToASPConverter.parse(ASPXContent);
+                File.WriteAllText(ASPXFile, ASPXContent);
+                Info(name + " was successfull!");
+            } catch (Exception e)
             {
-                throw new ASPXGenException("'" + HTMLFile + "' had no corresponding ASPX file to update. Generate one in Visual Studio, or check file names and paths.");
+                Error(name + " failed!", false);
+                FilesFailed++;
+                throw e;
             }
-
-            File.WriteAllText(ASPXFile, HTMLToASPConverter.parse(CompileASPX(ReadASPXMeta(ASPXContent), HTMLFile)));
+            FilesPassed++;
         }
 
         /// <summary>
@@ -292,7 +340,7 @@ namespace ASPXUpdater
         {
             foreach (String s in IN)
                 if (!Contains(OUT, ABS(outURI + Path.GetFileNameWithoutExtension(s) + '.' +outExtention))) 
-                    Info(preMsg + " '" + Path.GetFileNameWithoutExtension(s) + "' " + postMsg);
+                    Error(preMsg + " '" + Path.GetFileNameWithoutExtension(s) + "' " + postMsg, false);
         }
 
         static bool Contains(String[] arr, String el)
@@ -375,13 +423,17 @@ namespace ASPXUpdater
             if (current_replace_pattern.Contains(ID_PATTERN))
             {
                 ID = Regex.Match(TextID, "[[].*:").Value;
-                ID = ID.Substring(1, ID.Length - 2);
+                if (ID.Length > 0)
+                    ID = ID.Substring(1, ID.Length - 2);
+                else
+                    throw new ASPXUpdater.ASPXGenException("The pattern '" + s + "' requires an ID, but none was correctly supplied.");
             }
 
             if (current_replace_pattern.Contains(TEXT_PATTERN))
             {
                 Text = Regex.Match(TextID, ":.*]").Value;
-                Text = Text.Substring(1, Text.Length - 2);
+                if (ID.Length > 0)
+                    Text = Text.Substring(1, Text.Length - 2);
             }
             return new String[] { ID, Text };
         }
