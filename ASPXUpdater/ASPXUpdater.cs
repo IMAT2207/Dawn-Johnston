@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ASPXUpdater
 {
@@ -36,24 +37,34 @@ namespace ASPXUpdater
 
         private class ASPXGenException : Exception { public ASPXGenException(String message) : base("Failed to generate ASPX: " + message) { } }
 
-        static void LogAndWrite(String s)
+        static void LogAndWrite(String s) => LogAndWrite(s, false);
+
+        static void LogAndWrite(String s, bool IsError)
         {
             Logs.Add(s);
-            Console.WriteLine(s);
+            if (IsError)
+                Console.Error.WriteLine(s);
+            else
+                Console.WriteLine(s);
         }
 
         static void Info(String s) => LogAndWrite("[INFO] " + s);
         static void Error(String s) => LogAndWrite("[ERR] " + s);
         static void Success(String s) => LogAndWrite("[PASS] " + s);
-        static void Bar(String s) => LogAndWrite(BR + "==================" + s +"===================" + BR);
+        static void Bar(String s) => LogAndWrite(BR + "================== " + s +" ===================" + BR);
         static String BR => "\n\n";
 
         static String ABS(String s) => Path.GetFullPath(s);
         static void Main(string[] args)
         {
-            HTMLToASPConverter.runTest();
+            
             Bar("Startup");
-            if (DEBUG) Info("Debugger attached!\n Will work in debug directory!\n Real project will not be modified!");
+            if (DEBUG)
+            {
+                Info("Debugger attached!\n Will work in debug directory!\n Real project will not be modified!");
+                HTMLToASPConverter.runTest();
+            }
+
            
             Info("Will attempt to work at solution " + ABS(SLN));
 
@@ -74,8 +85,23 @@ namespace ASPXUpdater
                 Debugger.Break();
                 Info("Continue!");
             }
-            Bar("Idle. Press any key to Halt.");
-            Console.ReadKey();
+
+            Bar("Finished. Will auto close in 5 seconds, unless interrupted.");
+            for (int i = 0; i < 5; i++)
+            {
+                if (Console.KeyAvailable)
+                {
+                    Bar("Interrupted. Now idle. Press any key to Halt.");
+                    Thread.Sleep(1000);
+                    while (Console.KeyAvailable)
+                        Console.ReadKey(false);     // skips previous input chars, or waits if user is still holding a char. Effectively, this clears the input buffer to read from fresh.
+                    Console.ReadKey();
+                    break;
+                }   
+                else
+                    Thread.Sleep(1000);
+                Info("Will auto halt in " + (5-i) + " seconds. Hold any key to cancel.");
+            }
             WriteLog();
         }
 
@@ -293,11 +319,7 @@ namespace ASPXUpdater
     {
         public static void runTest()
         {
-            String s = "<label class=\"col - form - label\" >[myLabel:This Is A Label]</label>" +
-                "<label class=\"col - form - label\" >[myLabel:This Is A Label]</label>" +
-                "<label class=\"col - form - label\" >[myLabel1:This Is Not a Label ;)]</label>" +
-                "<label class=\"col - form - label\" >[myLabel2:This Is Also A Label]</label>" +
-                "<p>[myLabel3:This a paragraph label]</p>";
+            String s = "<form><button class=\"btn btn-primary\" type =\"button\" >[shittyButton:This Is A Button]</button></form>";
             String r = parse(s);
         }
         static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
@@ -310,8 +332,10 @@ namespace ASPXUpdater
         static readonly String[][] TagPatterns = new String[][]
         {
            new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },
-           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Button>" },
-           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" }
+           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>" },
+           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" },
+
+           new String[]{ "<form>", "<form action=\" / \" method =\"post\" runat=\"server\">" }
            // <div class="form-check"> <input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>
         };
 
@@ -345,13 +369,20 @@ namespace ASPXUpdater
 
         private static String[] GetTextID(String s)
         {
+            String ID = "";
+            String Text = "";
             String TextID = Regex.Match(s, ID_TEXT_PATTERN).Value;
-            String ID = Regex.Match(TextID, "[[].*:").Value;
-            ID = ID.Substring(1, ID.Length - 2);
+            if (current_replace_pattern.Contains(ID_PATTERN))
+            {
+                ID = Regex.Match(TextID, "[[].*:").Value;
+                ID = ID.Substring(1, ID.Length - 2);
+            }
 
-            String Text = Regex.Match(TextID, ":.*]").Value;
-            Text = Text.Substring(1, Text.Length - 2);
-
+            if (current_replace_pattern.Contains(TEXT_PATTERN))
+            {
+                Text = Regex.Match(TextID, ":.*]").Value;
+                Text = Text.Substring(1, Text.Length - 2);
+            }
             return new String[] { ID, Text };
         }
 
