@@ -116,6 +116,8 @@ namespace ASPXUpdater
                 Info("Will auto halt in " + (5-i) + " seconds. Hold any key to cancel.");
             }
 
+            return;
+
             HALT_INTERRUPT:
             Info("Interrupted. Now idle. Press any key to Halt.");
             Thread.Sleep(1000);
@@ -367,7 +369,7 @@ namespace ASPXUpdater
     {
         public static void runTest()
         {
-            String s = "<input class=\"form-control\" type=\"text\" value=\"[txtIn:Type]\">";
+            String s = "<form><label>[lblLogin:Login]</label><input class=\"form-control\" type =\"text\" value =\"[txtUserID: Enter your ID]\"><input class=\"form-control\" type =\"text\" value =\"[txtPasswrod: Enter your password]\">";
             String r = parse(s);
         }
         static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
