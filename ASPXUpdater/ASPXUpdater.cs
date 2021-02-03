@@ -370,7 +370,7 @@ namespace ASPXUpdater
             String s = "<input class=\"form-control\" type=\"text\" value=\"[txtIn:Type]\">";
             String r = parse(s);
         }
-        static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
+        static readonly String ID_TEXT_PATTERN = "[[][^:]*:[^\\]]*[\\]]";
         static readonly String ID_PATTERN = "__ID__";
         static readonly String TEXT_PATTERN = "__TEXT__";
         static volatile String current_tag_pattern = "";
