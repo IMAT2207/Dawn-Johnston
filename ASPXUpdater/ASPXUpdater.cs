@@ -132,7 +132,7 @@ namespace ASPXUpdater
                 Info(s);
             Info(BR);
             Success("✓✓✓ " + FilesPassed + " SUCCESSFUL TRANSLATIONS ✓✓✓");
-            Error(" XXX " + FilesFailed + " FAILED TRANSLATIONS     XXX");
+            Error(" XXX " + FilesFailed + " FAILED TRANSLATIONS     XXX", false);
 
         }
 
@@ -367,7 +367,7 @@ namespace ASPXUpdater
     {
         public static void runTest()
         {
-            String s = "<div class=\"form-check\"><input class=\"form-check-input\" type=\"checkbox\" id=\"formCheck-1\"><label class=\"form-check-label\" for=\"formCheck-1\">[yeet:fdsagfd yes m9]</label></div>";
+            String s = "<input class=\"form-control\" type=\"text\" value=\"[txtIn:Type]\">";
             String r = parse(s);
         }
         static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
@@ -397,7 +397,7 @@ namespace ASPXUpdater
 
            new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },                      // ASP label. Nothing too special, has an id and text. 
            new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>" },    // button. ID and text, also adds an 'on click' with the id, too.
-           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" },                                           // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
+           new String[]{ "<input class=\"form-control\" type=\"text\" value=\"" + ID_TEXT_PATTERN + "\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" },                                           // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
 
            new String[]{ "<form>", "<form action=\" / \" method =\"post\" runat=\"server\">" }                                                                                      // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
            // TODO check above, add on select or whatever the equiv is
