@@ -54,7 +54,7 @@ namespace ASPXUpdater
                 Console.WriteLine(s);
         }
 
-        static void Info(String s) => LogAndWrite("[INFO] " + s);
+        public static void Info(String s) => LogAndWrite("[INFO] " + s);
         static void Error(String s) => LogAndWrite("[ERR] " + s, true);
         static void Error(String s, bool logError) => LogAndWrite("[ERR] " + s, logError);
         static void Success(String s) => LogAndWrite("[PASS] " + s);
@@ -129,9 +129,15 @@ namespace ASPXUpdater
         private static void DumpErrors()
         {
             Bar("Report:");
-            Info("All errors logged:");
-            foreach (String s in Errors)
+
+            if (Errors.Count > 0)
+            {
+                Info("All errors logged:");
+                foreach (String s in Errors)
                 Info(s);
+            }
+            else
+                Info("No errors logged, hurray! Isn't this a rare sight!");
             Info(BR);
             Success("✓✓✓ " + FilesPassed + " SUCCESSFUL TRANSLATIONS ✓✓✓");
             Error(" XXX " + FilesFailed + " FAILED TRANSLATIONS     XXX", false);
@@ -372,11 +378,20 @@ namespace ASPXUpdater
             String s = "<form><label>[lblLogin:Login]</label><input class=\"form-control\" type =\"text\" value =\"[txtUserID: Enter your ID]\"><input class=\"form-control\" type =\"text\" value =\"[txtPasswrod: Enter your password]\">";
             String r = parse(s);
         }
+
+        /// <summary>
+        /// Pattern to ignore all attribute within an html opening tag.
+        /// </summary>
+        static readonly Regex ATTRIBUTE_CAPTURE_PATTERN_ADVANCED = new Regex(" ?( ?[^\\s]*=\"[^\"]*\" ?)* ?");
+
+
+        static readonly Regex ATTRIBUTE_CAPTURE_PATTERN = new Regex("[^>]*");   
         static readonly String ID_TEXT_PATTERN = "[[][^:]*:[^\\]]*[\\]]";
         static readonly String ID_PATTERN = "__ID__";
         static readonly String TEXT_PATTERN = "__TEXT__";
         static volatile String current_tag_pattern = "";
         static volatile String current_replace_pattern = "";
+
         static readonly MatchEvaluator TagEvaluator = new MatchEvaluator(ReplaceTag);
 
         /// <summary>
@@ -389,19 +404,18 @@ namespace ASPXUpdater
         /// 
         /// an error is produced if an HTML input string does not contain the [ID:TEXT].
         /// </summary>
-        static readonly String[][] TagPatterns = new String[][]
+        static readonly Regex[][] TagPatterns = new Regex[][]
         {
            // Patterns containing a labels.
            // They must be before the lable pattern.
-           new String[]{ "<div class=\"form-check\">[\\s?]*<input class=\"form-check-input\" type=\"checkbox\" id=\".*\">[\\s?]*<label class=\"form-check-label\" for=\".*\">" + ID_TEXT_PATTERN + "</label>[\\s?]*</div>", "<asp:CheckBox ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\" OnCheckedChanged=\"__ID___CheckedChanged\"/>" },
+           new Regex[]{ new Regex("<div class=\"form-check\">[\\s?]*<input class=\"form-check-input\" type=\"checkbox\"" + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[\\s?]*<label class=\"form-check-label[^\"]*\" for=\"[^\"]*\">" + ID_TEXT_PATTERN + "</label>[\\s?]*</div>"), new Regex("<asp:CheckBox ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\" OnCheckedChanged=\"__ID___CheckedChanged\"/>") },
 
 
 
-           new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },                      // ASP label. Nothing too special, has an id and text. 
-           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>" },    // button. ID and text, also adds an 'on click' with the id, too.
-           new String[]{ "<input class=\"form-control\" type=\"text\" value=\"" + ID_TEXT_PATTERN + "\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" },                                           // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
-
-           new String[]{ "<form>", "<form action=\" / \" method =\"post\" runat=\"server\">" }                                                                                      // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
+           new Regex[]{ new Regex("<label"  + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>"), new Regex("<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>") },                     // ASP label. Nothing too special, has an id and text. 
+           new Regex[]{ new Regex("<button" + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[^<]*</button>|<button[^/]*/>"), new Regex("<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>") },    // button. ID and text, also adds an 'on click' with the id, too.
+           new Regex[]{ new Regex("<input"  + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + "type=\"text\" " + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>") },                                  // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
+           new Regex[]{ new Regex("<form"   + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<form action=\" / \" method =\"post\" runat=\"server\">") }                                                                               // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
            // TODO check above, add on select or whatever the equiv is
 
 
@@ -417,10 +431,10 @@ namespace ASPXUpdater
         public static string parse(String s)
         {
             String content = s;
-            foreach (String[] patts in TagPatterns)
+            foreach (Regex[] patts in TagPatterns)
             {
-                current_tag_pattern = patts[0];
-                current_replace_pattern = patts[1];
+                current_tag_pattern = patts[0] + "";
+                current_replace_pattern = patts[1] + "";
                 content = Regex.Replace(content, current_tag_pattern, TagEvaluator);
             }
 
@@ -437,6 +451,8 @@ namespace ASPXUpdater
             String newLine = current_replace_pattern;
             newLine = Regex.Replace(newLine, ID_PATTERN, current_ID);
             newLine = Regex.Replace(newLine, TEXT_PATTERN, current_text);
+            ASPXUpdater.Info("Translated " + line +
+                           "\n            to => " + newLine + '\n');
 
             return newLine;
         }
