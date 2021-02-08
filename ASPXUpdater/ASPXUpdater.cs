@@ -415,7 +415,7 @@ namespace ASPXUpdater
            new Regex[]{ new Regex("<label"  + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>"), new Regex("<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>") },                     // ASP label. Nothing too special, has an id and text. 
            new Regex[]{ new Regex("<button" + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[^<]*</button>|<button[^/]*/>"), new Regex("<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>") },    // button. ID and text, also adds an 'on click' with the id, too.
            new Regex[]{ new Regex("<input"  + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + "type=\"text\" " + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>") },                                  // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
-           new Regex[]{ new Regex("<form"   + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<form action=\" / \" method =\"post\" runat=\"server\">") }                                                                               // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
+           new Regex[]{ new Regex("<form"   + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<form method=\"post\" runat=\"server\">") }                                                                               // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
            // TODO check above, add on select or whatever the equiv is
 
 
