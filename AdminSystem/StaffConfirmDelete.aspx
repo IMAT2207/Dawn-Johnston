@@ -23,7 +23,7 @@ The bootstrap front end seems perfectly compatable.
 
 <body style="height: 100%;width: 100%;background: var(--dark);">
     <div class="container d-xl-flex justify-content-xl-center align-items-xl-center rubberBand animated" style="width: 100%;height: 100%;background: var(--cyan);">
-        <form action=" / " method ="post" runat="server"><asp:Label ID="lblLogin" runat="server" Text="Login"></asp:Label><asp:TextBox runat="server" ID="txtUserID:Enter your ID]"><input class="form-control" type="text" value="[txtPasswrod">Enter your ID]"><input class="form-control" type="text" value="[txtPasswrod:Enter your password</asp:TextBox>
+        <form method="post" runat="server"><asp:Label ID="lblLogin" runat="server" Text="Login"></asp:Label><asp:TextBox runat="server" ID="txtUserID">Enter your ID</asp:TextBox><asp:TextBox runat="server" ID="txtPasswrod">Enter your password</asp:TextBox>
             <asp:CheckBox ID="chkRememberMe" runat="server" Text="Remember my ID" OnCheckedChanged="chkRememberMe_CheckedChanged"/><asp:Button ID="btnEnter" runat="server" Text="Enter"  OnClick="btnEnter_Click"></asp:Button>
         </form>
     </div>
