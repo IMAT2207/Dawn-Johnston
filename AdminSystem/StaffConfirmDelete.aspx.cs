@@ -11,4 +11,14 @@ public partial class StaffConfirmDelete : System.Web.UI.Page
     {
 
     }
+
+    protected void chkRememberMe_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnEnter_Click(object sender, EventArgs e)
+    {
+
+    }
 }
