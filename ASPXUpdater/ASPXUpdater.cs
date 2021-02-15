@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ASPXUpdater
 {
@@ -32,28 +33,46 @@ namespace ASPXUpdater
         private static readonly String ASSETS_INPUT = BOOTSTRAP_LOC + ASSETS;
         private static readonly String ASSETS_OUTPUT = ASPX + ASSETS;
         private static readonly List<String> Logs = new List<string>();
+        private static readonly List<String> Errors = new List<string>();
+        private static int FilesFailed = 0;
+        private static int FilesPassed = 0;
         private static readonly String LOG_LOC = "./ASPX UPDATER LASTEST.log";
 
-        private class ASPXGenException : Exception { public ASPXGenException(String message) : base("Failed to generate ASPX: " + message) { } }
+        public class ASPXGenException : Exception { public ASPXGenException(String message) : base("Failed to generate ASPX: " + message) { } }
 
-        static void LogAndWrite(String s)
+        static void LogAndWrite(String s) => LogAndWrite(s, false);
+
+        static void LogAndWrite(String s, bool IsError)
         {
             Logs.Add(s);
-            Console.WriteLine(s);
+            if (IsError)
+            {
+                Console.Error.WriteLine(s);
+                Errors.Add(s);
+            }
+            else
+                Console.WriteLine(s);
         }
 
-        static void Info(String s) => LogAndWrite("[INFO] " + s);
-        static void Error(String s) => LogAndWrite("[ERR] " + s);
+        public static void Info(String s) => LogAndWrite("[INFO] " + s);
+        static void Error(String s) => LogAndWrite("[ERR] " + s, true);
+        static void Error(String s, bool logError) => LogAndWrite("[ERR] " + s, logError);
         static void Success(String s) => LogAndWrite("[PASS] " + s);
-        static void Bar(String s) => LogAndWrite(BR + "==================" + s +"===================" + BR);
+        static void Bar(String s) => LogAndWrite(BR + "================== " + s +" ===================" + BR);
         static String BR => "\n\n";
 
         static String ABS(String s) => Path.GetFullPath(s);
         static void Main(string[] args)
         {
-            HTMLToASPConverter.runTest();
+            try { Console.SetWindowSize(250, 50); } catch (Exception ignored) { }
+
             Bar("Startup");
-            if (DEBUG) Info("Debugger attached!\n Will work in debug directory!\n Real project will not be modified!");
+            if (DEBUG)
+            {
+                Info("Debugger attached!\n Will work in debug directory!\n Real project will not be modified!");
+                HTMLToASPConverter.runTest();
+            }
+
            
             Info("Will attempt to work at solution " + ABS(SLN));
 
@@ -67,16 +86,62 @@ namespace ASPXUpdater
             UpdateAssets();
 
             Success("Finished!");
-            if (DEBUG)
-            {
-                Bar("Paused for debug");
-                Info("Attached to debugger. Press 'continue' or 'stop' in Visual Studio.");
-                Debugger.Break();
-                Info("Continue!");
-            }
-            Bar("Idle. Press any key to Halt.");
-            Console.ReadKey();
+
+            DumpErrors();
             WriteLog();
+
+            /*          
+                        if (DEBUG)
+                        {
+                            Bar("Paused for debug");
+                            Info("Attached to debugger. Press 'continue' or 'stop' in Visual Studio.");
+                            Debugger.Break();
+                            Info("Continue!");
+                        }
+            */
+
+            if (Errors.Count > 0)
+            {
+                Bar("Finished with errors. Will not auto close.");
+                goto HALT_INTERRUPT;
+            }
+
+            Bar("Finished with no errors. Will auto close in 5 seconds, unless interrupted.");
+            for (int i = 0; i < 5; i++)
+            {
+                if (Console.KeyAvailable)
+                    goto HALT_INTERRUPT;
+                else
+                    Thread.Sleep(1000);
+                Info("Will auto halt in " + (5-i) + " seconds. Hold any key to cancel.");
+            }
+
+            return;
+
+            HALT_INTERRUPT:
+            Info("Interrupted. Now idle. Press any key to Halt.");
+            Thread.Sleep(1000);
+            while (Console.KeyAvailable)
+                Console.ReadKey(false);     // skips previous input chars, or waits if user is still holding a char. Effectively, this clears the input buffer to read from fresh.
+            Console.ReadKey();
+        }
+
+        private static void DumpErrors()
+        {
+            Bar("Report:");
+
+            if (Errors.Count > 0)
+            {
+                Info("All errors logged:");
+                foreach (String s in Errors)
+                Info(s);
+            }
+            else
+                Info("No errors logged, hurray! Isn't this a rare sight!");
+            Info(BR);
+            Success("✓✓✓ " + FilesPassed + " SUCCESSFUL TRANSLATIONS ✓✓✓");
+            Error(" XXX " + FilesFailed + " FAILED TRANSLATIONS     XXX", false);
+
         }
 
         /// <summary>
@@ -104,7 +169,7 @@ namespace ASPXUpdater
                 try
                 {
                     ProcessFile(HTMLFile);
-                    Success("Updated ASPX for " + HTMLFile);
+                    Success("Updated ASPX for " + HTMLFile + BR);
                 }
                 catch (Exception e)
                 {
@@ -118,18 +183,35 @@ namespace ASPXUpdater
 
         private static void ProcessFile(String HTMLFile)
         {
-            String ASPXFile = ASPX + Path.GetFileNameWithoutExtension(HTMLFile) + ".aspx";
-            String ASPXContent;
+            String name = Path.GetFileName(HTMLFile);
             try
             {
-                ASPXContent = File.ReadAllText(ASPXFile);
-            }
-            catch (FileNotFoundException)
+                Info("Processing " + name  + "...");
+                String ASPXFile = ASPX + Path.GetFileNameWithoutExtension(HTMLFile) + ".aspx";
+                String ASPXContent;
+                try
+                {
+                    Info("Reading corresponding ASPX...");
+                    ASPXContent = File.ReadAllText(ASPXFile);
+                }
+                catch (FileNotFoundException)
+                {
+                    Info("Unable!");
+                    throw new ASPXGenException("'" + HTMLFile + "' had no corresponding ASPX file to update. Generate one in Visual Studio, or check file names and paths.");
+                }
+                Info("Compiling ASPX content...");
+                ASPXContent = CompileASPX(ReadASPXMeta(ASPXContent), HTMLFile);
+                Info("Translating HTML tags to ASP...");
+                ASPXContent = HTMLToASPConverter.parse(ASPXContent);
+                File.WriteAllText(ASPXFile, ASPXContent);
+                Info(name + " was successfull!");
+            } catch (Exception e)
             {
-                throw new ASPXGenException("'" + HTMLFile + "' had no corresponding ASPX file to update. Generate one in Visual Studio, or check file names and paths.");
+                Error(name + " failed!", false);
+                FilesFailed++;
+                throw e;
             }
-
-            File.WriteAllText(ASPXFile, HTMLToASPConverter.parse(CompileASPX(ReadASPXMeta(ASPXContent), HTMLFile)));
+            FilesPassed++;
         }
 
         /// <summary>
@@ -266,7 +348,7 @@ namespace ASPXUpdater
         {
             foreach (String s in IN)
                 if (!Contains(OUT, ABS(outURI + Path.GetFileNameWithoutExtension(s) + '.' +outExtention))) 
-                    Info(preMsg + " '" + Path.GetFileNameWithoutExtension(s) + "' " + postMsg);
+                    Error(preMsg + " '" + Path.GetFileNameWithoutExtension(s) + "' " + postMsg, false);
         }
 
         static bool Contains(String[] arr, String el)
@@ -293,35 +375,66 @@ namespace ASPXUpdater
     {
         public static void runTest()
         {
-            String s = "<label class=\"col - form - label\" >[myLabel:This Is A Label]</label>" +
-                "<label class=\"col - form - label\" >[myLabel:This Is A Label]</label>" +
-                "<label class=\"col - form - label\" >[myLabel1:This Is Not a Label ;)]</label>" +
-                "<label class=\"col - form - label\" >[myLabel2:This Is Also A Label]</label>" +
-                "<p>[myLabel3:This a paragraph label]</p>";
+            String s = "<form><label>[lblLogin:Login]</label><input class=\"form-control\" type =\"text\" value =\"[txtUserID: Enter your ID]\"><input class=\"form-control\" type =\"text\" value =\"[txtPasswrod: Enter your password]\">";
             String r = parse(s);
         }
-        static readonly String ID_TEXT_PATTERN = "[[].*:.*[\\]]";
+
+        /// <summary>
+        /// Pattern to ignore all attribute within an html opening tag.
+        /// </summary>
+        static readonly Regex ATTRIBUTE_CAPTURE_PATTERN_ADVANCED = new Regex(" ?( ?[^\\s]*=\"[^\"]*\" ?)* ?");
+
+
+        static readonly Regex ATTRIBUTE_CAPTURE_PATTERN = new Regex("[^>]*");   
+        static readonly String ID_TEXT_PATTERN = "[[][^:]*:[^\\]]*[\\]]";
         static readonly String ID_PATTERN = "__ID__";
         static readonly String TEXT_PATTERN = "__TEXT__";
         static volatile String current_tag_pattern = "";
         static volatile String current_replace_pattern = "";
+
         static readonly MatchEvaluator TagEvaluator = new MatchEvaluator(ReplaceTag);
 
-        static readonly String[][] TagPatterns = new String[][]
+        /// <summary>
+        /// The all important list of patterns which defines the HTML to ASP tag translation.
+        /// 
+        /// Each entry has two patterns, the input and the output. Before and after. The input is a standard REGEX which captures the elements to replace.
+        /// The second value is the string it will be replaced with. It may contain placeholders for the ID and value provided in the [ID:TEXT] standard from the HTML source. 
+        /// __ID__ will be replaced with the supplied ID. If an __ID__ placeholder is present, but no ID is provided, an error is thrown.
+        /// __TEXT__ will be replaced with the text value provided. This is always optional. Empty if nothing is provided.
+        /// 
+        /// an error is produced if an HTML input string does not contain the [ID:TEXT].
+        /// </summary>
+        static readonly Regex[][] TagPatterns = new Regex[][]
         {
-           new String[]{ "<label[^>]*>[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>", "<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>" },
-           new String[]{ "<button[^>]*>[^<]*</button>|<button[^/]*/>", "<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Button>" },
-           new String[]{ "<input type=\"text\" value=\"[^>]*\">", "<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>" }
-           // <div class="form-check"> <input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>
+           // Patterns containing a labels.
+           // They must be before the lable pattern.
+           new Regex[]{ new Regex("<div class=\"form-check\">[\\s?]*<input class=\"form-check-input\" type=\"checkbox\"" + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[\\s?]*<label class=\"form-check-label[^\"]*\" for=\"[^\"]*\">" + ID_TEXT_PATTERN + "</label>[\\s?]*</div>"), new Regex("<asp:CheckBox ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\" OnCheckedChanged=\"__ID___CheckedChanged\"/>") },
+
+
+
+           new Regex[]{ new Regex("<label"  + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[^<]*</label>|<label[^/]*/>|<p>[^<]*</p>"), new Regex("<asp:Label ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"></asp:Label>") },                     // ASP label. Nothing too special, has an id and text. 
+           new Regex[]{ new Regex("<button" + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">[^<]*</button>|<button[^/]*/>"), new Regex("<asp:Button ID=\"__ID__\" runat=\"server\" Text=\"__TEXT__\"  OnClick=\"__ID___Click\"></asp:Button>") },    // button. ID and text, also adds an 'on click' with the id, too.
+           new Regex[]{ new Regex("<input"  + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + "type=\"text\" " + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<asp:TextBox runat=\"server\" ID=\"__ID__\">__TEXT__</asp:TextBox>") },                                  // Text box, id and text. Text is shown as 'prompt' text, not textbox content.
+           new Regex[]{ new Regex("<form"   + ATTRIBUTE_CAPTURE_PATTERN_ADVANCED + ">"), new Regex("<form method=\"post\" runat=\"server\">") }                                                                               // Modifies the opening tag of a HTML form with a blank action and run at server. Required for some form items.
+           // TODO check above, add on select or whatever the equiv is
+
+
+           // TODO
+           // <div class="form-check"> <input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Label</label></div>       
+           // <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
+           // 
+           // <asp:ListBox ID="ListBox1" runat="server"></asp:ListBox>
+           // <asp:RadioButtonList ID="RadioButtonList1" runat="server"></asp:RadioButtonList>
+
         };
 
         public static string parse(String s)
         {
             String content = s;
-            foreach (String[] patts in TagPatterns)
+            foreach (Regex[] patts in TagPatterns)
             {
-                current_tag_pattern = patts[0];
-                current_replace_pattern = patts[1];
+                current_tag_pattern = patts[0] + "";
+                current_replace_pattern = patts[1] + "";
                 content = Regex.Replace(content, current_tag_pattern, TagEvaluator);
             }
 
@@ -338,6 +451,8 @@ namespace ASPXUpdater
             String newLine = current_replace_pattern;
             newLine = Regex.Replace(newLine, ID_PATTERN, current_ID);
             newLine = Regex.Replace(newLine, TEXT_PATTERN, current_text);
+            ASPXUpdater.Info("Translated " + line +
+                           "\n            to => " + newLine + '\n');
 
             return newLine;
         }
@@ -345,13 +460,24 @@ namespace ASPXUpdater
 
         private static String[] GetTextID(String s)
         {
+            String ID = "";
+            String Text = "";
             String TextID = Regex.Match(s, ID_TEXT_PATTERN).Value;
-            String ID = Regex.Match(TextID, "[[].*:").Value;
-            ID = ID.Substring(1, ID.Length - 2);
+            if (current_replace_pattern.Contains(ID_PATTERN))
+            {
+                ID = Regex.Match(TextID, "[[].*:").Value;
+                if (ID.Length > 0)
+                    ID = ID.Substring(1, ID.Length - 2);
+                else
+                    throw new ASPXUpdater.ASPXGenException("The pattern '" + s + "' requires an ID, but none was correctly supplied.");
+            }
 
-            String Text = Regex.Match(TextID, ":.*]").Value;
-            Text = Text.Substring(1, Text.Length - 2);
-
+            if (current_replace_pattern.Contains(TEXT_PATTERN))
+            {
+                Text = Regex.Match(TextID, ":.*]").Value;
+                if (ID.Length > 0)
+                    Text = Text.Substring(1, Text.Length - 2);
+            }
             return new String[] { ID, Text };
         }
 
@@ -369,7 +495,5 @@ namespace ASPXUpdater
             };
 
         }
-
-
     }
 }
