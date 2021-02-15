@@ -6,22 +6,42 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    class clsOrder
+    public class clsOrder
     {
-        int OrderID;
-        string OrderState;
-        static readonly string[] ORDER_STATES = new string[] { "WIP", "Finalized", "Shipped", "Delivered" };
-        int ProcessedBy;
-        int OrderedBy;
-        DateTime PlacedOn;
-        string DelieveryNote;
-        Boolean PaidFor;
+        public int OrderID;
+        public string OrderState;
+        public static readonly string[] ORDER_STATES = new string[] { "WIP", "Finalized", "Shipped", "Delivered" };
+        public int ProcessedBy;
+        public int OrderedBy;
+        public DateTime PlacedOn;
+        public string DeliveryNote;
+        public Boolean PaidFor;
+
+        public bool Find(int ID)
+        {
+            OrderID = 1;
+            OrderState = "WIP";
+            ProcessedBy = 100;
+            OrderedBy = 420;
+            PlacedOn = DateTime.Now;
+            DeliveryNote = "Leave at door";
+            PaidFor = true;
+            return true;
+        }
     }
 
-    class clsOrderItem
+    public class clsOrderItem
     {
-        string OrderItemID;
-        int OrderID;
-        int ProductID;
+        public bool Find(int ID)
+        {
+            OrderItemID = "12";
+            ProductID = 1;
+            OrderID = 1;
+            return true;
+        }
+
+        public string OrderItemID;
+        public int OrderID;
+        public int ProductID;
     }
 }
