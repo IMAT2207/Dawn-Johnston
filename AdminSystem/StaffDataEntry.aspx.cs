@@ -28,8 +28,18 @@ public partial class StaffDataEntry : System.Web.UI.Page
         // Captures the staff memebers first name.
         StaffMember.FirstName = txtFirstName.Text;
 
+        // Captures the staff members DOB.
+        DateTime enteredDate = DateTime.Parse(txtDOB.Text).Date;
+
+        DateTime dateOnly = enteredDate.Date;
+
+        StaffMember.DOB = DateTime.Parse(dateOnly.ToString("dd/MM/yyyy"));
+
         // Captures the staff memebers family name.
         StaffMember.FamilyName = txtFamilyName.Text;
+
+        bool box = chkIsManager.Checked == true;
+        StaffMember.IsManager = box;
 
         // Stores the first name in the session object.
         Session["StaffMember"] = StaffMember;
