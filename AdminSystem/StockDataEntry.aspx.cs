@@ -11,4 +11,9 @@ public partial class StockDataEntry : System.Web.UI.Page
     {
 
     }
+
+    protected void btnOK_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("StockViewer.aspx");
+    }
 }

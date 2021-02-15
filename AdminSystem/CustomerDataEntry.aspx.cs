@@ -21,4 +21,9 @@ public partial class CustomerDataEntry : System.Web.UI.Page
     {
 
     }
+
+    protected void ddlIsAvailable_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
