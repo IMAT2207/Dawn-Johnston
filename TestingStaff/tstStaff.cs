@@ -101,6 +101,13 @@ namespace Testing4
             Assert.AreEqual(StaffMember.FamilyName, TestData);
         }
 
+        public clsStaff createStaffAccount()
+        {
+            clsStaff order = new clsStaff();
+            order.Find(1);
+            return order;
+        }
+
 
     }
 }
