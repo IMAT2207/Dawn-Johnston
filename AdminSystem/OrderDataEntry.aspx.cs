@@ -17,6 +17,8 @@ public partial class OrderDataEntry : System.Web.UI.Page
     {
         clsOrder order = new clsOrder();
 
+        order.OrderID = int.Parse(txtID.Text);
+
         order.OrderState = cmbState.SelectedValue;
 
         order.ProcessedBy = int.Parse(txtProcessedBy.Text);
@@ -30,7 +32,9 @@ public partial class OrderDataEntry : System.Web.UI.Page
 
         order.PaidFor = true;
 
+        Session["Order"] = order;
         lblError.Text = "Success!";
+        Response.Redirect("OrderViewer.aspx");
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)
