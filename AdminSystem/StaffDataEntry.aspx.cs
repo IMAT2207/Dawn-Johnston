@@ -19,7 +19,7 @@ public partial class StaffDataEntry : System.Web.UI.Page
         clsStaff StaffMember = new clsStaff();
 
         // Captures the StaffID.
-        int x = Int32.Parse(txtStaffID.Text);
+        int x = int.Parse(txtStaffID.Text);
         StaffMember.StaffID = x;
 
         // Captures the staff memebers password.

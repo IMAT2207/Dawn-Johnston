@@ -10,7 +10,7 @@ namespace ClassLibrary
     {
         public int TraderId;
         public string TraderPassword;
-        public string BusinesName;
+        public string BusinessName;
         public string ContactEmail;
         public string DeliveryAddress;
         public DateTime AccountCreation;
@@ -21,7 +21,7 @@ namespace ClassLibrary
         {
             TraderId = 1;
             TraderPassword = "1234";
-            BusinesName = "Unknown";
+            BusinessName = "Unknown";
             ContactEmail = "Email@unknown.com";
             DeliveryAddress = "1UnknonwnStreet";
             AccountCreation = DateTime.Now;
