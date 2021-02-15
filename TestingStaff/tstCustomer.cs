@@ -34,8 +34,8 @@ namespace Testing4
         public void AttributeBusinesNameOk()
         {
             clsCustomer customer = new clsCustomer();
-            Assert.IsNotNull(customer.BusinesName);
-            Assert.IsTrue(customer.BusinesName.Length > 0 && customer.BusinesName.Length <= 50);
+            Assert.IsNotNull(customer.BusinessName);
+            Assert.IsTrue(customer.BusinessName.Length > 0 && customer.BusinessName.Length <= 50);
         }
 
         [TestMethod]
