@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Text.RegularExpressions;
 using ClassLibrary;
 
 namespace Testing4
@@ -38,8 +39,8 @@ namespace Testing4
                     break;
                 }
 
-            
             Assert.IsTrue(valid);
+            
         }
         
         [TestMethod]
