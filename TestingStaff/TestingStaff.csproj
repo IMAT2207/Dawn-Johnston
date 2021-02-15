@@ -53,6 +53,7 @@
     <Compile Include="tstCustomer.cs" />
     <Compile Include="tstOrder.cs" />
     <Compile Include="tstStaff.cs" />
+    <Compile Include="tstStock.cs" />
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
