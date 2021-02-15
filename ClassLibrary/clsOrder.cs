@@ -17,6 +17,8 @@ namespace ClassLibrary
         public string DeliveryNote;
         public Boolean PaidFor;
 
+        public clsOrder() => Find(1);
+
         public bool Find(int ID)
         {
             OrderID = 1;

@@ -32,6 +32,7 @@ public partial class OrderDataEntry : System.Web.UI.Page
 
         lblError.Text = "Success!";
     }
+
     protected void btnCancel_Click(object sender, EventArgs e)
     {
 

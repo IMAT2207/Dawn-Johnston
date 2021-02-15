@@ -31,23 +31,24 @@ namespace Testing4
             clsOrder order = createOrder();
             bool valid = false;
             Assert.IsNotNull(order.OrderState);
-            
+
 
             foreach (String s in clsOrder.ORDER_STATES)             // Check in range
-                if (s.Equals(order.OrderState)) {
+                if (s.Equals(order.OrderState))
+                {
                     valid = true;
                     break;
                 }
 
             Assert.IsTrue(valid);
-            
+
         }
-        
+
         [TestMethod]
         public void AttributeOrderedByOK()
         {
-            clsOrder order = createOrder(); 
-            Assert.IsNotNull(new clsCustomer.Find(order.OrderedBy)); // Check foriegn key exists
+            clsOrder order = createOrder();
+            Assert.IsNotNull(new clsCustomer().Find(order.OrderedBy)); // Check foriegn key exists
             Assert.IsNotNull(order.OrderedBy);                       // Check 
         }
 
@@ -71,7 +72,7 @@ namespace Testing4
             clsOrder order = createOrder();
             Assert.IsNotNull(order.PaidFor);
         }
-        
+
         [TestMethod]
         public void AttributeOrderIDOK()
         {
@@ -84,7 +85,7 @@ namespace Testing4
         {
             clsOrderItem order = new clsOrderItem();
             Assert.IsNotNull(order.ProductID);
-            Assert.IsNotNull(new clsStock.Find(order.ProductID));
+            Assert.IsNotNull(new clsStock().Find(order.ProductID));
         }
 
         [TestMethod]
@@ -93,3 +94,4 @@ namespace Testing4
 
         }
     }
+}
