@@ -17,7 +17,7 @@
             <asp:TextBox ID="txtPassword" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>
-            <asp:Label ID="lblBusinessName" runat="server" Text="Buisiness Name"></asp:Label>
+            <asp:Label ID="lblBusinessName" runat="server" Text="Business Name"></asp:Label>
             <asp:TextBox ID="txtBusinessName" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>
