@@ -8,14 +8,14 @@ namespace ClassLibrary
 {
     public class clsCustomer
     {
-        public int TraderId;
-        public string TraderPassword;
-        public string BusinessName;
-        public string ContactEmail;
-        public string DeliveryAddress;
-        public DateTime AccountCreation;
-        public int NumberOfOrders;
-        public Boolean IsSignedIn;
+        public int TraderId = -1;
+        public string TraderPassword = "1234";
+        public string BusinessName = "Unassigned Business Name";
+        public string ContactEmail = "Unassigned Contact Email";
+        public string DeliveryAddress = "Unassigned Delivery Address";
+        public DateTime AccountCreationDate = DateTime.Now;
+        public int NumberOfOrders = 0;
+        public Boolean IsSignedIn = false;
 
         public bool Find(int ID)
         {
@@ -24,7 +24,7 @@ namespace ClassLibrary
             BusinessName = "Unknown";
             ContactEmail = "Email@unknown.com";
             DeliveryAddress = "1UnknonwnStreet";
-            AccountCreation = DateTime.Now;
+            AccountCreationDate = DateTime.Now;
             NumberOfOrders = 1;
             IsSignedIn = true;
             
