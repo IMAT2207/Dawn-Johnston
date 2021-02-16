@@ -83,7 +83,7 @@ namespace ClassLibrary
 
         public bool Find(int ProductId)
         {
-            clsDataConnection DB = new clsDataConnection();
+            clsDataConnection DB = clsDataConnection.dataConnection;
 
             DB.AddParameter("@ProductId", ProductId);
 
