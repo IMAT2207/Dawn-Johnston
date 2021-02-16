@@ -17,12 +17,12 @@
             <asp:TextBox ID="txtPassword" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>
-            <asp:Label ID="lblBuisinessName" runat="server" Text="Buisiness Name"></asp:Label>
-            <asp:TextBox ID="txtBuisinessName" runat="server" Width="128px"></asp:TextBox>
+            <asp:Label ID="lblBusinessName" runat="server" Text="Buisiness Name"></asp:Label>
+            <asp:TextBox ID="txtBusinessName" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>
             <asp:Label ID="lblContactEmail" runat="server" Text="Contact Email"></asp:Label>
-            <asp:TextBox ID="txtOrderedBy" runat="server" Width="128px"></asp:TextBox>
+            <asp:TextBox ID="txtContactEmail" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>
             <asp:Label ID="lblDeliveryAddr" runat="server" Text="Delivery Address"></asp:Label>
