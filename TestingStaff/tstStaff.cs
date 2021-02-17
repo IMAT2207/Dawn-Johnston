@@ -1,6 +1,6 @@
 ﻿using System;
-using ClassLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ClassLibrary;
 
 namespace Testing4
 {
@@ -111,7 +111,7 @@ namespace Testing4
             Boolean Found = false;
 
             // Creating some test data to use with the method.
-            int StaffID = 1;
+            int StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
@@ -133,13 +133,13 @@ namespace Testing4
             Boolean OK = true;
 
             // Creating some test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the StaffID.
-            if (StaffMember.StaffID != 11)
+            if (StaffMember.StaffID != 12)
 
             {
                 OK = false;
@@ -162,7 +162,7 @@ namespace Testing4
             Boolean OK = true;
 
             // Creating some test data to use with the method.
-            int StaffID = 11;
+            int StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
@@ -190,7 +190,7 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
@@ -200,6 +200,8 @@ namespace Testing4
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
 
         [TestMethod]
@@ -215,16 +217,18 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the property.
-            if (StaffMember.DOB != DateTime.Now)
+            if (StaffMember.DOB != Convert.ToDateTime("01/07/1987"))
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
 
         [TestMethod]
@@ -240,16 +244,18 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the property.
-            if (StaffMember.FirstName != "first name") ;
+            if (StaffMember.FirstName != "Test")
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
 
         [TestMethod]
@@ -261,31 +267,22 @@ namespace Testing4
             //Boolean variable to store the result of the search.
             Boolean Found = false;
 
-            // Boolean variable to record if the data is OK.
+            // Boolean variable to record if the data is OK. *CURRENTLY REDUNDANT *
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the property.
-            if (StaffMember.FamilyName != "family name")
+            if (StaffMember.FamilyName != "Account")
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
-
-        /*public clsStaff createStaffAccount()
-    {
-        clsStaff order = new clsStaff();
-        order.Find(1);
-        return order;
-    }*/
-
-
-
-
     } 
 }
