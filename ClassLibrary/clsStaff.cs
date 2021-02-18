@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace ClassLibrary
 {
@@ -30,7 +33,7 @@ namespace ClassLibrary
             }
         }
 
-        private Boolean pIsManager;
+        private bool pIsManager;
         public bool IsManager
         {
             get
@@ -82,16 +85,34 @@ namespace ClassLibrary
             }
         }
 
-         public bool Find(int ID)
+         public bool Find(int StaffID)
          {
-             StaffID = 11;
-             StaffPassword = "password";
-             IsManager = true;
-             DOB = DateTime.Now;
-             FirstName = "first name";
-             FamilyName = "family name";
+            // Creates a new instance of the data connection.
+            clsDataConnection DB = new clsDataConnection();
+            // Add the parameter for the StaffID to seach for.
+            DB.AddParameter("@StaffID", StaffID);
+            // Executes the stored procedure.
+            DB.Execute("sproc_tblStaff_FilterByStaffID");
 
-             return true;
+            // Copy the data from the database to the private data members.
+            if (DB.Count == 1)
+            {
+                pStaffID = Convert.ToInt32(DB.DataTable.Rows[0]["StaffID"]);
+                pStaffPassword = Convert.ToString(DB.DataTable.Rows[0]["StaffPassword"]);
+                pIsManager = Convert.ToBoolean(DB.DataTable.Rows[0]["IsManager"]);
+                pDOB = Convert.ToDateTime(DB.DataTable.Rows[0]["DOB"]);
+                pFirstName = Convert.ToString(DB.DataTable.Rows[0]["FirstName"]);
+                pFamilyName = Convert.ToString(DB.DataTable.Rows[0]["FamilyName"]);
+
+                // Returns true if values are matched, and works.
+                return true;
+            }
+            // If no record is found.
+            else
+            {
+                // Returns false if a problem occurs.
+                return false;
+            }
          }
     }
 }
