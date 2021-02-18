@@ -276,13 +276,18 @@ namespace Testing4
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
+            //Assert.AreEqual(expected, actual);
+
             // Checks the property.
             if (StaffMember.FamilyName != "Account")
             {
                 OK = false;
             }
+            
 
             Assert.IsTrue(OK);
+
+
         }
     } 
 }
