@@ -7,7 +7,7 @@ namespace ClassLibrary
 {
     public class clsStaff
     {
-        private Int32 pStaffID;
+        private int pStaffID;
         public int StaffID
         {
             get
@@ -33,7 +33,7 @@ namespace ClassLibrary
             }
         }
 
-        private Boolean pIsManager;
+        private bool pIsManager;
         public bool IsManager
         {
             get

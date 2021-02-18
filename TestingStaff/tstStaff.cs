@@ -267,7 +267,7 @@ namespace Testing4
             //Boolean variable to store the result of the search.
             Boolean Found = false;
 
-            // Boolean variable to record if the data is OK. *CURRENTLY REDUNDANT *
+            // Boolean variable to record if the data is OK.
             Boolean OK = true;
 
             // Creationg test data to use with the method.
