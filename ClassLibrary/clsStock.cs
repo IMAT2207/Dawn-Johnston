@@ -1,32 +1,109 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClassLibrary;
 
 namespace ClassLibrary
 {
     public class clsStock
     {
-        public clsStock AStock = new clsStock();
-        public int ProductId;
-        public string ProductName;
-        public string ProductDescription;
-        public Boolean IsAvailable = false;
-        public int QuantityAvailable = 0;
-        public DateTime RestockDate;
+        private int aProductId;
+        public int ProductId
+        {
+            get
+            {
+                return aProductId;
+            }
+            set
+            {
+                aProductId = value;
+            }
+        }
+
+        private string aProductName;
+        public string ProductName
+        {
+            get
+            {
+                return aProductName;
+            }
+            set
+            {
+                aProductName = value;
+            }
+        }
+
+        private string aProductDescription;
+        public string ProductDescription
+        {
+            get
+            {
+                return aProductDescription;
+            }
+            set
+            {
+                aProductDescription = value;
+            }
+        }
+
+        private Boolean aIsAvailable;
+        public Boolean IsAvailable
+        {
+            get
+            {
+                return aIsAvailable;
+            }
+            set
+            {
+                aIsAvailable = value;
+            }
+        }
+        private int aQuantityAvailable;
+        public int QuantityAvailable
+        {
+            get
+            {
+                return aQuantityAvailable;
+            }
+            set
+            {
+                aQuantityAvailable = value;
+            }
+        }
+
+        private DateTime aRestockDate;
+        public DateTime RestockDate
+        {
+            get
+            {
+                return aRestockDate;
+            }
+            set
+            {
+                aRestockDate = value;
+            }
+        }
 
         public bool Find(int ProductId)
         {
-            ProductId = 1;
-            ProductName = "Beef";
-            ProductDescription = "About Something...";
-            IsAvailable = true;
-            QuantityAvailable = 10;
-            RestockDate = DateTime.Now;
+            clsDataConnection DB = clsDataConnection.dataConnection;
 
-            return true;
+            DB.AddParameter("@ProductId", ProductId);
+
+            DB.Execute("sproc_tblAddress_FilterByProductId");
+
+            if (DB.Count == 1)
+            {
+                aProductId = Convert.ToInt32(DB.DataTable.Rows[0]["ProductId"]);
+                aProductName = Convert.ToString(DB.DataTable.Rows[0]["Product Name"]);
+                aProductDescription = Convert.ToString(DB.DataTable.Rows[0]["Product Description"]);
+                aIsAvailable = Convert.ToBoolean(DB.DataTable.Rows[0]["Active"]);
+                aQuantityAvailable = Convert.ToInt32(DB.DataTable.Rows[0]["10"]);
+                aRestockDate = Convert.ToDateTime(DB.DataTable.Rows[0]["DateAdded"]);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }
