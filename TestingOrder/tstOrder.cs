@@ -3,7 +3,7 @@ using System;
 using System.Text.RegularExpressions;
 using ClassLibrary;
 
-namespace Testing4
+namespace TestingOrder
 {
     [TestClass]
     public class tstOrder

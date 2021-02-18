@@ -2,7 +2,7 @@
 using System;
 using ClassLibrary;
 
-namespace Testing4
+namespace TestingCustomer
 {
     [TestClass]
     public class tstCustomer
