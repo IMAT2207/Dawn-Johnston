@@ -37,4 +37,30 @@ public partial class StockDataEntry : System.Web.UI.Page
 
 
     }
+
+    protected void btnFind_Click(object sender, EventArgs e)
+    {
+        clsStock product = new clsStock();
+
+        Int32 ProductId;
+
+        Boolean Found = false;
+
+        ProductId = Convert.ToInt32(txtProductID.Text);
+
+        Found = product.Find(ProductId);
+
+        if(Found == true)
+        {
+            txtProductID.Text = product.ProductName;
+
+            txtProductID.Text = product.ProductDescription;
+
+            txtProductID.Text = product.IsAvailable.ToString();
+
+            txtProductID.Text = product.QuantityAvailable.ToString();
+
+            txtProductID.Text = product.RestockDate.ToString();
+        }
+    }
 }
