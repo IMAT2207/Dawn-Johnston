@@ -17,6 +17,7 @@ The bootstrap front end seems perfectly compatable.
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>LS Goods - Jordan</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alatsi">
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/404-NOT-FOUND-animated.css">
     <link rel="stylesheet" href="assets/css/Animated-CSS-Waves-Background-SVG.css">
@@ -33,7 +34,7 @@ The bootstrap front end seems perfectly compatable.
 <body>
     <div>
         <nav class="navbar navbar-dark navbar-expand bg-dark sb-topnav">
-            <div class="container-fluid"><button class="btn btn-link btn-sm text-light order-md-1" id="sidebarToggle" type="button"><i class="fa fa-bars" style="font-size: 20px;"></i></button><a class="navbar-brand" href="#"><img src="assets/img/desk.jpg" style="width: 28px;margin-right: 10px;border-width: 3px;border-style: solid;border-radius: 8px;">&nbsp;Your Brand</a>
+            <div class="container-fluid"><button class="btn btn-link btn-sm text-light order-md-1" id="sidebarToggle" type="button"><i class="fa fa-bars" style="font-size: 20px;"></i></button><a class="navbar-brand" href="#" style="color: rgb(243,153,47);font-weight: bold;font-style: italic;text-align: center;"><img src="assets/img/Logo.png" style="width: 28px;margin-right: 10px;">&nbsp;LS Wholesalers</a>
                 <ul class="navbar-nav d-flex order-3 ml-auto ml-md-0">
                     <li class="nav-item d-flex d-sm-flex d-md-none justify-content-center align-items-center justify-content-sm-center" style="margin-right: 7px;">
                         <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle text-white" aria-expanded="false" data-toggle="dropdown" href="#"><i class="fa fa-search" style="font-size: 25px;margin-right: 0px;"></i> </a>
@@ -56,8 +57,8 @@ The bootstrap front end seems perfectly compatable.
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div>
-                                <div class="sb-sidenav-menu-heading"><span>PAGES</span></div><a class="nav-link active" href="#">
-                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>Create Order</span>
+                                <div class="sb-sidenav-menu-heading"><span>ADMINISTRATIVE PAGES</span></div><a class="nav-link active" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>Create Order Record</span>
                                 </a>
                             </div>
                             <div>
@@ -66,7 +67,7 @@ The bootstrap front end seems perfectly compatable.
                                 </div>
                             </div>
                             <div><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>Accordion 2 Layer</span>
+                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>View Order Record</span>
                                     <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
                                 </a>
                                 <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#sidenavAccordion">
@@ -87,7 +88,7 @@ The bootstrap front end seems perfectly compatable.
                 </div>
             </div>
             <div id="layoutSidenav_content">
-                <main class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 100%;height: 100%;">
+                <main class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 100%;height: 100%;box-shadow: inset 0px 0px 20px rgb(51,51,51);">
                     <div style="width: 766px;height: 500px;">
                         <form method="post" runat="server">
                             <div class="d-lg-flex d-xl-flex flex-column align-items-lg-center justify-content-xl-center align-items-xl-center" style="background: repeating-linear-gradient(rgb(247,247,247), rgb(254,254,254) 100%), #f2f2f2;border-radius: 10px;box-shadow: 0px 0px 5px 3px rgb(220,220,220);border-style: solid;border-color: rgba(248,249,252,0);padding-top: 20px;padding-bottom: 20px;">
