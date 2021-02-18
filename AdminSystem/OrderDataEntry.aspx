@@ -17,57 +17,125 @@ The bootstrap front end seems perfectly compatable.
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>LS Goods - Jordan</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/404-NOT-FOUND-animated.css">
     <link rel="stylesheet" href="assets/css/Animated-CSS-Waves-Background-SVG.css">
     <link rel="stylesheet" href="assets/css/Color-Rainbow-Border-Shadow-with-Icon-Square-Animated.css">
     <link rel="stylesheet" href="assets/css/login-form---Ambrodu-1.css">
     <link rel="stylesheet" href="assets/css/login-form---Ambrodu.css">
+    <link rel="stylesheet" href="assets/css/sb-admin-2.css">
+    <link rel="stylesheet" href="assets/css/sb-admin-2.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/Tamplate-SB-Admin-on-BSS.css">
     <link rel="stylesheet" href="assets/css/Waves---Techonomics.css">
 </head>
 
-<body style="background: url(&quot;assets/img/nick-nice-dfvyCHzbA5g-unsplash.jpg&quot;) center / cover no-repeat;">
-    <div class="d-xl-flex justify-content-xl-center align-items-xl-center crshadow" style="width: 700px;height: 538px;">
-        <form method="post" runat="server">
-            <div class="d-lg-flex d-xl-flex flex-column align-items-lg-center justify-content-xl-center align-items-xl-center">
-                <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column align-items-center align-items-sm-center align-items-md-center align-items-lg-center justify-content-xl-center align-items-xl-center" style="width: 406px;">
-                    <div class="form-group text-center d-xl-flex justify-content-xl-center">
-                        <h1 style="text-shadow: 5px 5px 9px var(--gray);">Create an order</h1>
+<body>
+    <div>
+        <nav class="navbar navbar-dark navbar-expand bg-dark sb-topnav">
+            <div class="container-fluid"><button class="btn btn-link btn-sm text-light order-md-1" id="sidebarToggle" type="button"><i class="fa fa-bars" style="font-size: 20px;"></i></button><a class="navbar-brand" href="#"><img src="assets/img/desk.jpg" style="width: 28px;margin-right: 10px;border-width: 3px;border-style: solid;border-radius: 8px;">&nbsp;Your Brand</a>
+                <ul class="navbar-nav d-flex order-3 ml-auto ml-md-0">
+                    <li class="nav-item d-flex d-sm-flex d-md-none justify-content-center align-items-center justify-content-sm-center" style="margin-right: 7px;">
+                        <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle text-white" aria-expanded="false" data-toggle="dropdown" href="#"><i class="fa fa-search" style="font-size: 25px;margin-right: 0px;"></i> </a>
+                            <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
+                        </div>
+                    </li>
+                    <li class="nav-item d-flex justify-content-center align-items-center">
+                        <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle active text-white" aria-expanded="false" data-toggle="dropdown" href="#">&nbsp;<img class="rounded-circle" src="assets/img/boy.jpg" style="width: 40px;border-width: 2px;border-style: solid;"></a>
+                            <div class="dropdown-menu dropdown-menu-right text-left shadow" style="margin-top: 16px;"><a class="dropdown-item" href="#">Pengaturan</a><a class="dropdown-item" href="#">Log Aktivitas</a><a class="dropdown-item" href="#">Pelanggaran</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Keluar</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <div id="sidenavAccordion" class="sb-sidenav accordion sb-sidenav-dark">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div>
+                                <div class="sb-sidenav-menu-heading"><span>PAGES</span></div><a class="nav-link active" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>Create Order</span>
+                                </a>
+                            </div>
+                            <div>
+                                <div id="collapseLayouts" class="collapse" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <div class="sb-sidenav-menu-nested nav"><a class="nav-link" href="#">Menu Accordion</a><a class="nav-link" href="#">Menu Accordion</a></div>
+                                </div>
+                            </div>
+                            <div><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>Accordion 2 Layer</span>
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                                </a>
+                                <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#sidenavAccordion">
+                                    <div id="sidenavAccordionPages" class="sb-sidenav-menu-nested nav accordion"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth"><span>Menu Item</span>
+                                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
+                                        </a>
+                                        <div id="pagesCollapseAuth" class="collapse" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
+                                            <div class="sb-sidenav-menu-nested nav"><a class="nav-link" href="#">Menu Item</a><a class="nav-link" href="#">Menu Item</a><a class="nav-link" href="#">Menu Item</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblOrder" runat="server" Text="ID"></asp:Label></div>
-                        <div class="d-md-flex d-xl-flex justify-content-md-center justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtID">19012333</asp:TextBox></div>
-                    </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblState" runat="server" Text="State"></asp:Label></div>
-                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtState">WIP, Finalized, Dispatched, Delivered</asp:TextBox></div>
-                    </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblProc" runat="server" Text="Processed By"></asp:Label></div>
-                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtProc">91</asp:TextBox></div>
-                    </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblCust" runat="server" Text="Ordered By"></asp:Label></div>
-                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtCust">3612</asp:TextBox></div>
-                    </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblNote" runat="server" Text="Delivery Note"></asp:Label></div>
-                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtDelivery">Leave at door</asp:TextBox></div>
-                    </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="margin-right: 30px;"><asp:Label ID="lblMsg" runat="server" Text="Awaiting Input."></asp:Label></div>
-                    </div>
-                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;padding-top: 20px;padding-bottom: 20px;">
-                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 250px;"><asp:Button ID="btnFind" runat="server" Text="Find"  OnClick="btnFind_Click"></asp:Button></div>
-                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 250px;"><asp:Button ID="btnCancel" runat="server" Text="Cancel"  OnClick="btnCancel_Click"></asp:Button></div>
-                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 250px;"><asp:Button ID="btnOK" runat="server" Text="Place &amp; View"  OnClick="btnOK_Click"></asp:Button></div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small"><span>Logged as : David Aprilio</span></div>
                     </div>
                 </div>
             </div>
-        </form>
+            <div id="layoutSidenav_content">
+                <main class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 100%;height: 100%;">
+                    <div style="width: 766px;height: 500px;">
+                        <form method="post" runat="server">
+                            <div class="d-lg-flex d-xl-flex flex-column align-items-lg-center justify-content-xl-center align-items-xl-center" style="background: repeating-linear-gradient(rgb(247,247,247), rgb(254,254,254) 100%), #f2f2f2;border-radius: 10px;box-shadow: 0px 0px 5px 3px rgb(220,220,220);border-style: solid;border-color: rgba(248,249,252,0);padding-top: 20px;padding-bottom: 20px;">
+                                <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-column align-items-center align-items-sm-center align-items-md-center align-items-lg-center justify-content-xl-center align-items-xl-center" style="width: 406px;">
+                                    <div class="form-group text-center d-xl-flex flex-column justify-content-xl-center">
+                                        <h1 style="text-shadow: 5px 5px 13px var(--gray);color: rgb(0,0,0);">Create an order</h1>
+                                        <h6 style="text-shadow: 5px 5px 13px var(--gray);color: rgb(0,0,0);">Manually add a new order record to the database.</h6>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblOrder" runat="server" Text="ID"></asp:Label></div>
+                                        <div class="d-md-flex d-xl-flex justify-content-md-center justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtID">19012333</asp:TextBox></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblState" runat="server" Text="State"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtState">WIP, Finalized, Dispatched, Delivered</asp:TextBox></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblProc" runat="server" Text="Processed By"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtProc">91</asp:TextBox></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblCust" runat="server" Text="Ordered By"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtCust">3612</asp:TextBox></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblNote" runat="server" Text="Delivery Note"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtDelivery">Leave at door</asp:TextBox></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="margin-right: 30px;"><asp:Label ID="lblMsg" runat="server" Text="Awaiting Input."></asp:Label></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;padding-top: 20px;padding-bottom: 20px;">
+                                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 250px;padding: 8px;background: #fcfcfc;border-radius: 10px;border-style: solid;border-color: rgba(255,255,255,0);box-shadow: inset 0px 0px 10px rgb(225,225,225);"><asp:Button ID="btnFind" runat="server" Text="Find"  OnClick="btnFind_Click"></asp:Button></div>
+                                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 250px;padding: 8px;background: #fcfcfc;border-radius: 10px;border-style: solid;border-color: rgba(255,255,255,0);box-shadow: inset 0px 0px 10px rgb(225,225,225);"><asp:Button ID="btnCancel" runat="server" Text="Cancel"  OnClick="btnCancel_Click"></asp:Button></div>
+                                        <div class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 250px;padding: 8px;background: rgba(246,194,62,0.21);border-radius: 10px;border-style: solid;border-color: rgba(255,255,255,0);box-shadow: inset 0px 0px 10px rgba(246,194,62,0.57);"><asp:Button ID="btnOK" runat="server" Text="Modify Database &amp; View"  OnClick="btnOK_Click"></asp:Button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </main>
+            </div>
+        </div>
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/sb-admin-2.js"></script>
+    <script src="assets/js/sb-admin-2.min.js"></script>
 </body>
 
 </html>
