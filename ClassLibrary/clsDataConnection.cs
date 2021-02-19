@@ -20,7 +20,7 @@ public class clsDataConnection
     //ado.net class for building the sql commands    
     SqlCommandBuilder commandBuilder = new SqlCommandBuilder();
     //stores a list of all of the sql parameters
-    List<SqlParameter> SQLParams = new List<SqlParameter>();
+    public List<SqlParameter> SQLParams = new List<SqlParameter>();
     //data table used to store the results of the stored procedure
     DataTable dataTable = new DataTable();
     //string variable used to store the connection string

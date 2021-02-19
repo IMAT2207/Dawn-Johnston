@@ -14,7 +14,7 @@ public partial class OrderViewer : System.Web.UI.Page
         Response.Write(clsOrder.OrderID);
         Response.Write(clsOrder.ProcessedBy);
         Response.Write(clsOrder.OrderedBy);
-        Response.Write(clsOrder.OrderState);
+        Response.Write(clsOrder.State);
         Response.Write(clsOrder.PlacedOn);
         Response.Write(clsOrder.DeliveryNote);
         Response.Write(clsOrder.PaidFor);
