@@ -65,8 +65,11 @@ namespace ClassLibrary
         private static readonly string SPROC = "sproc_tblOrder_FilterByOrderID";
         #endregion attributes
 
-#warning for test data only, orders should not assume data; it may be treated as a valid record.
-        public clsOrder() => Find(1);
+        public clsOrder() { }
+
+        public clsOrder(int ID) => Find(ID);
+
+        public static clsOrder CreateAndFind(int ID) => new clsOrder(ID);
 
         /// <summary>
         /// Replaces which record this instance represents.
@@ -96,7 +99,8 @@ namespace ClassLibrary
             return true;
         }
 
-#warning TODO this should also check if the ID exists on the database.
+        public static bool IDIsValid(int ID) => IDIsValid(ID, new clsOrder());
+
         /// <summary>
         /// Determines if the parsed ID is a valid order primary key, and a corresponding record exists on the database.
         /// <br/><br/>

@@ -88,7 +88,7 @@ The bootstrap front end seems perfectly compatable.
                 </div>
             </div>
             <div id="layoutSidenav_content">
-                <main class="d-xl-flex justify-content-xl-center align-items-xl-center" style="width: 100%;height: 100%;box-shadow: inset 0px 0px 20px rgb(51,51,51);">
+                <main class="d-xl-flex justify-content-xl-center align-items-xl-start" style="width: 100%;height: 100%;">
                     <div style="width: 766px;height: 500px;">
                         <form method="post" runat="server">
                             <div class="d-lg-flex d-xl-flex flex-column align-items-lg-center justify-content-xl-center align-items-xl-center" style="background: repeating-linear-gradient(rgb(247,247,247), rgb(254,254,254) 100%), #f2f2f2;border-radius: 10px;box-shadow: 0px 0px 5px 3px rgb(220,220,220);border-style: solid;border-color: rgba(248,249,252,0);padding-top: 20px;padding-bottom: 20px;">
@@ -116,6 +116,14 @@ The bootstrap front end seems perfectly compatable.
                                     <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
                                         <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblNote" runat="server" Text="Delivery Note"></asp:Label></div>
                                         <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtDelivery">Leave at door</asp:TextBox></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblDate" runat="server" Text="Placed On"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:Calendar ID="PlacedOn" runat="server"></asp:Calendar></div>
+                                    </div>
+                                    <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
+                                        <asp:CheckBox ID="chkPaidFor" runat="server" Text="Has been paid for?" OnCheckedChanged="chkPaidFor_CheckedChanged"/>
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="margin-right: 30px;"></div>
                                     </div>
                                     <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
                                         <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="margin-right: 30px;"><asp:Label ID="lblMsg" runat="server" Text="Awaiting Input."></asp:Label></div>
