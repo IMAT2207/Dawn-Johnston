@@ -9,21 +9,24 @@ namespace ClassLibrary
 
     public class clsCustomer
     {
-        public int TraderId {get; set;}
-        public string TraderPassword { get; set; }
-        public string BusinessName { get; set; }
-        public string ContactEmail { get; set; }
-        public string DeliveryAddress { get; set; }
-        public DateTime AccountCreationDate { get; set; }
-        public int NumberOfOrders { get; set; }
-        public Boolean IsSignedIn { get; set; }
+        public int TraderId { get; set; } = -1;
+        public string TraderPassword { get; set; } = ".";
+        public string BusinessName { get; set; } = ".";
+        public string ContactEmail { get; set; } = ".";
+        public string DeliveryAddress { get; set; } = ".";
+        public DateTime AccountCreationDate { get; set; } = DateTime.Now;
+        public int NumberOfOrders { get; set; } = 0;
+        public Boolean IsSignedIn { get; set; } = false;
+
+        //When creating a customer default settings from entry "2" are utilised 
+        public clsCustomer() => Find(2);
 
         public bool Find(int ID)
         {
             //Creation of an instance of the data connection
             clsDataConnection DB = new clsDataConnection();
             //Adding prameter for search
-            DB.AddParameter("@TraderID", TraderId);
+            DB.AddParameter("@TraderID", ID);
             //Execute the procedure
             DB.Execute("sproc_tblCustomer_FilterByTraderId");
             //If data is found
