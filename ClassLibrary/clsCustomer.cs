@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
+
     public class clsCustomer
     {
         public int TraderId {get; set;}

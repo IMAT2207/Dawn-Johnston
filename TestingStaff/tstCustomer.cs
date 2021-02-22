@@ -7,14 +7,6 @@ namespace Testing4
     [TestClass]
     public class tstCustomer
     {
-
-        public clsCustomer createCustomer()
-        {
-            clsCustomer customer = new clsCustomer();
-            customer.Find(1);
-            return customer;
-        }
-
         //  --TestInitialise--
 
         [TestMethod]
@@ -147,6 +139,16 @@ namespace Testing4
             bool TestData = false;
             customer.IsSignedIn = TestData;
             Assert.AreEqual(customer.IsSignedIn, TestData);
+        }
+
+        //--Database Connection Test--
+
+        [TestMethod]
+        public void FindCustomerOK()
+        {
+            clsCustomer CustomerDatabaseTest = new clsCustomer();
+
+            Assert.IsTrue(CustomerDatabaseTest.Find(2));
         }
     }
 }
