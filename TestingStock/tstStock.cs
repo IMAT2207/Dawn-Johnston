@@ -160,7 +160,7 @@ namespace TestingStock
             Boolean OK = true;
             Int32 ProductId = 2;
             Found = product.Find(ProductId);
-            if(product.QuantityAvailable == 0)
+            if(product.QuantityAvailable != 0)
             {
                 OK = false;
             }
