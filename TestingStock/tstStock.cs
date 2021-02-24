@@ -145,7 +145,7 @@ namespace TestingStock
             clsStock product = new clsStock();
             Boolean Found = false;
             Boolean OK = true;
-            Int32 ProductId = 2;
+            Int32 ProductId = 1;
             Found = product.Find(ProductId);
             OK = product.IsAvailable;
             Assert.IsTrue(OK);
