@@ -85,18 +85,20 @@ namespace ClassLibrary
         {
             clsDataConnection DB = clsDataConnection.dataConnection;
 
-            DB.AddParameter("@ProductId", ProductId);
+            DB.SQLParams.Clear();
 
-            DB.Execute("sproc_tblAddress_FilterByProductId");
+            DB.AddParameter("@ProductID", ProductId);
+
+            DB.Execute("sproc_tblStock_FilterByProductId");
 
             if (DB.Count == 1)
             {
                 aProductId = Convert.ToInt32(DB.DataTable.Rows[0]["ProductId"]);
-                aProductName = Convert.ToString(DB.DataTable.Rows[0]["Product Name"]);
-                aProductDescription = Convert.ToString(DB.DataTable.Rows[0]["Product Description"]);
-                aIsAvailable = Convert.ToBoolean(DB.DataTable.Rows[0]["Active"]);
-                aQuantityAvailable = Convert.ToInt32(DB.DataTable.Rows[0]["10"]);
-                aRestockDate = Convert.ToDateTime(DB.DataTable.Rows[0]["DateAdded"]);
+                aProductName = Convert.ToString(DB.DataTable.Rows[0]["ProductName"]);
+                aProductDescription = Convert.ToString(DB.DataTable.Rows[0]["ProductDescription"]);
+                aIsAvailable = Convert.ToBoolean(DB.DataTable.Rows[0]["IsAvailable"]);
+                aQuantityAvailable = Convert.ToInt32(DB.DataTable.Rows[0]["QuantityAvailable"]);
+                aRestockDate = Convert.ToDateTime(DB.DataTable.Rows[0]["RestockDate"]);
 
                 return true;
             }
