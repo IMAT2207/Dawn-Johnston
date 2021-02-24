@@ -36,7 +36,11 @@ namespace TestingStock
         public void AttributeProductNameOK()
         {
             clsStock product = new clsStock();
-            Assert.IsNotNull(product.ProductName);
+
+            String TestData = "Product Name";
+            product.ProductName = TestData;
+
+            Assert.AreEqual(product.ProductName, TestData);
         }
 
         //Test Product Description
@@ -52,8 +56,11 @@ namespace TestingStock
         public void AttributeIsAvailableOK()
         {
             clsStock product = new clsStock();
-            Assert.IsNotNull(product.IsAvailable);
-            Assert.IsTrue(product.QuantityAvailable > 0);
+
+            Boolean TestData = true;
+            product.IsAvailable = TestData;
+
+            Assert.AreEqual(product.IsAvailable, TestData);
         }
 
         //Test Quantity
@@ -71,6 +78,17 @@ namespace TestingStock
         {
             clsStock product = new clsStock();
             Assert.IsNotNull(product.RestockDate);
+        }
+
+        //Create FindOK
+        [TestMethod]
+        public void TestFindOK()
+        {
+            clsStock product = new clsStock();
+            Boolean Found = false;
+            int ProductId = 2;
+            Found = product.Find(ProductId);
+            Assert.IsTrue(Found);
         }
 
         //Create Find Porduct ID Test
