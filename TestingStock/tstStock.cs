@@ -131,10 +131,7 @@ namespace TestingStock
             Boolean OK = true;
             Int32 ProductId = 2;
             Found = product.Find(ProductId);
-            if (product.ProductDescription != "Product Description")
-            {
-                OK = false;
-            }
+            OK = product.ProductDescription.Equals("Product Description");
             Assert.IsTrue(OK);
         }
 
