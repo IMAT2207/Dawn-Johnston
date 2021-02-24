@@ -147,10 +147,7 @@ namespace TestingStock
             Boolean OK = true;
             Int32 ProductId = 2;
             Found = product.Find(ProductId);
-            if(product.IsAvailable != true)
-            {
-                OK = false;
-            }
+            OK = product.IsAvailable;
             Assert.IsTrue(OK);
         }
 
