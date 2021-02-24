@@ -176,10 +176,7 @@ namespace TestingStock
             Boolean OK = true;
             Int32 ProductId = 2;
             Found = product.Find(ProductId);
-            if(product.RestockDate != DateTime.Now)
-            {
-                OK = false;
-            }
+            OK = product.RestockDate != null;
             Assert.IsTrue(OK);
         }
     }
