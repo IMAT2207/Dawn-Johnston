@@ -188,18 +188,103 @@ namespace TestingStock
         {
             clsStock product = new clsStock();
             String Error = "";
-            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Error = product.Valid(ProductName,QuantityAvailable,RestockDate);
             Assert.AreEqual(Error, "");
         }
 
-        //Create Test ProductNameMinLessOne()
+        //Create Test ProductName less than one Method
         [TestMethod]
         public void ProductNameMinLessOne()
         {
             clsStock product = new clsStock();
             String Error = "";
+            //this should fail
             string ProductName = "";
-            Error = product.Valid(ProductName);
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test ProductName for one character Method
+        [TestMethod]
+        public void ProductNameMin()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            string ProductName = "a";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test ProductName for two characters Method
+        [TestMethod]
+        public void ProductNameMinPlusOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            string ProductName = "aa";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test ProductName for max minus one character Method
+        [TestMethod]
+        public void ProductNameMaxMinusOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            string ProductName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test ProductName for max characters Method
+        [TestMethod]
+        public void ProductNameMax()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            string ProductName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test ProductName for max plus one character Method
+        [TestMethod]
+        public void ProductNameMaxPlusOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            string ProductName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test ProductName for mid characters Method
+        [TestMethod]
+        public void ProductNameMid()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            string ProductName = "aaaaaaaaaaaaaaaa";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test ProductName for Extreme Max characters Method
+        [TestMethod]
+        public void ProductNameExtremeMax()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            string ProductName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
             Assert.AreNotEqual(Error, "");
         }
     }

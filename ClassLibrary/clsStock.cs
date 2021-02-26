@@ -108,9 +108,20 @@ namespace ClassLibrary
 
         public string Valid(string productName,
                             string quantityAvailable,
-                            DateTime restockDate)
+                            string restockDate)
         {
-            return "";
+            String Error = "";
+            //if the Product Name is blank
+            if (productName.Length == 0)
+            {
+                Error = Error + "The Product Name may not be blank : ";
+            }
+            //if the Product Name is greater than 33 characters
+            if (productName.Length > 32)
+            {
+                Error = Error + "The Product Name must be less than 32 characters";
+            }
+            return Error;
         }
 
     }
