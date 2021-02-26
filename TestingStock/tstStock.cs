@@ -8,6 +8,11 @@ namespace TestingStock
     [TestClass]
     public class tstStock
     {
+        //good test data
+        string ProductName = "Product Name";
+        string QuantityAvailable = "2";
+        string RestockDate = DateTime.Now.Date.ToString();
+
         public clsStock createProduct()
         {
             clsStock product = new clsStock();
@@ -175,6 +180,27 @@ namespace TestingStock
             Found = product.Find(ProductId);
             OK = product.RestockDate != null;
             Assert.IsTrue(OK);
+        }
+
+        //Create Test Validation Method
+        [TestMethod]
+        public void ValidMethodOK()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test ProductNameMinLessOne()
+        [TestMethod]
+        public void ProductNameMinLessOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            string ProductName = "";
+            Error = product.Valid(ProductName);
+            Assert.AreNotEqual(Error, "");
         }
     }
 }

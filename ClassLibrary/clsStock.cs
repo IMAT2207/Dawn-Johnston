@@ -106,5 +106,12 @@ namespace ClassLibrary
             }
         }
 
+        public string Valid(string productName,
+                            string quantityAvailable,
+                            DateTime restockDate)
+        {
+            return "";
+        }
+
     }
 }
