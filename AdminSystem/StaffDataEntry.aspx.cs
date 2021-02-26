@@ -47,4 +47,32 @@ public partial class StaffDataEntry : System.Web.UI.Page
         // Navigates to the staff viewer page.
         Response.Redirect("StaffViewer.aspx");
     }
+
+    protected void btnFind_Click(object sender, EventArgs e)
+    {
+        // Creates a new instance of the staff class.
+        clsStaff StaffMember = new clsStaff();
+
+        // Variable to sote the primnary key.
+        Int32 StaffID;
+
+        // Variable to store the result of the find operation.
+        Boolean Found = false;
+
+        // Gets the primary key value entered by the user.
+        StaffID = Convert.ToInt32(txtStaffID.Text);
+
+        // Finds the record using the StaffID (PK).
+        Found = StaffMember.Find(StaffID);
+
+        // If the records is found.
+        if (Found == true)
+        {
+            txtStaffID.Text = StaffMember.StaffID.ToString();
+            txtStaffPassword.Text = StaffMember.StaffPassword;
+            txtDOB.Text = StaffMember.DOB.ToString();
+            txtFirstName.Text = StaffMember.FirstName;
+            txtFamilyName.Text = StaffMember.FamilyName;
+        }
+    }
 }
