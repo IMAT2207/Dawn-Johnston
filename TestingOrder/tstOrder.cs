@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text.RegularExpressions;
 using ClassLibrary;
@@ -30,11 +30,11 @@ namespace TestingOrder
         {
             clsOrder order = createOrder();
             bool valid = false;
-            Assert.IsNotNull(order.OrderState);
+            Assert.IsNotNull(order.State);
 
 
-            foreach (String s in clsOrder.ORDER_STATES)             // Check in range
-                if (s.Equals(order.OrderState))
+            foreach (clsOrder.OrderState s in Enum.GetValues(typeof(clsOrder.OrderState)))             // Check in range
+                if (s.Equals(order.State))
                 {
                     valid = true;
                     break;
