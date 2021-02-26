@@ -113,6 +113,7 @@ namespace ClassLibrary
             String Error = "";
             int x = Int32.Parse(quantityAvailable);
             int y = Math.Abs(x);
+            DateTime DateTemp;
             //if the Product Name is blank
             if (productName.Length == 0)
             {
@@ -137,6 +138,25 @@ namespace ClassLibrary
             if (y > 2147483647)
             {
                 Error = Error + "The Quantity Availability may not be greater than 2147483647 : ";
+            }
+            try
+            {
+                //Set restockDate value to the DateTemp variable
+                DateTemp = Convert.ToDateTime(restockDate);
+                //if set DateTime value is less than now DateTime
+                if (DateTemp < DateTime.Now.Date)
+                {
+                    Error = Error + "The date cannot be in the past : ";
+                }
+                //if set DateTime value is greater than now DateTime
+                if (DateTemp > DateTime.Now.Date)
+                {
+                    Error = Error + "The date cannot be in the future : ";
+                }
+            }
+            catch
+            {
+                Error = Error + "The date was not a valid date : ";
             }
             return Error;
         }

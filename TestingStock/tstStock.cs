@@ -439,5 +439,95 @@ namespace TestingStock
             Assert.AreEqual(Error, "");
             //Assert.AreNotEqual(Error, "");
         }
+
+        //Create Test RestockDate Extreme Minimum value
+        [TestMethod]
+        public void RestockDateExtremeMin()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            DateTime TestData;
+            TestData = DateTime.Now.Date;
+            //Add 100 years to data
+            //this should fail
+            TestData = TestData.AddYears(-100);
+            string RestockDate = TestData.ToString();
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test RestockDate yesterday value
+        [TestMethod]
+        public void RestockDateMinLessOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            DateTime TestData;
+            TestData = DateTime.Now.Date;
+            //Add -1 day value
+            //this should fail
+            TestData = TestData.AddDays(-1);
+            string RestockDate = TestData.ToString();
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test RestockDate today value
+        [TestMethod]
+        public void RestockDateMin()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //today's date
+            DateTime TestData;
+            TestData = DateTime.Now.Date;
+            //this should pass
+            string RestockDate = TestData.ToString();
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test RestockDate tomorrow value
+        [TestMethod]
+        public void RestockDateMinPlusOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            DateTime TestData;
+            TestData = DateTime.Now.Date;
+            //Add +1 day value
+            //this should fail
+            TestData = TestData.AddDays(+1);
+            string RestockDate = TestData.ToString();
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test RestockDate Extreme Max value
+        [TestMethod]
+        public void RestockDateExtremeMax()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            DateTime TestData;
+            TestData = DateTime.Now.Date;
+            //Add 100 years to data
+            //this should fail
+            TestData = TestData.AddYears(100);
+            string RestockDate = TestData.ToString();
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test RestockDate invalid data
+        [TestMethod]
+        public void RestockDateInvalidData()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            string RestockDate = "Date";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
     }
 }

@@ -17,22 +17,23 @@ public partial class StockDataEntry : System.Web.UI.Page
     {
         //instance of the stock class
         clsStock product = new clsStock();
-
+        //capture the product id
         product.ProductId = int.Parse(txtProductID.Text);
-
+        //capture the product name
         product.ProductName = txtProductName.Text;
-
+        //capture the product description
         product.ProductDescription = txtProductDescription.Text;
-
+        //capture the availability
         product.IsAvailable = chkAvailability.Checked;
-
+        //capture quantity
         int i = int.Parse(txtQuantity.Text);
         product.QuantityAvailable = i;
-
+        //capture restock date
         product.RestockDate = DateTime.Now;
-
+        //store the stock in the session object
         Session["Product Stock"] = product;
         lblError.Text = "Success!";
+        //redirect to the viewer page
         Response.Redirect("StockViewer.aspx");
 
 
