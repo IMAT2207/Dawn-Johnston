@@ -8,7 +8,6 @@ namespace TestingStock
     [TestClass]
     public class tstStock
     {
-
         public clsStock createProduct()
         {
             clsStock product = new clsStock();
@@ -39,14 +38,12 @@ namespace TestingStock
             clsStock product = new clsStock();
             Assert.IsNotNull(product.ProductName);
         }
-
         [TestMethod]
         public void AttributeProductDescriptionOK()
         {
             clsStock product = new clsStock();
             Assert.IsNull(product.ProductDescription);        
         }
-
 
         //Test Is Available
         [TestMethod]

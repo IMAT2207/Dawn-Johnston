@@ -18,7 +18,6 @@ namespace ClassLibrary
         /// Valid values for <a cref="OrderState"/>.
         /// </summary>
         public enum OrderState { WIP, Finalized, Shipped, Delivered };
-
         /// <summary>
         /// Max length of the VARCHAR underlying <a cref="DeliveryNote"/>
         /// </summary>
@@ -33,6 +32,7 @@ namespace ClassLibrary
         #region attributes
         /// <summary>
         /// The primary key of this order.
+
         /// <br/><br/>
         /// Cannot be null. If no order ID is found or assigned, will be -1.
         /// </summary>
@@ -55,7 +55,6 @@ namespace ClassLibrary
                 return false;
         }
 
-
         /// <summary>
         /// An enum of <a cref="OrderState"/> which represents the current state of the order.
         /// <br/><br/>
@@ -74,7 +73,6 @@ namespace ClassLibrary
             }
             return true;
         }
-
 
         /// <summary>
         /// The primary key of a the staff member who processed this order.
@@ -219,8 +217,30 @@ namespace ClassLibrary
             {
                 return false;
             }
+
             return true;
         }
+
+        public static bool IDIsValid(int ID) => IDIsValid(ID, new clsOrder());
+
+        /// <summary>
+        /// Determines if the parsed ID is a valid order primary key, and a corresponding record exists on the database.
+        /// <br/><br/>
+        /// If the ID is positive, checks the database for any matching entries.
+        /// Returns false if ID is negative, or the database returned no results.
+        /// <br/><br/>
+        /// SIDE EFFECT: Configures <a cref="clsOrder#bd"/>, which will contain matching records.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns>True if the Id is valid, else false.</returns>
+        public static bool IDIsValid(int ID, clsOrder order) {
+            if (ID < 0) return false;                       // Don't fetch if id is low
+            order.db.SQLParams.Clear();
+            order.db.AddParameter("@OrderID", ID);          // Fetch records
+            order.db.Execute(SPROC);
+            return order.db.Count > 0;                      // Return true if there was matches.
+        }
+
     }
 
     public class clsOrderItem
