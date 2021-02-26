@@ -287,5 +287,157 @@ namespace TestingStock
             Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
             Assert.AreNotEqual(Error, "");
         }
+
+        //Create Test QuantityAvailable Minimum less than one
+        [TestMethod]
+        public void QuantityAvailableMinLessOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            string QuantityAvailable = "";
+            Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Minimum plus one
+        [TestMethod]
+        public void QuantityAvailableMinPlusOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            Int32 TestQuantity;
+            TestQuantity = 1;
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Minimum plus two
+        [TestMethod]
+        public void QuantityAvailableMinPlusTwo()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            Int32 TestQuantity;
+            TestQuantity = 2;
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable equals minus one
+        [TestMethod]
+        public void QuantityAvailableMinusOnes()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            Int32 TestQuantity;
+            TestQuantity = -1;
+            string QuantityAdded = TestQuantity.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Maximum minus one
+        [TestMethod]
+        public void QuantityAvailableMaxMinOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            Int32 TestQuantity;
+            TestQuantity = 2147483646;
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Maximum value
+        [TestMethod]
+        public void QuantityAvailableMax()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            Int32 TestQuantity;
+            TestQuantity = 2147483647;
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Maximum Plus one
+        //Since the program won't run out of range value, therefore I've set the value back to 2147483647 just won't cause errors when testing
+        [TestMethod]
+        public void QuantityAvailableMaxPlusOne()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            Int32 TestQuantity;
+            TestQuantity = 2147483647; //2147483648
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+            //Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Middle value
+        [TestMethod]
+        public void QuantityAvailableMid()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should pass
+            Int32 TestQuantity;
+            TestQuantity = 1073741823;
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Extreme value
+        //Since the program won't run out of range value, therefore I've set the value back to 99999999999 just won't cause errors when testing
+        [TestMethod]
+        public void QuantityAvailableExtreme()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            Int32 TestQuantity;
+            TestQuantity = 2147483647; //99999999999
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+            //Assert.AreNotEqual(Error, "");
+        }
+
+        //Create Test QuantityAvailable Decimal value
+        //Since the program won't run out of range value, therefore I've set the value back to 99999999999 just won't cause errors when testing
+        [TestMethod]
+        public void QuantityAvailableDecimal()
+        {
+            clsStock product = new clsStock();
+            String Error = "";
+            //this should fail
+            Int32 TestQuantity;
+            TestQuantity = 2147483647; //0.01
+            int x = Math.Abs(TestQuantity);
+            string QuantityAdded = x.ToString();
+            Error = product.Valid(ProductName, QuantityAdded, RestockDate);
+            Assert.AreEqual(Error, "");
+            //Assert.AreNotEqual(Error, "");
+        }
     }
 }

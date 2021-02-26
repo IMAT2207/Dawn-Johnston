@@ -111,6 +111,8 @@ namespace ClassLibrary
                             string restockDate)
         {
             String Error = "";
+            int x = Int32.Parse(quantityAvailable);
+            int y = Math.Abs(x);
             //if the Product Name is blank
             if (productName.Length == 0)
             {
@@ -120,6 +122,21 @@ namespace ClassLibrary
             if (productName.Length > 32)
             {
                 Error = Error + "The Product Name must be less than 32 characters";
+            }
+            //if the QuantityAvailable is blank
+            if (quantityAvailable.Length == 0)
+            {
+                Error = Error + "The Quantity Availability may not be blank : ";
+            }
+            //if the QuantityAvailable is a negative number
+            if (x < 0)
+            {
+                Error = Error + "The Quantity Availability may not be negative : ";
+            }
+            //if the QuantityAvailable is more than 2147483647
+            if (y > 2147483647)
+            {
+                Error = Error + "The Quantity Availability may not be greater than 2147483647 : ";
             }
             return Error;
         }
