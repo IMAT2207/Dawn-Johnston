@@ -8,6 +8,8 @@ namespace ClassLibrary
 {
     public class clsCustomer
     {
+        public static readonly int CUST_ID_MAX = Int32.MaxValue;
+
         public int TraderId = -1;
         public string TraderPassword = "1234";
         public string BusinessName = "Unassigned Business Name";

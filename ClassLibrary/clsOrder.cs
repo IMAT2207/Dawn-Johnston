@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace ClassLibrary
 {
@@ -17,48 +18,131 @@ namespace ClassLibrary
         /// Valid values for <a cref="OrderState"/>.
         /// </summary>
         public enum OrderState { WIP, Finalized, Shipped, Delivered };
-        #endregion
 
+        /// <summary>
+        /// Max length of the VARCHAR underlying <a cref="DeliveryNote"/>
+        /// </summary>
+        public static readonly int DELIVERY_NOTE_LENGTH = 50;
+
+        /// <summary>
+        /// The max value for <a cref="OrderID"/>
+        /// </summary>
+        public static readonly int ORDER_ID_MAX = int.MaxValue;
+        #endregion constants
 
         #region attributes
         /// <summary>
         /// The primary key of this order.
-        /// </br></br>
-        /// Cannot be null. If no order ID is found or assigned, will be -1/
+        /// <br/><br/>
+        /// Cannot be null. If no order ID is found or assigned, will be -1.
         /// </summary>
-        public int OrderID { get; set; } = -1;
+        public int OrderID { get; private set; } = -1;
+
+        /// <summary>
+        /// Sets <a cref="OrderID"/> according to the string provided, after validation.
+        /// </summary>
+        /// <param name="ID">String representation of the new value for <a cref="OrderID"/></param>
+        /// <returns></returns>
+        public bool SetOrderID(String ID) => CanCast(ID) && SetOrderID(int.Parse(ID));
+        public bool SetOrderID(int ID)
+        {
+            if (IntAttributeValid(ID, ORDER_ID_MAX) && !new clsOrder().Find(ID)) // If record with that ID already exists, ignore.
+            {
+                OrderID = ID;
+                return true;
+            }
+            else
+                return false;
+        }
+
 
         /// <summary>
         /// An enum of <a cref="OrderState"/> which represents the current state of the order.
         /// <br/><br/>
         /// By default is WIP. May not be null.
         /// </summary>
-        public OrderState State { get; set; } = OrderState.WIP;
+        public OrderState State { get; private set; } = OrderState.WIP;
+
+        public bool SetOrderState(string text)
+        {
+            try
+            {
+                State = (OrderState) Enum.Parse(typeof(OrderState), text);
+            } catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
 
         /// <summary>
         /// The primary key of a the staff member who processed this order.
         /// </summary>
-        public int ProcessedBy { get; set; }
+        public int ProcessedBy { get; private set; }
+
+        public bool SetProcessedBy(String ID) => CanCast(ID) && SetProcessedBy(int.Parse(ID));
+
+        public bool SetProcessedBy(int StaffID)
+        {
+            if (IntAttributeValid(StaffID, clsStaff.STAFF_ID_MAX) && new clsCustomer().Find(StaffID)) // If record with that ID already exists, ignore.
+            {
+                ProcessedBy = StaffID;
+                return true;
+            }
+            else
+                return false;
+        }
 
         /// <summary>
         /// The primary key of the patron who placed this order
         /// </summary>
-        public int OrderedBy { get; set; }
+        public int OrderedBy { get; private set; }
+
+        public bool SetOrderedBy(String ID) => CanCast(ID) && SetOrderedBy(int.Parse(ID));
+
+        public bool SetOrderedBy(int CustomerID)
+        {
+            if (IntAttributeValid(CustomerID, clsCustomer.CUST_ID_MAX) && new clsCustomer().Find(CustomerID)) // If record with that ID already exists, ignore.
+            {
+                OrderedBy = CustomerID;
+                return true;
+            }
+            else
+                return false;
+        }
 
         /// <summary>
         /// The epoch on which this order was placed
         /// </summary>
-        public DateTime PlacedOn { get; set; }
+        public DateTime PlacedOn { get; private set; }
+
+        public bool SetPlacedOn(DateTime dt)
+        {
+            if (dt == null) return false;
+            PlacedOn = dt;
+            return true;
+        }
 
         /// <summary>
         /// Any delivery note left by the user upon placing the order.
         /// </summary>
-        public string DeliveryNote { get; set; }
+        public string DeliveryNote { get; private set; }
+
+        public bool SetDeliveryNote(string note)
+        {
+            if (StringAttributeValid(note, DELIVERY_NOTE_LENGTH))
+            {
+                DeliveryNote = note;
+                return true;
+            } else
+                return false;
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public Boolean PaidFor;
+        public Boolean PaidFor { get; set; }
 
         private clsDataConnection db = new clsDataConnection();
 
@@ -119,6 +203,24 @@ namespace ClassLibrary
             return order.db.Count > 0;                      // Return true if there was matches.
         }
 
+        private static bool StringAttributeValid(string str, int MaxLength) => StringAttributeValid(str, 0, MaxLength);
+        private static bool StringAttributeValid(string str, int MinLength, int MaxLength) => StringAttributeValid(str, MinLength, MaxLength, ".*");
+        private static bool StringAttributeValid(string str, int MinLength, int MaxLength, string regex) => Regex.IsMatch(str, regex) && (str.Length <= MaxLength && str.Length >= MinLength);
+        private static bool IntAttributeValid(int value, int MaxVal) => IntAttributeValid(value, 0, MaxVal);
+        private static bool IntAttributeValid(int value, int MinVal, int MaxVal) => value >= MinVal && value <= MaxVal;
+
+        private static bool CanCast(string val)
+        {
+            try
+            {
+                int.Parse(val);
+            }
+            catch (Exception ignored)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 
     public class clsOrderItem

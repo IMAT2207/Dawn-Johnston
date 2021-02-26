@@ -4,6 +4,8 @@ namespace ClassLibrary
 {
     public class clsStaff
     {
+        public static readonly int STAFF_ID_MAX = Int32.MaxValue;
+
         private int pStaffID;
         public int StaffID
         {
