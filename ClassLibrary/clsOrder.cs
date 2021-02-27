@@ -167,13 +167,13 @@ namespace ClassLibrary
             try
             {
                 // Mutate this instance with the first matching record.
-                OrderID = Convert.ToInt32(db.DataTable.Rows[0]["OrderID"]);
-                State = (OrderState)Enum.Parse(typeof(OrderState), Convert.ToString(db.DataTable.Rows[0]["OrderState"]));
-                ProcessedBy = Convert.ToInt32(db.DataTable.Rows[0]["ProcessedBy"]);
-                OrderedBy = Convert.ToInt32(db.DataTable.Rows[0]["OrderedBy"]);
-                PlacedOn = Convert.ToDateTime(db.DataTable.Rows[0]["PlacedOn"]);
+                OrderID      = Convert.ToInt32(db.DataTable.Rows[0]["OrderID"]);
+                State        = (OrderState)Enum.Parse(typeof(OrderState), Convert.ToString(db.DataTable.Rows[0]["OrderState"]));
+                ProcessedBy  = Convert.ToInt32(db.DataTable.Rows[0]["ProcessedBy"]);
+                OrderedBy    = Convert.ToInt32(db.DataTable.Rows[0]["OrderedBy"]);
+                PlacedOn     = Convert.ToDateTime(db.DataTable.Rows[0]["PlacedOn"]);
                 DeliveryNote = Convert.ToString(db.DataTable.Rows[0]["DeliveryNote"]);
-                PaidFor = Convert.ToBoolean(db.DataTable.Rows[0]["PaidFor"]);
+                PaidFor      = Convert.ToBoolean(db.DataTable.Rows[0]["PaidFor"]);
             }
             // Cast / conversion errors. Shouldn't really quietly ignore it, but OH WELL!
             catch (Exception e) { return false; }
