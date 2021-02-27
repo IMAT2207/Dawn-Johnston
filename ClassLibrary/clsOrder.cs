@@ -239,8 +239,11 @@ namespace ClassLibrary
             return order.db.Count > 0;                      // Return true if there was matches.
         }
 
+
     }
 
+
+    [Obsolete]
     public class clsOrderItem
     {
         public bool Find(int ID)
