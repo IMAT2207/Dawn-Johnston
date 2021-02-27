@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -220,8 +220,6 @@ namespace ClassLibrary
 
             return true;
         }
-
-        public static bool IDIsValid(int ID) => IDIsValid(ID, new clsOrder());
 
         /// <summary>
         /// Determines if the parsed ID is a valid order primary key, and a corresponding record exists on the database.
