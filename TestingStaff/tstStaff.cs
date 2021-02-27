@@ -9,10 +9,10 @@ namespace TestingStaff
     {
 
         // TEST DATA
-        string StaffPassword = "password";
-        string RecordCreated = DateTime.Now.Date.ToString();
-        string FirstName = "Test";
-        string FamilyName = "Account";
+        public static string StaffPassword = "password";
+        public static string RecordCreated = DateTime.Now.Date.ToString();
+        public static string FirstName = "Test";
+        public static string FamilyName = "Account";
 
         [TestMethod]
         public void InstanceOK()
