@@ -18,34 +18,33 @@ public partial class StaffDataEntry : System.Web.UI.Page
         // Creates a new instance of the staff class.
         clsStaff StaffMember = new clsStaff();
 
-        // Captures the StaffID.
-        int x = int.Parse(txtStaffID.Text);
-        StaffMember.StaffID = x;
+        // Capture the values.
+        string StaffPassword = txtStaffPassword.Text;
+        string RecordCreated = txtRecordCreated.Text;
+        string FirstName = txtFirstName.Text;
+        string FamilyName = txtFamilyName.Text;
 
-        // Captures the staff memebers password.
-        StaffMember.StaffPassword = txtStaffPassword.Text;
+        // Variable to store any error messages.
+        string Error = "";
 
-        // Captures the staff memebers first name.
-        StaffMember.FirstName = txtFirstName.Text;
+        Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+        if (Error == "")
+        {
+            StaffMember.StaffPassword = StaffPassword;
+            StaffMember.RecordCreated = Convert.ToDateTime(RecordCreated);
+            StaffMember.FirstName = FirstName;
+            StaffMember.FamilyName = FamilyName;
 
-        // Captures the staff members DOB.
-        DateTime enteredDate = DateTime.Parse(txtDOB.Text).Date;
+            // Stores the address in the session.
+            Session["StaffMember"] = StaffMember;
+            // Redirect to the StaffViewer page.
+            Response.Redirect("StaffViewer.aspx");
+        }
+        else
+        {
+            lblError.Text = Error;
+        }
 
-        DateTime dateOnly = enteredDate.Date;
-
-        StaffMember.DOB = DateTime.Parse(dateOnly.ToString("dd/MM/yyyy"));
-
-        // Captures the staff memebers family name.
-        StaffMember.FamilyName = txtFamilyName.Text;
-
-        bool box = chkIsManager.Checked == true;
-        StaffMember.IsManager = box;
-
-        // Stores the first name in the session object.
-        Session["StaffMember"] = StaffMember;
-
-        // Navigates to the staff viewer page.
-        Response.Redirect("StaffViewer.aspx");
     }
 
     protected void btnFind_Click(object sender, EventArgs e)
@@ -70,9 +69,11 @@ public partial class StaffDataEntry : System.Web.UI.Page
         {
             txtStaffID.Text = StaffMember.StaffID.ToString();
             txtStaffPassword.Text = StaffMember.StaffPassword;
-            txtDOB.Text = StaffMember.DOB.ToString();
+            txtRecordCreated.Text = StaffMember.RecordCreated.ToString();
             txtFirstName.Text = StaffMember.FirstName;
             txtFamilyName.Text = StaffMember.FamilyName;
         }
     }
 }
+
+
