@@ -11,13 +11,14 @@
         <div>
             <asp:Label ID="lblTraderID" runat="server" Text="Trader ID"></asp:Label>
             <asp:TextBox ID="txtID" runat="server" Width="128px"></asp:TextBox>
+            <asp:Button ID="btnFind" runat="server" OnClick="btnFind_Click" Text="Find" />
         </div>
         <div>
             <asp:Label ID="lblPassword" runat="server" Text="Password"></asp:Label>
             <asp:TextBox ID="txtPassword" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>
-            <asp:Label ID="lblBuisinessName" runat="server" Text="Buisiness Name"></asp:Label>
+            <asp:Label ID="lblBusinessName" runat="server" Text="Business Name"></asp:Label>
             <asp:TextBox ID="txtBusinessName" runat="server" Width="128px"></asp:TextBox>
         </div>
         <div>

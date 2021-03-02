@@ -1,12 +1,19 @@
 ﻿using System;
-using ClassLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ClassLibrary;
 
-namespace Testing4
+namespace TestingStaff
 {
     [TestClass]
     public class tstStaff
     {
+
+        // TEST DATA
+        public static string StaffPassword = "password";
+        public static string RecordCreated = DateTime.Now.Date.ToString();
+        public static string FirstName = "Test";
+        public static string FamilyName = "Account";
+
         [TestMethod]
         public void InstanceOK()
         {
@@ -46,17 +53,17 @@ namespace Testing4
         }
 
         [TestMethod]
-        public void DOBPropertyOK()
+        public void RecordAddedOK()
         {
             // Creates an instance of the staff class.
             clsStaff StaffMember = new clsStaff();
 
             // Creates test data, and assigns that data to the property.
             DateTime TestData = DateTime.Now.Date;
-            StaffMember.DOB = TestData;
+            StaffMember.RecordCreated = TestData;
 
             // Tests for equality between the two values.
-            Assert.AreEqual(StaffMember.DOB, TestData);
+            Assert.AreEqual(StaffMember.RecordCreated, TestData);
         }
 
         [TestMethod]
@@ -101,6 +108,8 @@ namespace Testing4
             Assert.AreEqual(StaffMember.FamilyName, TestData);
         }
 
+        /* Find method tests */ 
+
         [TestMethod]
         public void FindMethodOK()
         {
@@ -111,7 +120,7 @@ namespace Testing4
             Boolean Found = false;
 
             // Creating some test data to use with the method.
-            int StaffID = 1;
+            int StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
@@ -133,13 +142,13 @@ namespace Testing4
             Boolean OK = true;
 
             // Creating some test data to use with the method.
-            int StaffID = 11;
+            int StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the StaffID.
-            if (StaffMember.StaffID != 11)
+            if (StaffMember.StaffID != 12)
 
             {
                 OK = false;
@@ -162,7 +171,7 @@ namespace Testing4
             Boolean OK = true;
 
             // Creating some test data to use with the method.
-            int StaffID = 11;
+            int StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
@@ -190,7 +199,7 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
@@ -200,10 +209,12 @@ namespace Testing4
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
 
         [TestMethod]
-        public void TestDOBFound()
+        public void TestRecordCreatedFound()
         {
             // Creates a new instance of the staff class.
             clsStaff StaffMember = new clsStaff();
@@ -215,16 +226,18 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the property.
-            if (StaffMember.DOB != DateTime.Now)
+            if (StaffMember.RecordCreated != Convert.ToDateTime("01/07/2020"))
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
 
         [TestMethod]
@@ -240,16 +253,18 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
             // Checks the property.
-            if (StaffMember.FirstName != "first name") ;
+            if (StaffMember.FirstName != "Test")
             {
                 OK = false;
             }
+
+            Assert.IsTrue(OK);
         }
 
         [TestMethod]
@@ -265,27 +280,607 @@ namespace Testing4
             Boolean OK = true;
 
             // Creationg test data to use with the method.
-            int StaffID = 11;
+            Int32 StaffID = 12;
 
             // Invoking the method.
             Found = StaffMember.Find(StaffID);
 
+            //Assert.AreEqual(expected, actual);
+
             // Checks the property.
-            if (StaffMember.FamilyName != "family name")
+            if (StaffMember.FamilyName != "Account")
             {
                 OK = false;
             }
+            
+
+            Assert.IsTrue(OK);
+
+
         }
 
-        /*public clsStaff createStaffAccount()
-    {
-        clsStaff order = new clsStaff();
-        order.Find(1);
-        return order;
-    }*/
+        [TestMethod]
+        public void ValidMethodOK()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
 
+            // String variable to store an error message.
+            String Error = "";
 
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
 
+            // Tests for equality, to see if the rsult is correct.
+            Assert.AreEqual(Error, "");
+        }
 
+        /* StaffPassword boundry tests */
+
+        [TestMethod]
+        public void StaffPasswordMinLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "";
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordMin()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "a";
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordMinPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "aa";
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordMid()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "aaaaaaaaaaaaaaa"; // 15 characters.
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordMax()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 30 characters.
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordMaxLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 29 characters.
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordMaxPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 31 characters.
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void StaffPasswordExtremeMax()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test data to pass to the method.
+            string StaffPassword = "";
+            StaffPassword = StaffPassword.PadRight(100, 'a'); // 100 characters.
+
+            // Ivokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        /* RecordCreated boundry tests */
+
+        [TestMethod]
+        public void RecordCreatedExtremeMin()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Variable to store the test date data (todays date).
+            DateTime TestDate = DateTime.Now.Date;
+
+            // Change date to todays date - 10 years (extreme min).
+            TestDate = TestDate.AddYears(-10);
+
+            // Converting the date variable to a string variable.
+            string RecordCreated = TestDate.ToString();
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void RecordCreatedMinLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Variable to store the test date data (todays date).
+            DateTime TestDate = DateTime.Now.Date;
+
+            // Change date to todays date - 1 day (min - 1).
+            TestDate = TestDate.AddDays(-1);
+
+            // Converting the date variable to a string variable.
+            string RecordCreated = TestDate.ToString();
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void RecordCreatedMin()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Variable to store the test date data (todays date).
+            DateTime TestDate = DateTime.Now.Date;
+
+            // Converting the date variable to a string variable.
+            string RecordCreated = TestDate.ToString();
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void RecordCreatedMinPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Variable to store the test date data (todays date).
+            DateTime TestDate = DateTime.Now.Date;
+
+            // Change date to todays date + 1 day (min + 1).
+            TestDate = TestDate.AddDays(1);
+
+            // Converting the date variable to a string variable.
+            string RecordCreated = TestDate.ToString();
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void RecordCreatedExtremeMax()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Variable to store the test date data (todays date).
+            DateTime TestDate = DateTime.Now.Date;
+
+            // Change date to todays date + 10 years (extreme max).
+            TestDate = TestDate.AddYears(10);
+
+            // Converting the date variable to a string variable.
+            string RecordCreated = TestDate.ToString();
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void RecordCreatedInvalidData()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Setting the RecordCreated to a non Date value.
+            string RecordCreated = "test string";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        /* FirstName boundry tests */
+
+        [TestMethod]
+        public void FirstNameMinLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FirstNameMin()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "a";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FirstNameMinPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "aa";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FirstNameMaxLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 49 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FirstNameMax()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 50 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FirstNameMaxPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 51 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FirstNameMid()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FirstName = "aaaaaaaaaaaaaaaaaaaaaaaaa"; // 25 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        /* FamilyName boundry tests */
+
+        [TestMethod]
+        public void FamilyNameMinLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FamilyNameMin()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "a";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FamilytNameMinPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "aa";
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FamilyNameMaxLessOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 49 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FamilyNameMax()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 50 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FamilyNameMaxPlusOne()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // 51 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for in-equality, to see if the result is correct.
+            Assert.AreNotEqual(Error, "");
+        }
+
+        [TestMethod]
+        public void FamilyNameMid()
+        {
+            // Creates a new instance of the staff class.
+            clsStaff StaffMember = new clsStaff();
+
+            // String variable to store an error message.
+            string Error = "";
+
+            // Test value.
+            string FamilyName = "aaaaaaaaaaaaaaaaaaaaaaaaa"; // 25 characters.
+
+            // Invokes the method.
+            Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
+
+            // Tests for equality, to see if the result is correct.
+            Assert.AreEqual(Error, "");
+        }
     } 
 }
