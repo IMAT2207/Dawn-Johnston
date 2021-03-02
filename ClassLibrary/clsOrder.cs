@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -167,13 +167,13 @@ namespace ClassLibrary
             try
             {
                 // Mutate this instance with the first matching record.
-                OrderID = Convert.ToInt32(db.DataTable.Rows[0]["OrderID"]);
-                State = (OrderState)Enum.Parse(typeof(OrderState), Convert.ToString(db.DataTable.Rows[0]["OrderState"]));
-                ProcessedBy = Convert.ToInt32(db.DataTable.Rows[0]["ProcessedBy"]);
-                OrderedBy = Convert.ToInt32(db.DataTable.Rows[0]["OrderedBy"]);
-                PlacedOn = Convert.ToDateTime(db.DataTable.Rows[0]["PlacedOn"]);
+                OrderID      = Convert.ToInt32(db.DataTable.Rows[0]["OrderID"]);
+                State        = (OrderState)Enum.Parse(typeof(OrderState), Convert.ToString(db.DataTable.Rows[0]["OrderState"]));
+                ProcessedBy  = Convert.ToInt32(db.DataTable.Rows[0]["ProcessedBy"]);
+                OrderedBy    = Convert.ToInt32(db.DataTable.Rows[0]["OrderedBy"]);
+                PlacedOn     = Convert.ToDateTime(db.DataTable.Rows[0]["PlacedOn"]);
                 DeliveryNote = Convert.ToString(db.DataTable.Rows[0]["DeliveryNote"]);
-                PaidFor = Convert.ToBoolean(db.DataTable.Rows[0]["PaidFor"]);
+                PaidFor      = Convert.ToBoolean(db.DataTable.Rows[0]["PaidFor"]);
             }
             // Cast / conversion errors. Shouldn't really quietly ignore it, but OH WELL!
             catch (Exception e) { return false; }
@@ -221,8 +221,6 @@ namespace ClassLibrary
             return true;
         }
 
-        public static bool IDIsValid(int ID) => IDIsValid(ID, new clsOrder());
-
         /// <summary>
         /// Determines if the parsed ID is a valid order primary key, and a corresponding record exists on the database.
         /// <br/><br/>
@@ -241,8 +239,11 @@ namespace ClassLibrary
             return order.db.Count > 0;                      // Return true if there was matches.
         }
 
+
     }
 
+
+    [Obsolete]
     public class clsOrderItem
     {
         public bool Find(int ID)
