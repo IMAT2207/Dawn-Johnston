@@ -60,7 +60,11 @@ namespace TestingOrder
         public void OrderIDMinMinus1()
         {
             clsOrder order = createOrder();
-            order.SetOrderID(-1);
+            try
+            {
+                order.SetOrderID(-1);
+                Assert.Fail();
+            }catch (Exception ignored) {}
             Assert.IsTrue(order.Valid().Length == 0);
         }
 
@@ -68,7 +72,12 @@ namespace TestingOrder
         public void OrderIDExtremeMin()
         {
             clsOrder order = createOrder();
-            order.SetOrderID(int.MinValue);
+            try
+            {
+                order.SetOrderID(int.MinValue);
+                Assert.Fail();
+            }
+            catch (Exception ignored) { }
             Assert.IsTrue(order.Valid().Length == 0);
         }
 
@@ -77,7 +86,12 @@ namespace TestingOrder
         public void OrderIDMax()
         {
             clsOrder order = createOrder();
-            order.SetOrderID(int.MaxValue);
+            try
+            {
+                order.SetOrderID(int.MaxValue);
+                Assert.Fail();
+            }
+            catch (Exception ignored) { }
             Assert.IsTrue(order.Valid().Length == 0);
         }
 
