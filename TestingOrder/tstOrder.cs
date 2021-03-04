@@ -105,7 +105,12 @@ namespace TestingOrder
         public void OrderIDExtremeMax()
         {
             clsOrder order = createOrder();
-            order.SetOrderID(int.MaxValue);
+            try
+            {
+                order.SetOrderID(int.MaxValue);
+                Assert.Fail();
+            }
+            catch (Exception ignored) { }
             Assert.IsTrue(order.Valid().Length == 0);
         }
         #endregion OrderID
@@ -154,7 +159,7 @@ namespace TestingOrder
         {
             clsOrder order = createOrder();
             order.SetOrderState(null);
-            Assert.IsTrue(order.Valid().Length != 0); // Unsure of expected result atm
+            Assert.IsTrue(order.Valid().Length == 0); // State will still be valid, it will not be set to null.
         }
 
         [TestMethod]
@@ -162,7 +167,7 @@ namespace TestingOrder
         {
             clsOrder order = createOrder();
             order.SetOrderState("This is not a valid state. Take that, code.");
-            Assert.IsTrue(order.Valid().Length == 0); // unsure
+            Assert.IsTrue(order.Valid().Length == 0); // State will be valid, it will not be set.
         }
         #endregion OrderState
 
@@ -271,29 +276,16 @@ namespace TestingOrder
         public void OrderedByMinMinus1()
         {
             clsOrder order = createOrder();
-            try
-            {
-                order.SetOrderedBy(-1); // Throws an exception if ID is not valid.
-            } catch (Exception e)
-            {
-                return;
-            }
-            Assert.Fail();
+
+            Assert.IsFalse(order.SetOrderedBy(-1)); // Throws an exception if ID is not valid.
+
         }
 
         [TestMethod]
         public void OrderedByExtremeMin()
         {
             clsOrder order = createOrder();
-            try
-            {
-                order.SetOrderedBy(int.MinValue); // Throws an exception if ID is not valid.
-            }
-            catch (Exception e)
-            {
-                return;
-            }
-            Assert.Fail();
+            Assert.IsFalse(order.SetOrderedBy(int.MinValue)); // Fails if below 0.
         }
 
         [TestMethod]
