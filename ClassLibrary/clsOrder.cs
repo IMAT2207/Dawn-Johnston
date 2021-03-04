@@ -125,7 +125,7 @@ namespace ClassLibrary
         /// <summary>
         /// Any delivery note left by the user upon placing the order.
         /// </summary>
-        public string DeliveryNote { get; private set; }
+        public string DeliveryNote { get; private set; } = "";
 
         public bool SetDeliveryNote(string note)
         {
