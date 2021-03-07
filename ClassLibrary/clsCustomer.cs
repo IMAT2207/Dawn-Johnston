@@ -9,6 +9,7 @@ namespace ClassLibrary
 
     public class clsCustomer
     {
+        public static readonly int CUST_ID_MAX = int.MaxValue;
         public int TraderId { get; set; } = -1;
         public string TraderPassword { get; set; } = ".";
         public string BusinessName { get; set; } = ".";
