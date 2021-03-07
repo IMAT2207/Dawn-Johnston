@@ -10,14 +10,110 @@ namespace ClassLibrary
     public class clsCustomer
     {
         public static readonly int CUST_ID_MAX = int.MaxValue;
-        public int TraderId { get; set; } = -1;
-        public string TraderPassword { get; set; } = ".";
-        public string BusinessName { get; set; } = ".";
-        public string ContactEmail { get; set; } = ".";
-        public string DeliveryAddress { get; set; } = ".";
-        public DateTime AccountCreationDate { get; set; } = DateTime.Now;
-        public int NumberOfOrders { get; set; } = 0;
-        public Boolean IsSignedIn { get; set; } = false;
+
+        private int PrivTraderId;
+        public int TraderID
+        {
+            get
+            {
+                return PrivTraderId;
+            }
+            set
+            {
+                PrivTraderId = value;
+            }
+        }
+
+        private string PrivTraderPassword;
+        public string TraderPassword
+        {
+            get
+            {
+                return PrivTraderPassword;
+            }
+            set
+            {
+                PrivTraderPassword = value;
+            }
+        }
+
+        private string PrivBusinessName;
+        public string BusinessName
+        {
+            get
+            {
+                return PrivBusinessName;
+            }
+            set
+            {
+                PrivBusinessName = value;
+            }
+        }
+
+        private string PrivContactEmail;
+        public string ContactEmail
+        {
+            get
+            {
+                return PrivContactEmail;
+            }
+            set
+            {
+                PrivContactEmail = value;
+            }
+        }
+
+        private string PrivDeliveryAddress;
+        public string DeliveryAddress
+        {
+            get
+            {
+                return PrivDeliveryAddress;
+            }
+            set
+            {
+                PrivDeliveryAddress = value;
+            }
+        }
+
+        private DateTime PrivAccountCreationDate;
+        public DateTime AccountCreationDate
+        {
+            get
+            {
+                return PrivAccountCreationDate;
+            }
+            set
+            {
+                PrivAccountCreationDate = value;
+            }
+        }
+
+        private int PrivNumberOfOrders;
+        public int NumberOfOrders
+        {
+            get
+            {
+                return PrivNumberOfOrders;
+            }
+            set
+            {
+                PrivNumberOfOrders = value;
+            }
+        }
+
+        private bool PrivIsSignedIn;
+        public bool IsSignedIn
+        {
+            get
+            {
+                return PrivIsSignedIn;
+            }
+            set
+            {
+                PrivIsSignedIn = value;
+            }
+        }
 
         //When creating a customer default settings from entry "2" are utilised 
         public clsCustomer() => Find(2);
@@ -33,14 +129,14 @@ namespace ClassLibrary
             //If data is found
             if (DB.Count == 1)
             {
-                TraderId = Convert.ToInt32(DB.DataTable.Rows[0]["TraderId"]);
-                TraderPassword = Convert.ToString(DB.DataTable.Rows[0]["TraderPassword"]);
-                BusinessName = Convert.ToString(DB.DataTable.Rows[0]["BusinessName"]);
-                ContactEmail = Convert.ToString(DB.DataTable.Rows[0]["ContactEmail"]);
-                DeliveryAddress = Convert.ToString(DB.DataTable.Rows[0]["DeliveryAddress"]);
-                AccountCreationDate = Convert.ToDateTime(DB.DataTable.Rows[0]["AccountCreationDate"]);
-                NumberOfOrders = Convert.ToInt32(DB.DataTable.Rows[0]["NumberOfOrders"]);
-                IsSignedIn = Convert.ToBoolean(DB.DataTable.Rows[0]["IsSignedIn"]);
+                PrivTraderId = Convert.ToInt32(DB.DataTable.Rows[0]["TraderId"]);
+                PrivTraderPassword = Convert.ToString(DB.DataTable.Rows[0]["TraderPassword"]);
+                PrivBusinessName = Convert.ToString(DB.DataTable.Rows[0]["BusinessName"]);
+                PrivContactEmail = Convert.ToString(DB.DataTable.Rows[0]["ContactEmail"]);
+                PrivDeliveryAddress = Convert.ToString(DB.DataTable.Rows[0]["DeliveryAddress"]);
+                PrivAccountCreationDate = Convert.ToDateTime(DB.DataTable.Rows[0]["AccountCreationDate"]);
+                PrivNumberOfOrders = Convert.ToInt32(DB.DataTable.Rows[0]["NumberOfOrders"]);
+                PrivIsSignedIn = Convert.ToBoolean(DB.DataTable.Rows[0]["IsSignedIn"]);
                 //Return that the operation was completed
                 return true;
             }
@@ -49,6 +145,11 @@ namespace ClassLibrary
                 //If no data is found
                 return false;
             }
-        }   
+        }
+
+        public void Valid()
+        {
+
+        }
     }
 }

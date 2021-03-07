@@ -8,10 +8,6 @@ using ClassLibrary;
 
 public partial class CustomerDataEntry : System.Web.UI.Page
 {
-    protected void Page_Load(object sender, EventArgs e)
-    {
-
-    }
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
@@ -19,7 +15,7 @@ public partial class CustomerDataEntry : System.Web.UI.Page
         clsCustomer Customer = new clsCustomer();
 
         int ID = int.Parse(txtID.Text);
-        Customer.TraderId = ID;
+        Customer.TraderID = ID;
 
         Customer.TraderPassword = txtPassword.Text;
         Customer.BusinessName = txtBusinessName.Text;
