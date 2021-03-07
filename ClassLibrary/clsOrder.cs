@@ -101,7 +101,7 @@ namespace ClassLibrary
 
         public bool SetOrderedBy(int CustomerID)
         {
-            if (IntAttributeValid(CustomerID, clsCustomer.CUST_ID_MAX) && new clsCustomer().Find(CustomerID)) // If record with that ID already exists, ignore.
+            if (IntAttributeValid(CustomerID, int.MaxValue) && new clsCustomer().Find(CustomerID)) // If record with that ID already exists, ignore.
             {
                 OrderedBy = CustomerID;
                 return true;
