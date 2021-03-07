@@ -220,26 +220,6 @@ namespace ClassLibrary
 
             return true;
         }
-
-        /// <summary>
-        /// Determines if the parsed ID is a valid order primary key, and a corresponding record exists on the database.
-        /// <br/><br/>
-        /// If the ID is positive, checks the database for any matching entries.
-        /// Returns false if ID is negative, or the database returned no results.
-        /// <br/><br/>
-        /// SIDE EFFECT: Configures <a cref="clsOrder#bd"/>, which will contain matching records.
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns>True if the Id is valid, else false.</returns>
-        public static bool IDIsValid(int ID, clsOrder order) {
-            if (ID < 0) return false;                       // Don't fetch if id is low
-            order.db.SQLParams.Clear();
-            order.db.AddParameter("@OrderID", ID);          // Fetch records
-            order.db.Execute(SPROC);
-            return order.db.Count > 0;                      // Return true if there was matches.
-        }
-
-
     }
 
 
