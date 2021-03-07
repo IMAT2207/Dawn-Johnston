@@ -12,7 +12,7 @@ namespace ClassLibrary
         public static readonly int CUST_ID_MAX = int.MaxValue;
 
         private int PrivTraderId;
-        public int TraderID
+        public int TraderId
         {
             get
             {
@@ -147,9 +147,130 @@ namespace ClassLibrary
             }
         }
 
-        public void Valid()
+        public static void NewLine(string ErrorMessage)
         {
+            ErrorMessage += '\n';
+        }
 
+        public string Valid() => Valid(TraderId, TraderPassword, BusinessName, ContactEmail, DeliveryAddress, AccountCreationDate, NumberOfOrders, IsSignedIn);
+
+        public static string Valid(  int TraderId, 
+                            string TraderPassword,
+                            string BusinessName,
+                            string ContactEmail,
+                            string DeliveryAddress,
+                            DateTime AccountCreationDate,
+                            int NumberOfOrders,
+                            bool IsSignedIn )
+
+        {
+            string ErrorMessage = "";
+
+            //--TraderId--
+            if (TraderId < 0)
+            {
+                ErrorMessage += "TraderId cannot be less than 0";
+                NewLine(ErrorMessage);
+            }
+
+            if (TraderId > int.MaxValue)
+            {
+                ErrorMessage += "TraderId cannot be greater than 2,147,483,647";
+                NewLine(ErrorMessage);
+            }
+
+            //--TraderPassword--
+            if (TraderPassword == null)
+            {
+                ErrorMessage += "TraderPassword cannot be null";
+                NewLine(ErrorMessage);
+            }
+
+            if (TraderPassword.Length < 6)
+            {
+                ErrorMessage += "TraderPassword cannot be less than 50 characters";
+                NewLine(ErrorMessage);
+            }
+
+            if (TraderPassword.Length > 50)
+            {
+                ErrorMessage += "TraderPassword cannot be longer than 50 characters";
+                NewLine(ErrorMessage);
+            }
+
+            //--BusinessName--
+            if (BusinessName == null)
+            {
+                ErrorMessage += "BusinessName cannot be null";
+                NewLine(ErrorMessage);
+            }
+
+            if (BusinessName.Length > 50)
+            {
+                ErrorMessage += "BusinessName cannot be longer than 50 characters";
+                NewLine(ErrorMessage);
+            }
+
+            //--ContactEmail--
+            if (ContactEmail == null)
+            {
+                ErrorMessage += "ContactEmail cannot be null";
+                NewLine(ErrorMessage);
+            }
+
+            if (ContactEmail.Length > 50)
+            {
+                ErrorMessage += "ContactEmail cannot be longer than 50 characters";
+                NewLine(ErrorMessage);
+            }
+
+            //--DeliveryAddress--
+            if (DeliveryAddress == null)
+            {
+                ErrorMessage += "DeliveryAddress cannot be null";
+                NewLine(ErrorMessage);
+            }
+
+            if (DeliveryAddress.Length > 50)
+            {
+                ErrorMessage += "DeliveryAddress cannot be longer than 50 characters";
+                NewLine(ErrorMessage);
+            }
+
+            //--AccountCreationDate--
+            if (AccountCreationDate == null)
+            {
+                ErrorMessage += "AccountCreationDate cannot be null";
+                NewLine(ErrorMessage);
+            }
+
+            if (AccountCreationDate > DateTime.Now)
+            {
+                ErrorMessage += "AccountCreationDate cannot be created in the future";
+                NewLine(ErrorMessage);
+            }
+
+            //--NumberOfOrders--
+            if (NumberOfOrders < 0)
+            {
+                ErrorMessage += "NumberOfOrders cannot be less than 0";
+                NewLine(ErrorMessage);
+            }
+
+            if (NumberOfOrders > int.MaxValue)
+            {
+                ErrorMessage += "NumberOfOrders cannot be greater than 2,147,483,647";
+                NewLine(ErrorMessage);
+            }
+
+            //--IsSignedIn-- 'Redundant since bool is never null, however included for consistency'
+            if (IsSignedIn == null)
+            {
+                ErrorMessage += "NumberOfOrders cannot be less than 0";
+                NewLine(ErrorMessage);
+            }
+
+            return ErrorMessage;
         }
     }
 }

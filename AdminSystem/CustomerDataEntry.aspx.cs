@@ -14,13 +14,34 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
         clsCustomer Customer = new clsCustomer();
 
-        int ID = int.Parse(txtID.Text);
-        Customer.TraderID = ID;
+        int TraderId = int.Parse(txtID.Text);
+        string TraderPassword = txtPassword.Text;
+        string BusinessName = txtBusinessName.Text;
+        string ContactEmail = txtContactEmail.Text;
+        string DeliveryAddress = txtDeliveryAddr.Text;
+        DateTime AccountCreationDate = calendarAccountCreationDate.SelectedDate;
+        int NumberOfOrders = int.Parse(txtNumberOfOrders.Text);
+        bool IsSignedIn = checkIsSignedIn.Checked;
 
-        Customer.TraderPassword = txtPassword.Text;
-        Customer.BusinessName = txtBusinessName.Text;
-        Customer.ContactEmail = txtContactEmail.Text;
-        Customer.DeliveryAddress = txtDeliveryAddr.Text;
+        string Error = "";
+
+        Error = Customer.Valid();
+
+        if (Error == "")
+        {
+            Customer.TraderId = TraderId;
+            Customer.TraderPassword = TraderPassword;
+            Customer.BusinessName = BusinessName;
+            Customer.ContactEmail = ContactEmail;
+            Customer.DeliveryAddress = DeliveryAddress;
+            Customer.AccountCreationDate = AccountCreationDate;
+            Customer.NumberOfOrders = NumberOfOrders;
+            Customer.IsSignedIn = IsSignedIn;
+        }
+        else
+        {
+            lblErr.Text = Error;
+        }
 
         Session["Customer"] = Customer;
         Response.Redirect("CustomerViewer.aspx");
@@ -40,6 +61,9 @@ public partial class CustomerDataEntry : System.Web.UI.Page
             txtPassword.Text = Customer.TraderPassword;
             txtContactEmail.Text = Customer.ContactEmail;
             txtDeliveryAddr.Text = Customer.DeliveryAddress;
+            calendarAccountCreationDate.SelectedDate = Customer.AccountCreationDate;
+            txtNumberOfOrders.Text = Convert.ToString(Customer.NumberOfOrders);
+            checkIsSignedIn.Checked = Customer.IsSignedIn;
         }
     }
 
