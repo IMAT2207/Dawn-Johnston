@@ -14,18 +14,35 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
         clsCustomer Customer = new clsCustomer();
 
-        int TraderId = int.Parse(txtID.Text);
+        int TraderId = 0;
         string TraderPassword = txtPassword.Text;
         string BusinessName = txtBusinessName.Text;
         string ContactEmail = txtContactEmail.Text;
         string DeliveryAddress = txtDeliveryAddr.Text;
+        int NumberOfOrders = 0;
         DateTime AccountCreationDate = calendarAccountCreationDate.SelectedDate;
-        int NumberOfOrders = int.Parse(txtNumberOfOrders.Text);
         bool IsSignedIn = checkIsSignedIn.Checked;
 
         string Error = "";
 
-        Error = Customer.Valid();
+        try {
+            TraderId = int.Parse(txtID.Text);
+        } catch (FormatException Ignored)
+        {
+            Error += "\n Enter a valid number for Trader Id";
+            
+        }
+
+        try
+        {
+            NumberOfOrders = int.Parse(txtNumberOfOrders.Text);
+        }
+        catch (FormatException Ignored)
+        {
+            Error += "\n Enter a valid number for Number O";
+        }
+
+        Error += Customer.Valid();
 
         if (Error == "")
         {
@@ -44,7 +61,10 @@ public partial class CustomerDataEntry : System.Web.UI.Page
         }
 
         Session["Customer"] = Customer;
-        Response.Redirect("CustomerViewer.aspx");
+        if (Error.Equals(""))
+        {
+            Response.Redirect("CustomerViewer.aspx");
+        }
     }
 
     protected void btnFind_Click(object sender, EventArgs e)

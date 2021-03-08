@@ -169,105 +169,105 @@ namespace ClassLibrary
             //--TraderId--
             if (TraderId < 0)
             {
-                ErrorMessage += "TraderId cannot be less than 0";
                 NewLine(ErrorMessage);
+                ErrorMessage += "TraderId cannot be less than 0";
             }
 
             if (TraderId > int.MaxValue)
             {
-                ErrorMessage += "TraderId cannot be greater than 2,147,483,647";
                 NewLine(ErrorMessage);
+                ErrorMessage += "TraderId cannot be greater than 2,147,483,647";
             }
 
             //--TraderPassword--
             if (TraderPassword == null)
             {
-                ErrorMessage += "TraderPassword cannot be null";
                 NewLine(ErrorMessage);
+                ErrorMessage += "TraderPassword cannot be null";
             }
 
             if (TraderPassword.Length < 6)
             {
-                ErrorMessage += "TraderPassword cannot be less than 50 characters";
                 NewLine(ErrorMessage);
+                ErrorMessage += "TraderPassword cannot be less than 50 characters";
             }
 
             if (TraderPassword.Length > 50)
             {
-                ErrorMessage += "TraderPassword cannot be longer than 50 characters";
                 NewLine(ErrorMessage);
+                ErrorMessage += "TraderPassword cannot be longer than 50 characters";
             }
 
             //--BusinessName--
             if (BusinessName == null)
             {
-                ErrorMessage += "BusinessName cannot be null";
                 NewLine(ErrorMessage);
+                ErrorMessage += "BusinessName cannot be null";
             }
 
             if (BusinessName.Length > 50)
             {
-                ErrorMessage += "BusinessName cannot be longer than 50 characters";
                 NewLine(ErrorMessage);
+                ErrorMessage += "BusinessName cannot be longer than 50 characters";
             }
 
             //--ContactEmail--
             if (ContactEmail == null)
             {
-                ErrorMessage += "ContactEmail cannot be null";
                 NewLine(ErrorMessage);
+                ErrorMessage += "ContactEmail cannot be null";
             }
 
             if (ContactEmail.Length > 50)
             {
-                ErrorMessage += "ContactEmail cannot be longer than 50 characters";
                 NewLine(ErrorMessage);
+                ErrorMessage += "ContactEmail cannot be longer than 50 characters";
             }
 
             //--DeliveryAddress--
             if (DeliveryAddress == null)
             {
-                ErrorMessage += "DeliveryAddress cannot be null";
                 NewLine(ErrorMessage);
+                ErrorMessage += "DeliveryAddress cannot be null";
             }
 
             if (DeliveryAddress.Length > 50)
             {
-                ErrorMessage += "DeliveryAddress cannot be longer than 50 characters";
                 NewLine(ErrorMessage);
+                ErrorMessage += "DeliveryAddress cannot be longer than 50 characters";
             }
 
             //--AccountCreationDate--
             if (AccountCreationDate == null)
             {
-                ErrorMessage += "AccountCreationDate cannot be null";
                 NewLine(ErrorMessage);
+                ErrorMessage += "AccountCreationDate cannot be null";
             }
 
             if (AccountCreationDate > DateTime.Now)
             {
-                ErrorMessage += "AccountCreationDate cannot be created in the future";
                 NewLine(ErrorMessage);
+                ErrorMessage += "AccountCreationDate cannot be created in the future";
             }
 
             //--NumberOfOrders--
             if (NumberOfOrders < 0)
             {
-                ErrorMessage += "NumberOfOrders cannot be less than 0";
                 NewLine(ErrorMessage);
+                ErrorMessage += "NumberOfOrders cannot be less than 0";
             }
 
             if (NumberOfOrders > int.MaxValue)
             {
-                ErrorMessage += "NumberOfOrders cannot be greater than 2,147,483,647";
                 NewLine(ErrorMessage);
+                ErrorMessage += "NumberOfOrders cannot be greater than 2,147,483,647";
             }
 
             //--IsSignedIn-- 'Redundant since bool is never null, however included for consistency'
             if (IsSignedIn == null)
             {
-                ErrorMessage += "NumberOfOrders cannot be less than 0";
                 NewLine(ErrorMessage);
+                ErrorMessage += "NumberOfOrders cannot be less than 0";
             }
 
             return ErrorMessage;
