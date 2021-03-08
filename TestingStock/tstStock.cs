@@ -295,7 +295,9 @@ namespace TestingStock
             clsStock product = new clsStock();
             String Error = "";
             //this should fail
-            string QuantityAvailable = "";
+            Int32 TestQuantity;
+            TestQuantity = -1;
+            string QuantityAvailable = TestQuantity.ToString();
             Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
             Assert.AreNotEqual(Error, "");
         }
