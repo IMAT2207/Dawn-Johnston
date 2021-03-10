@@ -47,29 +47,26 @@ namespace ClassLibrary
             //object for data connection
             clsDataConnection DB = new clsDataConnection();
             //execute the stored procedure
-            DB.Execute("");
-            //create the items of test data
-            clsStock TestItem = new clsStock();
-            //set its properties
-            TestItem.ProductId = 1;
-            TestItem.ProductName = "Beef";
-            TestItem.ProductDescription = "Something Good";
-            TestItem.IsAvailable = true;
-            TestItem.QuantityAvailable = 1;
-            TestItem.RestockDate = DateTime.Now.Date;
-            //add the item to the test list
-            mStockList.Add(TestItem);
-            //re initialise the obkect for some new data
-            TestItem = new clsStock();
-            //set its properties
-            TestItem.ProductId = 2;
-            TestItem.ProductName = "Chicken";
-            TestItem.ProductDescription = "Something Better";
-            TestItem.IsAvailable = true;
-            TestItem.QuantityAvailable = 1;
-            TestItem.RestockDate = DateTime.Now.Date;
-            //add the item to the test list
-            mStockList.Add(TestItem);
+            DB.Execute("sproc_tblStock_SelectAll");
+            //get the count of records
+            RecordCount = DB.Count;
+            //while there are records to process
+            while(Index < RecordCount)
+            {
+                //create a blank stock
+                clsStock AStock = new clsStock();
+                //read in the fields from the current record
+                AStock.ProductId = Convert.ToInt32(DB.DataTable.Rows[Index]["ProductId"]);
+                AStock.ProductName = Convert.ToString(DB.DataTable.Rows[Index]["ProductName"]);
+                AStock.ProductDescription = Convert.ToString(DB.DataTable.Rows[Index]["ProductDescription"]);
+                AStock.IsAvailable = Convert.ToBoolean(DB.DataTable.Rows[Index]["IsAvailable"]);
+                AStock.QuantityAvailable = Convert.ToInt32(DB.DataTable.Rows[Index]["QuantityAvailable"]);
+                AStock.RestockDate = Convert.ToDateTime(DB.DataTable.Rows[Index]["RestockDate"]);
+                //add the record to the private data member
+                mStockList.Add(AStock);
+                //point at the next record
+                Index++;
+            }
         }
     }
 }
