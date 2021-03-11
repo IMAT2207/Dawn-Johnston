@@ -78,36 +78,5 @@ namespace TestingStock
             AllStocks.ThisStock = TestStock;
             Assert.AreEqual(AllStocks.ThisStock, TestStock);
         }
-
-        [TestMethod]
-        public void ListAndCountOK()
-        {
-            //create an instance of the class
-            clsStockCollection AllStocks = new clsStockCollection();
-            //create some test data to the list object
-            List<clsStock> TestList = new List<clsStock>();
-            //create the item of test data
-            clsStock TestItem = new clsStock();
-            //set its properties
-            TestItem.ProductId = 1;
-            TestItem.ProductName = "Beef";
-            TestItem.ProductDescription = "Something Good";
-            TestItem.IsAvailable = true;
-            TestItem.QuantityAvailable = 1;
-            TestItem.RestockDate = DateTime.Now.Date;
-            //add the item to the test list
-            TestList.Add(TestItem);
-            //assign the data
-            AllStocks.StockList = TestList;
-            Assert.AreEqual(AllStocks.Count, TestList.Count);
-        }
-
-        [TestMethod]
-        public void TwoRecordsPresent()
-        {
-            //create an instance of the class
-            clsStockCollection AllStocks = new clsStockCollection();
-            Assert.AreEqual(AllStocks.Count, 2);
-        }
     }
 }
