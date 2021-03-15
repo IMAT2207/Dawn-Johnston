@@ -9,8 +9,8 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:TextBox ID="lstStockList" runat="server" Height="422px" Width="706px"></asp:TextBox>
         </div>
+        <asp:ListBox ID="lstStockList" runat="server" Height="509px" OnSelectedIndexChanged="ListBox1_SelectedIndexChanged" Width="711px"></asp:ListBox>
     </form>
 </body>
 </html>
