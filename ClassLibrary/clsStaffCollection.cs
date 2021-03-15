@@ -66,6 +66,33 @@ namespace ClassLibrary
                 // Future work.
             }
         }
-        public clsStaff ThisStaff { get; set; }
+        clsStaff pThisStaff = new clsStaff();
+        public clsStaff ThisStaff
+        {
+            get
+            {
+                return pThisStaff;
+            }
+            set
+            {
+                pThisStaff = value;
+            }
+        }
+        public int Add()
+        {
+            // Adds a new record to the database based on the values of pThisStaff.
+            // Establishes a new database connection.
+            clsDataConnection DB = new clsDataConnection();
+
+            // Sets the parameters for the stores procedure.
+            DB.AddParameter("@StaffPassword", pThisStaff.StaffPassword);
+            DB.AddParameter("@IsManager", pThisStaff.IsManager);
+            DB.AddParameter("@RecordCreated", pThisStaff.RecordCreated);
+            DB.AddParameter("@FirstName", pThisStaff.FirstName);
+            DB.AddParameter("@FamilyName", pThisStaff.FamilyName);
+
+            // Executes the query, returning the primary key value.
+            return DB.Execute("sproc_tblStaff_Insert");
+        }
     }
 }

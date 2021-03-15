@@ -18,7 +18,7 @@ public partial class StaffDataEntry : System.Web.UI.Page
         // Creates a new instance of the staff class.
         clsStaff StaffMember = new clsStaff();
 
-        // Capture the values.
+        // Capture the data.
         string StaffPassword = txtStaffPassword.Text;
         string RecordCreated = txtRecordCreated.Text;
         string FirstName = txtFirstName.Text;
@@ -30,15 +30,24 @@ public partial class StaffDataEntry : System.Web.UI.Page
         Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
         if (Error == "")
         {
+            // Captures the data.
             StaffMember.StaffPassword = StaffPassword;
+            StaffMember.IsManager = chkIsManager.Checked;
             StaffMember.RecordCreated = Convert.ToDateTime(RecordCreated);
             StaffMember.FirstName = FirstName;
             StaffMember.FamilyName = FamilyName;
 
-            // Stores the address in the session.
-            Session["StaffMember"] = StaffMember;
-            // Redirect to the StaffViewer page.
-            Response.Redirect("StaffViewer.aspx");
+            // Create a new instance of the staff collection.
+            clsStaffCollection StaffMembers = new clsStaffCollection();
+
+            // Set the ThisStaff property.
+            StaffMembers.ThisStaff = StaffMember;
+
+            // Add the new record.
+            StaffMembers.Add();
+
+            // Redirect to the StaffList page.
+            Response.Redirect("StaffList.aspx");
         }
         else
         {
