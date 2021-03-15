@@ -140,5 +140,55 @@ namespace TestingStaff
             // Tests for equality of the two values.
             Assert.AreEqual(StaffMembers.ThisStaff, TestItem);
         }
+
+        [TestMethod]
+        public void UpdateMethodOK()
+        {
+            // Creates an instance of clsStaffCollection.
+            clsStaffCollection StaffMembers = new clsStaffCollection();
+
+            // Create an item for test data.
+            clsStaff TestItem = new clsStaff();
+
+            // Variable to store the primary key value.
+            int PrimaryKey = 0;
+
+            // Sets the properties of the test item.
+            TestItem.StaffID = 21;
+            TestItem.StaffPassword = "password";
+            TestItem.IsManager = true;
+            TestItem.RecordCreated = DateTime.Now.Date;
+            TestItem.FirstName = "Test";
+            TestItem.FamilyName = "Account";
+
+            // Set ThisStaff to the test data.
+            StaffMembers.ThisStaff = TestItem;
+
+            // Add the record.
+            PrimaryKey = StaffMembers.Add();
+
+            // Set the primary key of the test data.
+            TestItem.StaffID = PrimaryKey;
+
+            // Modify the test data.
+            TestItem.StaffID = 271;
+            TestItem.StaffPassword = "passwordTest";
+            TestItem.IsManager = false;
+            TestItem.RecordCreated = DateTime.Now.Date;
+            TestItem.FirstName = "firstName test";
+            TestItem.FamilyName = "familyName test";
+
+            // Set the record based on the new test data.
+            StaffMembers.ThisStaff = TestItem;
+
+            // Update the record.
+            StaffMembers.Update();
+
+            // Find the record.
+            StaffMembers.ThisStaff.Find(PrimaryKey);
+
+            // Tests for equality of the two values.
+            Assert.AreEqual(StaffMembers.ThisStaff, TestItem);
+        }
     }
 } 

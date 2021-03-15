@@ -44,4 +44,28 @@ public partial class StaffList : System.Web.UI.Page
         // Redirect to the StaffDataEntry webpage.
         Response.Redirect("StaffDataEntry.aspx");
     }
+
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        // Variable to store the primary key value of the record to be modified.
+        int StaffID;
+
+        // If a record has been selected from the list.
+        if (lstStaffList.SelectedIndex != -1)
+        {
+            // Obtain the primary key value of the record to modify.
+            StaffID = Convert.ToInt32(lstStaffList.SelectedValue);
+
+            // Stores the data in the session object.
+            Session["StaffID"] = StaffID;
+
+            // Redirect to the edit page.
+            Response.Redirect("StaffDataEntry.aspx");
+        }
+        else
+        {
+            // Display an error message.
+            lblError.Text = "Please select a record to edit from the list";
+        }
+    }
 }
