@@ -12,7 +12,7 @@ public partial class StaffDataEntry : System.Web.UI.Page
     int StaffID;
     protected void Page_Load(object sender, EventArgs e)
     {
-        // get the StaffID va;ue to be processed.
+        // get the StaffID value to be processed.
         StaffID = Convert.ToInt32(Session["StaffID"]);
         if (IsPostBack == false)
         {
