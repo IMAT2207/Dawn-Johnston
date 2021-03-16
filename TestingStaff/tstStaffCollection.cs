@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClassLibrary;
 using System.Collections.Generic;
@@ -189,6 +189,114 @@ namespace TestingStaff
 
             // Tests for equality of the two values.
             Assert.AreEqual(StaffMembers.ThisStaff, TestItem);
+        }
+
+        [TestMethod]
+        public void DeleteMethodOK()
+        {
+            // Creates an instance of clsStaffCollection.
+            clsStaffCollection StaffMembers = new clsStaffCollection();
+
+            // Create an item for test data.
+            clsStaff TestItem = new clsStaff();
+
+            // Variable to store the primary key value.
+            int PrimaryKey = 0;
+
+            // Sets the properties of the test item.
+            TestItem.StaffID = 21;
+            TestItem.StaffPassword = "password";
+            TestItem.IsManager = true;
+            TestItem.RecordCreated = DateTime.Now.Date;
+            TestItem.FirstName = "Test";
+            TestItem.FamilyName = "Account";
+
+            // Set ThisStaff to the test data.
+            StaffMembers.ThisStaff = TestItem;
+
+            // Add the record.
+            PrimaryKey = StaffMembers.Add();
+
+            // Set the primary key of the test data.
+            TestItem.StaffID = PrimaryKey;
+
+            // Find the record.
+            StaffMembers.ThisStaff.Find(PrimaryKey);
+
+            // Delete the record.
+            StaffMembers.Delete();
+
+            // Try's to find the deleted record.
+            Boolean Found = StaffMembers.ThisStaff.Find(PrimaryKey);
+
+            // Tests if the record was not found.
+            Assert.IsFalse(Found);
+        }
+
+        [TestMethod]
+        public void ReportByFirstNameMethodOK()
+        {
+            // Creates an instance of clsStaffCollection containing unfiltered data.
+            clsStaffCollection StaffMembers = new clsStaffCollection();
+
+            // Create an instance of the filtered data.
+            clsStaffCollection FilteredStaff = new clsStaffCollection();
+
+            // Apply a blank string, returns all records.
+            FilteredStaff.ReportByFirstName("");
+
+            // Tests for equality between the two values.
+            Assert.AreEqual(StaffMembers.Count, FilteredStaff.Count);
+        }
+
+        [TestMethod]
+        public void ReportByFirstNameNoneFound()
+        {
+            // Create an instance of the filtered data.
+            clsStaffCollection FilteredStaff = new clsStaffCollection();
+
+            // Apply a first name record that doesnt exist.
+            FilteredStaff.ReportByFirstName("xxx");
+
+            // Tests for equality between the two values, indicating there are no records.
+            Assert.AreEqual(0, FilteredStaff.Count);
+        }
+
+        [TestMethod]
+        public void ReportByFirstNameTestDataFound(string FirstName)
+        {
+            // Create an instance of the filtered data.
+            clsStaffCollection FilteredStaff = new clsStaffCollection();
+
+            // Variable to store the outcome.
+            Boolean OK = true;
+
+            // Apply a first name that doesnt exist.
+            FilteredStaff.ReportByFirstName("xxx");
+
+            // Check that the correct of number of records are found.
+            if (FilteredStaff.Count == 2)
+            {
+                // Check that the first record is StaffID 7.
+                if (FilteredStaff.StaffList[0].StaffID != 7)
+                {
+                    OK = false;
+                }
+
+                // Check that the first record is StaffID 12.
+                if (FilteredStaff.StaffList[1].StaffID != 12)
+                {
+                    OK = false;
+                }
+
+            }
+            else
+            {
+                OK = false;
+            }
+
+            // Test to see that there are no records.
+            Assert.IsTrue(OK);
         }
     }
 } 

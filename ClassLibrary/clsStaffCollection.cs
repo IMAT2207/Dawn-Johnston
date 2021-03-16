@@ -7,41 +7,14 @@ namespace ClassLibrary
     {
         public clsStaffCollection()
         {
-            // Variable for the index.
-            int Index = 0;
-
-            // Variable to store the record account.
-            int RecordCount = 0;
-
             // Object for data connection.
             clsDataConnection DB = new clsDataConnection();
 
             // Executes the stored procedure.
             DB.Execute("sproc_tblStaff_SelectAll");
 
-            // Obtains the number of records.
-            RecordCount = DB.Count;
-
-            // While there are remaining records to process.
-            while (Index < RecordCount)
-            {
-                // Creates a blank staff record.
-                clsStaff StaffMember = new clsStaff();
-
-                // Reads the fields from the current record.
-                StaffMember.StaffID = Convert.ToInt32(DB.DataTable.Rows[Index]["StaffID"]);
-                StaffMember.StaffPassword = Convert.ToString(DB.DataTable.Rows[Index]["StaffPassword"]);
-                StaffMember.IsManager = Convert.ToBoolean(DB.DataTable.Rows[Index]["IsManager"]);
-                StaffMember.RecordCreated = Convert.ToDateTime(DB.DataTable.Rows[Index]["RecordCreated"]);
-                StaffMember.FirstName = Convert.ToString(DB.DataTable.Rows[Index]["FirstName"]);
-                StaffMember.FamilyName = Convert.ToString(DB.DataTable.Rows[Index]["FamilyName"]);
-
-                // Adds the record to the private data member.
-                pStaffList.Add(StaffMember);
-
-                // Points towards the next record.
-                Index++;
-            }
+            // Populate the ArrayList with the data table.
+            PopulateArray(DB);
         }
         private List<clsStaff> pStaffList = new List<clsStaff>();
         public List<clsStaff> StaffList
@@ -111,6 +84,73 @@ namespace ClassLibrary
 
             // Executes the query, returning the primary key value.
             DB.Execute("sproc_tblStaff_Update");
+        }
+
+        public void Delete()
+        {
+            // Connects to the database.
+            clsDataConnection DB = new clsDataConnection();
+
+            // Set the parameters for the stored procedure.
+            DB.AddParameter("@StaffID", pThisStaff.StaffID);
+
+            // Execute the stored procedure.
+            DB.Execute("sproc_tblStaff_Delete");
+        }
+
+        public void ReportByFirstName(string FirstName)
+        {
+            // Filters the records based on a full or partial first name.
+            
+            // Connects to the database.
+            clsDataConnection DB = new clsDataConnection();
+
+            // Send the FirstName parameter to the database.
+            DB.AddParameter("@FirstName", FirstName);
+
+            // Execute the stored procedure.
+            DB.Execute("sproc_tblStaff_FilterByFirstName");
+
+            // Populate the ArrayList with the data table.
+            PopulateArray(DB);
+        }
+
+        void PopulateArray(clsDataConnection DB)
+        {
+            // Populates the array list based on the data table in the parameter DB.
+
+            // Variable for the index.
+            int Index = 0;
+
+            // Variable to store the record count.
+            int RecordCount;
+
+            // Obtains the count of records.
+            RecordCount = DB.Count;
+
+            // Clear the private ArrayList.
+            pStaffList = new List<clsStaff>();
+
+            // While there are records to process.
+            while (Index < RecordCount)
+            {
+                // Create a blank staff record.
+                clsStaff StaffMember = new clsStaff();
+
+                // Read in the fields from the current record.
+                StaffMember.StaffID = Convert.ToInt32(DB.DataTable.Rows[Index]["StaffID"]);
+                StaffMember.StaffPassword = Convert.ToString(DB.DataTable.Rows[Index]["StaffPassword"]);
+                StaffMember.IsManager = Convert.ToBoolean(DB.DataTable.Rows[Index]["IsManager"]);
+                StaffMember.RecordCreated = Convert.ToDateTime(DB.DataTable.Rows[Index]["RecordCreated"]);
+                StaffMember.FirstName = Convert.ToString(DB.DataTable.Rows[Index]["FirstName"]);
+                StaffMember.FamilyName = Convert.ToString(DB.DataTable.Rows[Index]["FamilyName"]);
+
+                // Add the record to the private data member.
+                pStaffList.Add(StaffMember);
+
+                // Increment the index.
+                Index++;
+            }
         }
     }
 }
