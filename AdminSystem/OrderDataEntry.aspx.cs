@@ -97,6 +97,12 @@ public partial class OrderDataEntry : System.Web.UI.Page
             "Delivery Note"
         );
 
+        WarnIfInvalid(
+            order.SetPlacedOn(PlacedOn.SelectedDate)
+        ,
+            "Placed On"
+        );
+
         order.PaidFor = chkPaidFor.Checked;             // This shouldn't need validation. #Checked can only be true or false, both values are valid.
 
         if (dirty.isDirty) {                            // If form is dirty, reset dirty bit and return. Don't continue to success.
