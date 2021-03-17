@@ -166,6 +166,7 @@ namespace ClassLibrary
         /// <returns>True if <paramref name="ID"/> was valid, record was found, and order was successfully mutated. False if <paramref name="ID"/> is negative, no matches were found, or failed to read the data stored within it.</returns>
         public bool Find(int ID)
         {
+            OrderID = ID;
             if (!IDIsValid(ID, this)) return false;                             // Check ID exists, and fetch matching records. Return false if not valid, or no matches.
 
             try
