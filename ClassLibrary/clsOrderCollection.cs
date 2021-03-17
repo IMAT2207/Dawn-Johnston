@@ -29,16 +29,15 @@ namespace ClassLibrary
         }
 
         #region operations
-        public Int32 Add() {
-            ThisOrder = new clsOrder(123);
+        public Int32 Add() { 
 
             clsDataConnection DB = clsDataConnection.dataConnection;
-
+            DB.SQLParams.Clear();
             DB.AddParameter("ProcessedBy", ThisOrder.ProcessedBy);
             DB.AddParameter("OrderedBy", ThisOrder.OrderedBy);
             DB.AddParameter("PlacedOn", ThisOrder.PlacedOn);
             DB.AddParameter("DeliveryNote", ThisOrder.DeliveryNote);
-            DB.AddParameter("OrderState", ThisOrder.State);
+            DB.AddParameter("OrderState", ThisOrder.State.ToString());
             DB.AddParameter("PaidFor", ThisOrder.PaidFor);
             return DB.Execute("sproc_tblOrder_Insert");
         }
