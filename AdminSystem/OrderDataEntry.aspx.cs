@@ -105,7 +105,7 @@ public partial class OrderDataEntry : System.Web.UI.Page
         }
 
         #warning This should modify the database to write a record.
-
+        order.AssertExists();                           // If record does not exists, create it.
         Session["Order"] = order;                       // Success! Form can be submitted. For now, Store order on session.
         lblMsg.Text = "Success!";                       // Display success message.
         Response.Redirect("OrderViewer.aspx");          // Switch to display form, which will display the record on the session.
