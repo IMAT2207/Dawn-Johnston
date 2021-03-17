@@ -78,5 +78,70 @@ namespace TestingStock
             AllStocks.ThisStock = TestStock;
             Assert.AreEqual(AllStocks.ThisStock, TestStock);
         }
+
+        [TestMethod]
+        public void AddMethodOK()
+        {
+            //create an instance of the class
+            clsStockCollection AllStocks = new clsStockCollection();
+            //create test item of test data
+            clsStock TestItem = new clsStock();
+            //var to store primary key
+            Int32 PrimaryKey = 0;
+            //set its properties
+            TestItem.ProductId = 1;
+            TestItem.ProductName = "Beef";
+            TestItem.ProductDescription = "Something Good";
+            TestItem.IsAvailable = true;
+            TestItem.QuantityAvailable = 1;
+            TestItem.RestockDate = DateTime.Now.Date;
+            //set ThisStock to the test data
+            AllStocks.ThisStock = TestItem;
+            //add the record
+            PrimaryKey = AllStocks.Add();
+            //set the primary key of the test data
+            TestItem.ProductId = PrimaryKey;
+            //find the record
+            AllStocks.ThisStock.Find(PrimaryKey);
+            Assert.AreEqual(AllStocks.ThisStock, TestItem);
+        }
+
+        [TestMethod]
+        public void UpdateMethodOK()
+        {
+            //create an instance
+            clsStockCollection AllStocks = new clsStockCollection();
+            //create the item of test data
+            clsStock TestItem = new clsStock();
+            //var to store the primary key
+            Int32 PrimaryKey = 0;
+            //set its properties
+            TestItem.ProductId = 1;
+            TestItem.ProductName = "Beef";
+            TestItem.ProductDescription = "Something Good";
+            TestItem.IsAvailable = true;
+            TestItem.QuantityAvailable = 1;
+            TestItem.RestockDate = DateTime.Now.Date;
+            //set ThisStock to the test data
+            AllStocks.ThisStock = TestItem;
+            //add the record
+            PrimaryKey = AllStocks.Add();
+            //set the primary key of the test data
+            TestItem.ProductId = PrimaryKey;
+            //modify the test data
+            TestItem.ProductId = 3;
+            TestItem.ProductName = "Chicken";
+            TestItem.ProductDescription = "Something Really Good";
+            TestItem.IsAvailable = false;
+            TestItem.QuantityAvailable = 2;
+            TestItem.RestockDate = DateTime.Now.Date;
+            //set the record based on the new test data
+            AllStocks.ThisStock = TestItem;
+            //update the record
+            AllStocks.Update();
+            //find the record
+            AllStocks.ThisStock.Find(PrimaryKey);
+            Assert.AreEqual(AllStocks.ThisStock, TestItem);
+        }
     }
 }

@@ -15,13 +15,21 @@ public partial class StockDataEntry : System.Web.UI.Page
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
+        //create a new instance of clsStock
         clsStock product = new clsStock();
+        //capture the Product ID
         string ProductId = txtProductID.Text;
+        //capture the Product Name
         string ProductName = txtProductName.Text;
+        //capture the Product Description
         string ProductDescription = txtProductDescription.Text;
+        //capture Quantity Available
         string QuantityAvailable = txtQuantity.Text;
+        //capture Restock Date
         string RestockDate = txtRestockDate.Text;
+        //variable to store any error messages
         string Error = "";
+        //validation the data
         Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
         if (Error == "")
         {
@@ -40,6 +48,12 @@ public partial class StockDataEntry : System.Web.UI.Page
             product.RestockDate = Convert.ToDateTime(RestockDate);
             //store the stock in the session object
             Session["Product Stock"] = product;
+            //create a new instance of the stock collection
+            clsStockCollection StockList = new clsStockCollection();
+            //set the ThisStock
+            StockList.ThisStock = product;
+            //add the new record
+            StockList.Add();
             //redirect to the viewer page
             Response.Redirect("StockViewer.aspx");
         }
