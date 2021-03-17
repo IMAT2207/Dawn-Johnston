@@ -13,6 +13,17 @@ namespace ClassLibrary
 
         public clsOrderCollection()
         {
+            Populate();
+        }
+
+        public clsOrderCollection(clsOrder thisOrder)
+        {
+            ThisOrder = thisOrder;
+        }
+
+
+        private void Populate()
+        {
             OrderList.Add(new clsOrder(1));
             OrderList.Add(new clsOrder(1));
         }
