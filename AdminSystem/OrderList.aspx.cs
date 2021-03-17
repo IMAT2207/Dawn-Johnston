@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using ClassLibrary;
 
 public partial class OrderList : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack) DisplayOrders();
+    }
 
+    private void DisplayOrders()
+    {
+        ListBox1.DataSource = new clsOrderCollection();
+        ListBox1.DataValueField = "OrderID";
+        ListBox1.DataTextField = "OrderedBy";
+        ListBox1.DataBind();
     }
 }
