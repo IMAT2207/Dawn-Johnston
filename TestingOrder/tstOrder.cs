@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text.RegularExpressions;
 using ClassLibrary;
+using System.Collections.Generic;
 
 namespace TestingOrder
 {
@@ -315,6 +316,73 @@ namespace TestingOrder
 
         }
         #endregion OrderedBy
+
+        #region orderCollection
+
+        [TestMethod]
+        public void CollectionInstanceOK()
+        {
+            Assert.IsNotNull(new clsOrderCollection());
+        }
+        
+ //       [TestMethod]
+ //       public void CollectionCountPropOK()
+ //       {
+ //           clsOrderCollection collection = new clsOrderCollection();
+ //           Int32 count = 1;
+ //          collection.count = count;
+ //          Assert.AreEqual(count, collection.count);
+ //       }
+       
+        [TestMethod]
+        public void CollectionOrderPropOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+
+            // Create and populate an order with db record #1
+            clsOrder order = new clsOrder(1);
+
+            collection.ThisOrder = order;
+        }
+        
+        [TestMethod]
+        public void CollectionOrderListPropOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            List<clsOrder> OrderList = new List<clsOrder>();
+
+            // Create and populate an order with db record #1
+            OrderList.Add(new clsOrder(1));
+
+            collection.OrderList = OrderList;
+            Assert.AreEqual(collection.OrderList, OrderList);
+        }
+
+        [TestMethod]
+        public void Collection2RecsPresent()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            Assert.AreEqual(collection.count, 2);
+        }
+
+        [TestMethod]
+        public void CollectionCountOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            List<clsOrder> OrderList = new List<clsOrder>();
+
+            // Create and populate an order with db record #1
+            OrderList.Add(new clsOrder(1));
+            OrderList.Add(new clsOrder(1));
+            OrderList.Add(new clsOrder(1));
+
+
+            collection.OrderList = OrderList;
+            Assert.AreEqual(collection.count, OrderList.Count);
+        }
+
+
+        #endregion
 
     }
 }
