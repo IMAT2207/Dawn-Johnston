@@ -48,16 +48,16 @@ namespace ClassLibrary
             }
         }
 
-        private DateTime pDOB;
-        public DateTime DOB
+        private DateTime pRecordCreated;
+        public DateTime RecordCreated
         {
             get
             {
-                return pDOB;
+                return pRecordCreated;
             }
             set
             {
-                pDOB = value;
+                pRecordCreated = value;
             }
         }
 
@@ -102,7 +102,7 @@ namespace ClassLibrary
                 pStaffID = Convert.ToInt32(DB.DataTable.Rows[0]["StaffID"]);
                 pStaffPassword = Convert.ToString(DB.DataTable.Rows[0]["StaffPassword"]);
                 pIsManager = Convert.ToBoolean(DB.DataTable.Rows[0]["IsManager"]);
-                pDOB = Convert.ToDateTime(DB.DataTable.Rows[0]["DOB"]);
+                pRecordCreated = Convert.ToDateTime(DB.DataTable.Rows[0]["RecordCreated"]);
                 pFirstName = Convert.ToString(DB.DataTable.Rows[0]["FirstName"]);
                 pFamilyName = Convert.ToString(DB.DataTable.Rows[0]["FamilyName"]);
 
@@ -116,5 +116,63 @@ namespace ClassLibrary
                 return false;
             }
          }
+
+        public string Valid(string staffPassword, string recordCreated, string firstName, string familyName)
+        {
+            // String variable to store error message.
+            string Error = "";
+
+            // Temporary variables to store date values.
+            DateTime DateTemp;
+
+            if (staffPassword.Length == 0)
+            {
+                Error = Error + "The staff password cannot be blank : ";
+            }
+
+            if (staffPassword.Length > 30)
+            {
+                Error = Error + "The staff password cannot be greater than 30 characters : ";
+            }
+
+            try
+            {
+                DateTemp = Convert.ToDateTime(recordCreated);
+                if (DateTemp < DateTime.Now.Date)
+                {
+                    Error = Error + "The record cannot be created in the past : ";
+                }
+
+                if (DateTemp > DateTime.Now.Date)
+                {
+                    Error = Error + "The record cannot be created in the future : ";
+                }
+            }
+            catch
+            {
+                Error = Error + "The date entered is not a valid date : ";
+            }
+
+            if (firstName.Length > 50)
+            {
+                Error = Error + "The first name cannot be greater than 50 characters : ";
+            }
+
+            if (firstName.Length == 0)
+            {
+                Error = Error + "The first name cannot be blank : ";
+            }
+
+            if (familyName.Length > 50)
+            {
+                Error = Error + "The family name cannot be greater than 50 characters : ";
+            }
+
+            if (familyName.Length == 0)
+            {
+                Error = Error + "The family name cannot be blank : ";
+            }
+            return Error;
+        }
     }
 }

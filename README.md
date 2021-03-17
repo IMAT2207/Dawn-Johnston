@@ -10,4 +10,4 @@ The customer can create their required traders’ account, which will store requ
 
 A private sector of the web system will house controls for staff. This staff only section shows orders which have been placed and need completing, alongside tools for managing and monitoring stock levels and customer data
 
-First design jornal [here](https://drive.google.com/drive/folders/1IrpN926YiIOFxwyh_ulOuuKwMdrTV5bW?usp=sharing)
+First design jornal [here](https://docs.google.com/document/d/1s_PC_sH63ZbdOO7RRw4gTo3bhZOnNHCgfWp2OIz-544/edit)

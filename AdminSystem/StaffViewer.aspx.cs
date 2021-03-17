@@ -19,8 +19,8 @@ public partial class StaffViewer : System.Web.UI.Page
         Response.Write(StaffMember.StaffID);
         // Displays the staff password for this entry.
         Response.Write(StaffMember.StaffPassword);
-        // Displays the staff DOB for this entry.
-        Response.Write(StaffMember.DOB);
+        // Displays the account creation date for this entry.
+        Response.Write(StaffMember.RecordCreated);
         // Displays the first name for this entry.
         Response.Write(StaffMember.FirstName);
         // Displays the family name for this entry.

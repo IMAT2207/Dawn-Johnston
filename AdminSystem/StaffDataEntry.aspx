@@ -17,8 +17,8 @@
             <asp:Label ID="lblStaffPassword" runat="server" Text="Password" width="81px"></asp:Label>
             <asp:TextBox ID="txtStaffPassword" runat="server"></asp:TextBox>
         </p>
-        <asp:Label ID="lblDOB" runat="server" Text="Date of Birth" width="81px"></asp:Label>
-        <asp:TextBox ID="txtDOB" runat="server"></asp:TextBox>
+        <asp:Label ID="lblRecordCreated" runat="server" Text="Record Created" width="81px"></asp:Label>
+        <asp:TextBox ID="txtRecordCreated" runat="server"></asp:TextBox>
         <p>
             <asp:Label ID="lblFirstname" runat="server" Text="First Name" width="81px"></asp:Label>
             <asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox>
