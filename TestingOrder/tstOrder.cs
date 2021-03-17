@@ -130,7 +130,7 @@ namespace TestingOrder
         {
             clsOrder order = createOrder();
             order.PaidFor = false;
-            Assert.IsTrue(order.Valid().Length == 0);
+            Assert.IsTrue(order.Valid().Length != 0);
         }
 
         [TestMethod]

@@ -5,7 +5,7 @@ namespace ClassLibrary
 {
     public class clsOrderCollection
     {
-        public List<clsOrder> OrderList { get; set; }
+        public List<clsOrder> OrderList { get; set; } = new List<clsOrder>();
         
         public clsOrder ThisOrder { get; set; }
 
