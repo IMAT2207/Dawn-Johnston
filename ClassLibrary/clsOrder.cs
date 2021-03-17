@@ -199,13 +199,23 @@ namespace ClassLibrary
         /// <param name="ID"></param>
         /// <returns>True if the Id is valid, else false.</returns>
         public static bool IDIsValid(int ID, clsOrder order) {
-            if (ID < 0) return false;                       // Don't fetch if id is low
-            order.db.SQLParams.Clear();
-            order.db.AddParameter("@OrderID", ID);          // Fetch records
-            order.db.Execute(SPROC);
-            return order.db.Count > 0;                      // Return true if there was matches.
+            return (ID < 0) && IDExists(ID);
         }
 
+        public bool IDExists() => IDExists(this.OrderID);
+
+        public static bool IDExists(int ID)
+        {
+            clsDataConnection.dataConnection.SQLParams.Clear();
+            clsDataConnection.dataConnection.AddParameter("@OrderID", ID);          // Fetch records
+            clsDataConnection.dataConnection.Execute(SPROC);
+            return clsDataConnection.dataConnection.Count > 0;                      // Return true if there was matches.
+        }
+
+        /// <summary>
+        /// If no record mathing the ID of this one exists, this Order is inserted into the database.
+        /// </summary>
+        public void AssertExists() { if (!IDExists()) new clsOrderCollection(this).Add(); }
         private static bool StringAttributeValid(string str, int MaxLength) => StringAttributeValid(str, 0, MaxLength);
         private static bool StringAttributeValid(string str, int MinLength, int MaxLength) => StringAttributeValid(str, MinLength, MaxLength, ".*");
         private static bool StringAttributeValid(string str, int MinLength, int MaxLength, string regex) => Regex.IsMatch(str, regex) && (str.Length <= MaxLength && str.Length >= MinLength);
