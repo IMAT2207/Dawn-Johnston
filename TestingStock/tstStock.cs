@@ -47,8 +47,6 @@ namespace TestingStock
 
             Assert.AreEqual(product.ProductName, TestData);
         }
-
-        //Test Product Description
         [TestMethod]
         public void AttributeProductDescriptionOK()
         {

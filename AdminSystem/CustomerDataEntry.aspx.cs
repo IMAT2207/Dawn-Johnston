@@ -30,8 +30,26 @@ public partial class CustomerDataEntry : System.Web.UI.Page
         Response.Redirect("CustomerViewer.aspx");
     }
 
+    protected void btnFind_Click(object sender, EventArgs e)
+    {
+        clsCustomer Customer = new clsCustomer();
+        int TraderId;
+        Boolean Found = false;
+        TraderId = Convert.ToInt32(txtID.Text);
+        Found = Customer.Find(TraderId);
+
+        if (Found)
+        {
+            txtBusinessName.Text = Customer.BusinessName;
+            txtPassword.Text = Customer.TraderPassword;
+            txtContactEmail.Text = Customer.ContactEmail;
+            txtDeliveryAddr.Text = Customer.DeliveryAddress;
+        }
+    }
+
     protected void btnCancel_Click(object sender, EventArgs e)
     {
 
     }
+
 }
