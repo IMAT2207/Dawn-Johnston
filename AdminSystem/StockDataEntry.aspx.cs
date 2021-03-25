@@ -15,25 +15,53 @@ public partial class StockDataEntry : System.Web.UI.Page
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
-        //instance of the stock class
+        //create a new instance of clsStock
         clsStock product = new clsStock();
-
-        product.ProductId = int.Parse(txtProductID.Text);
-
-        product.ProductName = txtProductName.Text;
-
-        product.ProductDescription = txtProductDescription.Text;
-
-        product.IsAvailable = chkAvailability.Checked;
-
-        int i = int.Parse(txtQuantity.Text);
-        product.QuantityAvailable = i;
-
-        product.RestockDate = DateTime.Now;
-
-        Session["Product Stock"] = product;
-        lblError.Text = "Success!";
-        Response.Redirect("StockViewer.aspx");
+        //capture the Product ID
+        string ProductId = txtProductID.Text;
+        //capture the Product Name
+        string ProductName = txtProductName.Text;
+        //capture the Product Description
+        string ProductDescription = txtProductDescription.Text;
+        //capture Quantity Available
+        string QuantityAvailable = txtQuantity.Text;
+        //capture Restock Date
+        string RestockDate = txtRestockDate.Text;
+        //variable to store any error messages
+        string Error = "";
+        //validation the data
+        Error = product.Valid(ProductName, QuantityAvailable, RestockDate);
+        if (Error == "")
+        {
+            //capture the product id
+            product.ProductId = int.Parse(txtProductID.Text);
+            //capture the product name
+            product.ProductName = txtProductName.Text;
+            //capture the product description
+            product.ProductDescription = txtProductDescription.Text;
+            //capture the availability
+            product.IsAvailable = chkAvailability.Checked;
+            //capture quantity
+            int i = int.Parse(txtQuantity.Text);
+            product.QuantityAvailable = i;
+            //capture restock date
+            product.RestockDate = Convert.ToDateTime(RestockDate);
+            //store the stock in the session object
+            Session["Product Stock"] = product;
+            //create a new instance of the stock collection
+            clsStockCollection StockList = new clsStockCollection();
+            //set the ThisStock
+            StockList.ThisStock = product;
+            //add the new record
+            StockList.Add();
+            //redirect to the viewer page
+            Response.Redirect("StockViewer.aspx");
+        }
+        else
+        {
+            //display the error message
+            lblError.Text = Error;
+        }
 
 
     }

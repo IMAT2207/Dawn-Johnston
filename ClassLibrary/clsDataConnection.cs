@@ -13,7 +13,14 @@ using System.Data;
 
 public class clsDataConnection
 {
-    public static readonly clsDataConnection dataConnection = new clsDataConnection();
+    private static readonly clsDataConnection dataConnection = new clsDataConnection();
+
+    public static clsDataConnection GetDataConnection()
+    {
+        dataConnection.SQLParams.Clear();
+        dataConnection.DataTable.Clear();
+        return dataConnection;
+    }
 
     //connection object used to connect to the database
     SqlConnection connectionToDB = new SqlConnection();
