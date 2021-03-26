@@ -116,7 +116,7 @@ namespace TestingStock
             //var to store the primary key
             Int32 PrimaryKey = 0;
             //set its properties
-            TestItem.ProductId = 1;
+            //TestItem.ProductId = 1;
             TestItem.ProductName = "Beef";
             TestItem.ProductDescription = "Something Good";
             TestItem.IsAvailable = true;
@@ -129,7 +129,7 @@ namespace TestingStock
             //set the primary key of the test data
             TestItem.ProductId = PrimaryKey;
             //modify the test data
-            TestItem.ProductId = 3;
+            //TestItem.ProductId = 3;
             TestItem.ProductName = "Chicken";
             TestItem.ProductDescription = "Something Really Good";
             TestItem.IsAvailable = false;

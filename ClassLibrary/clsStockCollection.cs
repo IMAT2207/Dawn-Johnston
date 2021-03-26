@@ -104,6 +104,7 @@ namespace ClassLibrary
             //connect to the database
             clsDataConnection DB = new clsDataConnection();
             //set the parameters for the stored procedure
+            DB.AddParameter("@ProductID", mThisStock.ProductId);
             DB.AddParameter("@ProductName", mThisStock.ProductName);
             DB.AddParameter("@ProductDescription", mThisStock.ProductDescription);
             DB.AddParameter("@IsAvailable", mThisStock.IsAvailable);

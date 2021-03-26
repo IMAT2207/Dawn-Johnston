@@ -8,8 +8,10 @@ using ClassLibrary;
 
 public partial class StockList : System.Web.UI.Page
 {
+    Int32 ProductId;
     protected void Page_Load(object sender, EventArgs e)
     {
+        ProductId = Convert.ToInt32(Session["ProductID"]);
         //if this is the first time the page is displayed
         if (IsPostBack == false)
         {
@@ -17,7 +19,6 @@ public partial class StockList : System.Web.UI.Page
             DisplayStocks();
         }
     }
-
     void DisplayStocks()
     {
         //create an instance
@@ -27,7 +28,21 @@ public partial class StockList : System.Web.UI.Page
         //set the name of the primary key
         lstStockList.DataValueField = "ProductID";
         //set the data field to display
-        lstStockList.DataTextField = "QuantityAvailable";
+        lstStockList.DataTextField = "ProductName";
+        //bind the data to the list
+        lstStockList.DataBind();
+    }
+
+    protected void ListBox1_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        //create an instance of the Stock Collection
+        clsStockCollection Stocks = new clsStockCollection();
+        //set the data source to the list
+        lstStockList.DataSource = Stocks.StockList;
+        //set the name of the primary key
+        lstStockList.DataValueField = "ProductID";
+        //set the data field to display
+        lstStockList.DataTextField = "ProductName";
         //bind the data to the list
         lstStockList.DataBind();
     }
@@ -38,7 +53,15 @@ public partial class StockList : System.Web.UI.Page
         //store -1 into the session object to indicate this is a new record
         Session["ProductID"] = -1;
         //redirect to the data entry page
-        Response.Redirect("AStock.aspx");
+        Response.Redirect("StockDataEntry.aspx");
+    }
+
+    protected void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //store the data in the session object
+        Session["ProductID"] = ProductId;
+        //redirect to the edit page
+        Response.Redirect("StockDataEntry.sapx");
     }
 
     protected void btnEdit_Click(object sender, EventArgs e)
@@ -51,20 +74,16 @@ public partial class StockList : System.Web.UI.Page
             //get the primary key value of the record to edit
             ProductId = Convert.ToInt32(lstStockList.SelectedValue);
             //store the data in the session object
-            Session["ProductId"] = ProductId;
+            Session["ProductID"] = ProductId;
             //redirect to the edit page
-            Response.Redirect("AStock.aspx");
+            Response.Redirect("StockDataEntry.aspx");
         }
         //if no record has been selected
         else
         {
-            //display an error message
             lblError.Text = "Please select a record to delete from the list";
         }
     }
 
-    protected void btnDelete_Click(object sender, EventArgs e)
-    {
 
-    }
 }
