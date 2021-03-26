@@ -70,7 +70,7 @@ namespace ClassLibrary
                 //create a blank stock
                 clsStock AStock = new clsStock();
                 //read in the fields from the current record
-                AStock.ProductId = Convert.ToInt32(DB.DataTable.Rows[Index]["ProductId"]);
+                AStock.ProductId = Convert.ToInt32(DB.DataTable.Rows[Index]["ProductID"]);
                 AStock.ProductName = Convert.ToString(DB.DataTable.Rows[Index]["ProductName"]);
                 AStock.ProductDescription = Convert.ToString(DB.DataTable.Rows[Index]["ProductDescription"]);
                 AStock.IsAvailable = Convert.ToBoolean(DB.DataTable.Rows[Index]["IsAvailable"]);
@@ -91,7 +91,7 @@ namespace ClassLibrary
             //set the parameters for the stored procedure
             DB.AddParameter("@ProductName", mThisStock.ProductName);
             DB.AddParameter("@ProductDescription", mThisStock.ProductDescription);
-            DB.AddParameter("@IsAvabile", mThisStock.IsAvailable);
+            DB.AddParameter("@IsAvailable", mThisStock.IsAvailable);
             DB.AddParameter("@QuantityAvailable", mThisStock.QuantityAvailable);
             DB.AddParameter("@RestockDate", mThisStock.RestockDate);
             //execute the query returning the primary key value
@@ -112,6 +112,17 @@ namespace ClassLibrary
             DB.AddParameter("@RestockDate", mThisStock.RestockDate);
             //execute the stored procedure
             DB.Execute("spro_tblStock_Update");
+        }
+
+        public void Delete()
+        {
+            //deletes the record pointed to by thisStock
+            //connect to the database
+            clsDataConnection DB = new clsDataConnection();
+            //set the parameters for the stored procedure
+            DB.AddParameter("@ProductID", mThisStock.ProductId);
+            //execute the stored procedure
+            DB.Execute("sproc_tblStock_Delete");
         }
     }
 }

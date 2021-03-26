@@ -10,12 +10,6 @@ namespace TestingStock
     public class tstStockCollection
     {
         [TestMethod]
-        public void TestMethod1()
-        {
-
-        }
-
-        [TestMethod]
         public void InstanceOK()
         {
             //create an instance of the class
@@ -89,11 +83,11 @@ namespace TestingStock
             //var to store primary key
             Int32 PrimaryKey = 0;
             //set its properties
-            TestItem.ProductId = 1;
+            TestItem.ProductId = 3;
             TestItem.ProductName = "Beef";
             TestItem.ProductDescription = "Something Good";
             TestItem.IsAvailable = true;
-            TestItem.QuantityAvailable = 1;
+            TestItem.QuantityAvailable = 11;
             TestItem.RestockDate = DateTime.Now.Date;
             //set ThisStock to the test data
             AllStocks.ThisStock = TestItem;
@@ -142,6 +136,37 @@ namespace TestingStock
             //find the record
             AllStocks.ThisStock.Find(PrimaryKey);
             Assert.AreEqual(AllStocks.ThisStock, TestItem);
+        }
+
+        [TestMethod]
+        public void DeleteMethodOK()
+        {
+            //create an instance of the class
+            clsStockCollection AllStocks = new clsStockCollection();
+            //create the tem of test data
+            clsStock TestItem = new clsStock();
+            //var to store the primary key
+            int PrimaryKey = 0;
+            //set its properties
+            TestItem.ProductId = 3;
+            TestItem.ProductName = "Beef";
+            TestItem.ProductDescription = "Something Good";
+            TestItem.IsAvailable = true;
+            TestItem.QuantityAvailable = 1;
+            TestItem.RestockDate = DateTime.Now.Date;
+            //set ThisStock to the test data
+            AllStocks.ThisStock = TestItem;
+            //add the record
+            PrimaryKey = AllStocks.Add();
+            //set the primary key of the test data
+            TestItem.ProductId = PrimaryKey;
+            //find the record
+            AllStocks.ThisStock.Find(PrimaryKey);
+            //delete the record
+            AllStocks.Delete();
+            //find the record
+            Boolean Found = AllStocks.ThisStock.Find(PrimaryKey);
+            Assert.IsFalse(Found);
         }
     }
 }

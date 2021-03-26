@@ -86,4 +86,26 @@ public partial class StockList : System.Web.UI.Page
     }
 
 
+
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        //var to store the primary key value of the record to be deleted
+        Int32 ProductId;
+        //if a record has been selected from the list
+        if(lstStockList.SelectedIndex != -1)
+        {
+            //get the primary key value of the record to delte
+            ProductId = Convert.ToInt32(lstStockList.SelectedValue);
+            //store the data in the session object
+            Session["ProductID"] = ProductId;
+            //redirect to the delete page
+            Response.Redirect("StockDelete.aspx");
+        }
+        //no record has been selected
+        else
+        {
+            //display an error
+            lblError.Text = "Please select a record to delete from the list";
+        }
+    }
 }
