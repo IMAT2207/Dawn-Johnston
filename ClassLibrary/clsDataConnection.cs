@@ -13,7 +13,7 @@ using System.Data;
 
 public class clsDataConnection
 {
-    public static readonly clsDataConnection dataConnection = new clsDataConnection();
+    public static clsDataConnection dataConnection = new clsDataConnection();
 
     //connection object used to connect to the database
     SqlConnection connectionToDB = new SqlConnection();

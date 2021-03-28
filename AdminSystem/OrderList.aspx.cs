@@ -11,9 +11,9 @@ public partial class OrderList : System.Web.UI.Page
     private void DisplayOrders()
     {
         lstOrders.DataSource = new clsOrderCollection().OrderList;
-        lstOrders.DataValueField = "OrderID";
-        lstOrders.DataTextField = "OrderedBy";
-        lstOrders.DataBind();
+        lstOrders.DataTextField = "DeliveryNote";
+        lstOrders.DataValueField = "OrderID"; 
+        lstOrders.DataBind();                                   
     }
 
 

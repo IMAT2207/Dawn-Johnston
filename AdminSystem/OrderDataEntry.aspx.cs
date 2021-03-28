@@ -153,7 +153,8 @@ public partial class OrderDataEntry : System.Web.UI.Page
     /// </summary>
     private void DisplayOrder() 
     {
-        clsOrder order = new clsOrder().Find(Convert.ToInt32(Session["OrderID"]);
+        clsOrder order = new clsOrder();
+        order.Find(Convert.ToInt32(Session["OrderID"]));
         showRecord(order);
     }
 
