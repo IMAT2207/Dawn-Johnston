@@ -47,9 +47,9 @@ namespace ClassLibrary
 
         }
 
-        public void Update()
+        public int Update()
         {
-
+            return 0;
         }
 
         #endregion

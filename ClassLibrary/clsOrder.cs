@@ -215,7 +215,16 @@ namespace ClassLibrary
         /// <summary>
         /// If no record mathing the ID of this one exists, this Order is inserted into the database.
         /// </summary>
-        public void AssertExists() { if (!IDExists()) new clsOrderCollection(this).Add(); }
+        /// <returns>True if record did not exist AND was created successfully. False would indicate record exists, or it failed to be created.</returns>
+        public Boolean AssertExists() => IDExists() ? false : new clsOrderCollection(this).Add() != -1;
+
+        /// <summary>
+        /// Updates the record which matches the OrderID of this instance to match this instance.
+        /// </summary>
+        /// <returns>True if updated successfully</returns>
+        public Boolean Update() => IDExists() ? false : new clsOrderCollection(this).Update() == 0;
+
+
         private static bool StringAttributeValid(string str, int MaxLength) => StringAttributeValid(str, 0, MaxLength);
         private static bool StringAttributeValid(string str, int MinLength, int MaxLength) => StringAttributeValid(str, MinLength, MaxLength, ".*");
         private static bool StringAttributeValid(string str, int MinLength, int MaxLength, string regex) => Regex.IsMatch(str, regex) && (str.Length <= MaxLength && str.Length >= MinLength);

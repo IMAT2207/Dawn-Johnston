@@ -10,9 +10,33 @@ public partial class OrderList : System.Web.UI.Page
 
     private void DisplayOrders()
     {
-        ListBox1.DataSource = new clsOrderCollection().OrderList;
-        ListBox1.DataValueField = "OrderID";
-        ListBox1.DataTextField = "OrderedBy";
-        ListBox1.DataBind();
+        lstOrders.DataSource = new clsOrderCollection().OrderList;
+        lstOrders.DataValueField = "OrderID";
+        lstOrders.DataTextField = "OrderedBy";
+        lstOrders.DataBind();
+    }
+
+
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        if (lstOrders.SelectedIndex == -1)
+        {
+            lblError.Text = "No item selected";
+            return;
+        }
+
+        // Get the selected index and hope it's a valid item id
+        Session["OrderID"] = Int32.Parse(lstOrders.SelectedValue);
+        Response.Redirect("OrderDataEntry.aspx");
     }
 }
