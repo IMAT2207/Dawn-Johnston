@@ -24,8 +24,16 @@ namespace ClassLibrary
 
         private void Populate()
         {
-            OrderList.Add(new clsOrder(1));
-            OrderList.Add(new clsOrder(1));
+            clsDataConnection.dataConnection = new clsDataConnection();
+            clsDataConnection.dataConnection.Execute("sproc_tblOrder_SelectAll");
+            int Count = clsDataConnection.dataConnection.Count;
+            int Index = 0;
+
+            while (Index < Count)
+            {
+                OrderList.Add(new clsOrder(Index));
+                Index++;
+            }
         }
 
         #region operations
@@ -33,13 +41,14 @@ namespace ClassLibrary
 
             clsDataConnection DB = clsDataConnection.dataConnection;
             DB.SQLParams.Clear();
-            DB.AddParameter("ProcessedBy", ThisOrder.ProcessedBy);
-            DB.AddParameter("OrderedBy", ThisOrder.OrderedBy);
-            DB.AddParameter("PlacedOn", ThisOrder.PlacedOn);
+            DB.AddParameter("ProcessedBy",  ThisOrder.ProcessedBy);
+            DB.AddParameter("OrderedBy",    ThisOrder.OrderedBy);
+            DB.AddParameter("PlacedOn",     ThisOrder.PlacedOn);
             DB.AddParameter("DeliveryNote", ThisOrder.DeliveryNote);
-            DB.AddParameter("OrderState", ThisOrder.State.ToString());
-            DB.AddParameter("PaidFor", ThisOrder.PaidFor);
-            return DB.Execute("sproc_tblOrder_Insert");
+            DB.AddParameter("OrderState",   ThisOrder.State.ToString());
+            DB.AddParameter("PaidFor",      ThisOrder.PaidFor);
+            ThisOrder.SetOrderID(DB.Execute("sproc_tblOrder_Insert"));
+            return ThisOrder.OrderID;
         }
 
         public void FilterByCustomerID(String customerID)

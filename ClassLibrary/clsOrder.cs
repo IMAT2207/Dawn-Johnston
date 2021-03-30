@@ -46,9 +46,12 @@ namespace ClassLibrary
         public bool SetOrderID(String ID) => CanCast(ID) && SetOrderID(int.Parse(ID));
         public bool SetOrderID(int ID)
         {
-            if (IntAttributeValid(ID, ORDER_ID_MAX) && !new clsOrder().Find(ID)) // If record with that ID already exists, ignore.
+            if (IntAttributeValid(ID, ORDER_ID_MAX)) // If record with that ID already exists, ignore.
             {
                 OrderID = ID;
+                if (new clsOrder().Find(ID)) // Check in sandbox copy before mutating self
+                    Find(ID);                // If record exists, update self to represent it.
+
                 return true;
             }
             else
@@ -199,17 +202,17 @@ namespace ClassLibrary
         /// <param name="ID"></param>
         /// <returns>True if the Id is valid, else false.</returns>
         public static bool IDIsValid(int ID, clsOrder order) {
-            return (ID < 0) && IDExists(ID);
+            return (ID >= 0) && order.IDExists(ID);
         }
 
         public bool IDExists() => IDExists(this.OrderID);
 
-        public static bool IDExists(int ID)
+        public bool IDExists(int ID)
         {
-            clsDataConnection.dataConnection.SQLParams.Clear();
-            clsDataConnection.dataConnection.AddParameter("@OrderID", ID);          // Fetch records
-            clsDataConnection.dataConnection.Execute(SPROC);
-            return clsDataConnection.dataConnection.Count > 0;                      // Return true if there was matches.
+            db.SQLParams.Clear();
+            db.AddParameter("@OrderID", ID);          // Fetch records
+            db.Execute(SPROC);
+            return db.Count > 0;                      // Return true if there was matches.
         }
 
         /// <summary>
