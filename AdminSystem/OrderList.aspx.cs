@@ -6,8 +6,14 @@ public partial class OrderList : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Page.IsPostBack) return;
+        showAll();
+    }
+
+    private void showAll()
+    {
         clsDataConnection DB = new clsDataConnection();
-        DB.Execute("sproc_tblOrderSelectAll");
+        DB.Execute("sproc_tblOrder_SelectAll");
         PopulateArray(DB);
     }
 
@@ -15,19 +21,24 @@ public partial class OrderList : System.Web.UI.Page
     {
         lstOrders.DataSource = l;
         lstOrders.DataValueField = "OrderID";
-        lstOrders.DataTextField = "OrderedBy";
+        lstOrders.DataTextField = "DeliveryNote";
         lstOrders.DataBind();
     }
 
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
-
+        Response.Redirect("OrderDataEntry.aspx");
     }
 
     protected void btnDelete_Click(object sender, EventArgs e)
     {
-
+        if (lstOrders.SelectedIndex == -1) return;
+        clsOrderCollection collection = new clsOrderCollection();
+        collection.ThisOrder = new clsOrder();
+        collection.ThisOrder.Find(lstOrders.SelectedIndex);
+        collection.Delete();
+        showAll();
     }
 
     protected void btnEdit_Click(object sender, EventArgs e)
@@ -52,9 +63,7 @@ public partial class OrderList : System.Web.UI.Page
 
     protected void search_clear(object sender, EventArgs e)
     {
-        clsOrderCollection collection = new clsOrderCollection();
-        collection.FilterByCustomerID("");
-        DisplayOrders(collection.OrderList);
+        showAll();
     }
 
     private void PopulateArray(clsDataConnection DB)

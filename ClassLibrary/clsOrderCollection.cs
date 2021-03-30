@@ -56,7 +56,8 @@ namespace ClassLibrary
             clsDataConnection DB = new clsDataConnection();
             DB.AddParameter("@param1", customerID);
             DB.Execute("sproc_tblOrder_FilterByCustomerID");
-            for (int i = 0; i < DB.Count; i++)
+            OrderList.Clear();
+            for (int i = 0; i < DB.DataTable.Rows.Count; i++)
             {
                 clsOrder order = new clsOrder();
                 order.Find(Convert.ToInt32(DB.DataTable.Rows[i]["OrderID"]));
@@ -67,16 +68,11 @@ namespace ClassLibrary
         public void Delete()
         {
             clsDataConnection DB = new clsDataConnection();
-            DB.AddParameter("@OrderID", ThisOrder.OrderID);
+            DB.AddParameter("@param1", ThisOrder.OrderID);
             DB.Execute("sproc_tblOrder_Delete");
-
         }
 
-        public int Update()
-        {
-            return 0;
-        }
-
+        public int Update() => ThisOrder.Update() ? ThisOrder.OrderID : -1;
         #endregion
     }
 }
