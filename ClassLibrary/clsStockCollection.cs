@@ -33,7 +33,7 @@ namespace ClassLibrary
             }
             set
             {
-
+                //future uses
             }
         }
         //public property for ThisStock
@@ -127,15 +127,15 @@ namespace ClassLibrary
             DB.Execute("sproc_tblStock_Delete");
         }
 
-        public void ReportByAvailability(string Availability)
+        public void ReportByQuantity(string Quantity)
         {
             //filters the records
             //connect to the data
             clsDataConnection DB = new clsDataConnection();
             //send the IsAvailable value to the database
-            DB.AddParameter("@IsAvailable", Availability);
+            DB.AddParameter("@QuantityAvailable", Quantity);
             //execute the stored procedure
-            DB.Execute("sproc_tblStock_FilterByAvailability");
+            DB.Execute("sproc_tblStock_FilterByQuantity");
             //populate the array list with the data table
             PopulateArray(DB);
         }

@@ -108,4 +108,19 @@ public partial class StockList : System.Web.UI.Page
             lblError.Text = "Please select a record to delete from the list";
         }
     }
+
+    protected void btnApply_Click(object sender, EventArgs e)
+    {
+        //create an instance
+        clsStockCollection Stocks = new clsStockCollection();
+        Stocks.ReportByQuantity(txtQuantity.Text);
+        lstStockList.DataSource = Stocks.StockList;
+        //set the name of the primary key
+        lstStockList.DataValueField = "ProductID";
+        //set the name of the field to display
+        lstStockList.DataTextField = "QuantityAvailable";
+        //bind the data to the list
+        lstStockList.DataBind();
+
+    }
 }

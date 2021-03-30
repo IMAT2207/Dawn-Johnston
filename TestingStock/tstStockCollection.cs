@@ -48,7 +48,7 @@ namespace TestingStock
             //create an instance of the class
             clsStockCollection AllStocks = new clsStockCollection();
             //create some test data to assign to the property
-            Int32 SomeCount = 8;
+            Int32 SomeCount = 2;
             //assign the data to the property
             AllStocks.Count = SomeCount;
             Assert.AreEqual(AllStocks.Count, SomeCount);
@@ -170,15 +170,43 @@ namespace TestingStock
         }
 
         [TestMethod]
-        public void ReportByAvailabiityOK()
+        public void ReportByQuantityOK()
         {
-            //create an instance
-            clsStockCollection AllStocks = new clsStockCollection();
             //create an instance of the filtered data
             clsStockCollection FilteredStocks = new clsStockCollection();
             //apply a blank string
-            FilteredStocks.ReportByAvailability("xxxx");
+            FilteredStocks.ReportByQuantity("x");
             Assert.AreEqual(0, FilteredStocks.Count);
+        }
+
+        [TestMethod]
+        public void ReportByQuantityTestDataFound()
+        {
+            //create an instance
+            clsStockCollection FilteredStocks = new clsStockCollection();
+            //var to store outcome
+            Boolean OK = true;
+            //apply a quantity that doesn't exist
+            FilteredStocks.ReportByQuantity("x");
+            //check that the correct number of records are found
+            if (FilteredStocks.Count == 2)
+            {
+                //check that the first record is ID 36
+                if (FilteredStocks.StockList[0].ProductId != 36)
+                {
+                    OK = false;
+                }
+                //check that the first record is ID 37
+                if (FilteredStocks.StockList[1].ProductId != 37)
+                {
+                    OK = false;
+                }
+                else
+                {
+                    OK = false;
+                }
+                Assert.IsTrue(OK);
+            }
         }
     }
 }
