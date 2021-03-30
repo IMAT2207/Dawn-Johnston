@@ -43,12 +43,12 @@ namespace TestingStock
         }
 
         [TestMethod]
-        public void CountProductOK()
+        public void CountPropertyOK()
         {
             //create an instance of the class
             clsStockCollection AllStocks = new clsStockCollection();
             //create some test data to assign to the property
-            Int32 SomeCount = 2;
+            Int32 SomeCount = 8;
             //assign the data to the property
             AllStocks.Count = SomeCount;
             Assert.AreEqual(AllStocks.Count, SomeCount);
@@ -83,7 +83,7 @@ namespace TestingStock
             //var to store primary key
             Int32 PrimaryKey = 0;
             //set its properties
-            TestItem.ProductId = 3;
+            TestItem.ProductId = 1;
             TestItem.ProductName = "Beef";
             TestItem.ProductDescription = "Something Good";
             TestItem.IsAvailable = true;
@@ -167,6 +167,18 @@ namespace TestingStock
             //find the record
             Boolean Found = AllStocks.ThisStock.Find(PrimaryKey);
             Assert.IsFalse(Found);
+        }
+
+        [TestMethod]
+        public void ReportByAvailabiityOK()
+        {
+            //create an instance
+            clsStockCollection AllStocks = new clsStockCollection();
+            //create an instance of the filtered data
+            clsStockCollection FilteredStocks = new clsStockCollection();
+            //apply a blank string
+            FilteredStocks.ReportByAvailability("xxxx");
+            Assert.AreEqual(0, FilteredStocks.Count);
         }
     }
 }

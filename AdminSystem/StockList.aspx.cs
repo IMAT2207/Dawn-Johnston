@@ -22,7 +22,7 @@ public partial class StockList : System.Web.UI.Page
     void DisplayStocks()
     {
         //create an instance
-        clsStockCollection Stocks = new clsStockCollection();
+        ClassLibrary.clsStockCollection Stocks = new ClassLibrary.clsStockCollection();
         //set the data source to the list
         lstStockList.DataSource = Stocks.StockList;
         //set the name of the primary key

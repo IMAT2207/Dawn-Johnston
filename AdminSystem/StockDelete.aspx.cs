@@ -26,4 +26,9 @@ public partial class StockDelete : System.Web.UI.Page
         //redirect back to the main page
         Response.Redirect("StockList.aspx");
     }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+
+    }
 }
