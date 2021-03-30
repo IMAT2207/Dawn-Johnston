@@ -15,6 +15,14 @@
         <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
         <br />
         <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
+        <p>
+            Search for customer ID :
+            <asp:TextBox ID="txtFilter" runat="server" Width="205px"></asp:TextBox>
+        </p>
+        <p>
+            <asp:Button ID="btnSearch" runat="server" OnClick="search_click" Text="Filter" Width="98px" />
+            <asp:Button ID="btnClear" runat="server" OnClick="search_clear" Text="Clear" Width="110px" />
+        </p>
     </form>
 </body>
 </html>

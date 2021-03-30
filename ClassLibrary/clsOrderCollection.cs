@@ -42,8 +42,24 @@ namespace ClassLibrary
             return DB.Execute("sproc_tblOrder_Insert");
         }
 
+        public void FilterByCustomerID(String customerID)
+        {
+            clsDataConnection DB = new clsDataConnection();
+            DB.AddParameter("@param1", customerID);
+            DB.Execute("sproc_tblOrder_FilterByCustomerID");
+            for (int i = 0; i < DB.Count; i++)
+            {
+                clsOrder order = new clsOrder();
+                order.Find(Convert.ToInt32(DB.DataTable.Rows[i]["OrderID"]));
+                OrderList.Add(order);
+            }
+        }
+
         public void Delete()
         {
+            clsDataConnection DB = new clsDataConnection();
+            DB.AddParameter("@OrderID", ThisOrder.OrderID);
+            DB.Execute("sproc_tblOrder_Delete");
 
         }
 

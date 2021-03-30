@@ -381,8 +381,64 @@ namespace TestingOrder
             Assert.AreEqual(collection.count, OrderList.Count);
         }
 
+        [TestMethod]
+        public void CollectionUpdateMethodOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
 
+            clsOrder order = new clsOrder();
+            collection.ThisOrder = order;
+
+            order.SetDeliveryNote("This is a test note");
+            order.SetOrderedBy(1);
+            order.PaidFor = false;
+            order.SetPlacedOn(DateTime.Now);
+            order.SetProcessedBy(1);
+
+            order.SetOrderID(collection.Add());
+
+            order.SetDeliveryNote("Different note");
+            order.SetOrderedBy(0);
+            order.PaidFor = true;
+            order.SetPlacedOn(DateTime.Now);
+            order.SetProcessedBy(0);
+
+            collection.Update();
+
+            collection.ThisOrder.Find(collection.ThisOrder.OrderID);
+
+            Assert.AreEqual(collection.ThisOrder, order);
+        }
+
+        [TestMethod]
+        public void FilterOK()
+        {
+            clsOrderCollection filteredCollection = new clsOrderCollection();
+            filteredCollection.FilterByCustomerID("0");
+            Assert.IsTrue
+                (
+                filteredCollection.count == 1 &&
+                filteredCollection.OrderList[0].OrderID == 1
+                );
+        }
+
+        [TestMethod]
+        public void DeleteOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            clsOrder TestOrder = new clsOrder();
+            TestOrder.PaidFor = true;
+            TestOrder.SetDeliveryNote("note");
+            TestOrder.SetOrderedBy(0);
+            TestOrder.SetOrderID(0);
+            TestOrder.SetOrderState("WIP");
+            TestOrder.SetProcessedBy(0);
+            TestOrder.SetPlacedOn(DateTime.Now);
+
+            TestOrder.PaidFor = true;
+            TestOrder.PaidFor = true;
+            TestOrder.PaidFor = true;
+        }
         #endregion
-
     }
 }
