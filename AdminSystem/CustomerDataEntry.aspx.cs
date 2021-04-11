@@ -14,40 +14,35 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
         clsCustomer Customer = new clsCustomer();
 
-        string Error = "";
         int TraderId = 0;
-        try
-        {
-            TraderId = Convert.ToInt32(txtID.Text);
-        }
-        catch (FormatException ex)
-        {
-            Error += "<br> TraderId must be a number";
-        }
         string TraderPassword = txtPassword.Text;
         string BusinessName = txtBusinessName.Text;
         string ContactEmail = txtContactEmail.Text;
         string DeliveryAddress = txtDeliveryAddr.Text;
         int NumberOfOrders = 0;
-        try
-        {
-            NumberOfOrders = Convert.ToInt32(txtNumberOfOrders.Text);
-        }
-        catch (FormatException ex)
-        {
-            Error += "<br> NumberOfOrders must be a number";
-        }
         DateTime AccountCreationDate = calendarAccountCreationDate.SelectedDate;
         bool IsSignedIn = checkIsSignedIn.Checked;
 
-        Error += clsCustomer.Valid( TraderId,
-                                    TraderPassword,
-                                    BusinessName,
-                                    ContactEmail,
-                                    DeliveryAddress,
-                                    AccountCreationDate,
-                                    NumberOfOrders,
-                                    IsSignedIn);
+        string Error = "";
+
+        try {
+            TraderId = int.Parse(txtID.Text);
+        } catch (FormatException Ignored)
+        {
+            Error += "\n Enter a valid number for Trader Id";
+            
+        }
+
+        try
+        {
+            NumberOfOrders = int.Parse(txtNumberOfOrders.Text);
+        }
+        catch (FormatException Ignored)
+        {
+            Error += "\n Enter a valid number for Number O";
+        }
+
+        Error += Customer.Valid();
 
         if (Error == "")
         {

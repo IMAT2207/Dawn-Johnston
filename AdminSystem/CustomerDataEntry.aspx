@@ -43,7 +43,7 @@
             <asp:CheckBox ID="checkIsSignedIn" Text=" " runat="server"></asp:CheckBox>
         </div>
         <div>
-            <asp:Label ID="lblErr" runat="server" Text="" ></asp:Label>
+            <asp:Label ID="lblErr" runat="server" Text="[Error]"></asp:Label>
         </div>
         <p>
             <asp:Button ID="btnOK" runat="server" OnClick="btnOK_Click" Text="OK"/>
