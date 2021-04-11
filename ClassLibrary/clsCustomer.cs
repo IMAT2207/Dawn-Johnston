@@ -147,9 +147,9 @@ namespace ClassLibrary
             }
         }
 
-        public static void NewLine(string ErrorMessage)
+        public static string NewLine(string ErrorMessage)
         {
-            ErrorMessage += '\n';
+            return ErrorMessage + "<br>";
         }
 
         public string Valid() => Valid(TraderId, TraderPassword, BusinessName, ContactEmail, DeliveryAddress, AccountCreationDate, NumberOfOrders, IsSignedIn);
@@ -169,104 +169,110 @@ namespace ClassLibrary
             //--TraderId--
             if (TraderId < 0)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "TraderId cannot be less than 0";
             }
 
             if (TraderId > int.MaxValue)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "TraderId cannot be greater than 2,147,483,647";
             }
 
             //--TraderPassword--
             if (TraderPassword == null)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "TraderPassword cannot be null";
             }
 
             if (TraderPassword.Length < 6)
             {
-                NewLine(ErrorMessage);
-                ErrorMessage += "TraderPassword cannot be less than 50 characters";
+                ErrorMessage = NewLine(ErrorMessage);
+                ErrorMessage += "TraderPassword cannot be less than 6 characters";
             }
 
             if (TraderPassword.Length > 50)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "TraderPassword cannot be longer than 50 characters";
             }
 
             //--BusinessName--
             if (BusinessName == null)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "BusinessName cannot be null";
             }
 
             if (BusinessName.Length > 50)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "BusinessName cannot be longer than 50 characters";
             }
 
             //--ContactEmail--
             if (ContactEmail == null)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "ContactEmail cannot be null";
             }
 
             if (ContactEmail.Length > 50)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "ContactEmail cannot be longer than 50 characters";
             }
 
             //--DeliveryAddress--
             if (DeliveryAddress == null)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "DeliveryAddress cannot be null";
             }
 
             if (DeliveryAddress.Length > 50)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "DeliveryAddress cannot be longer than 50 characters";
             }
 
             //--AccountCreationDate--
             if (AccountCreationDate == null)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "AccountCreationDate cannot be null";
             }
 
             if (AccountCreationDate > DateTime.Now)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "AccountCreationDate cannot be created in the future";
+            }
+
+            if (AccountCreationDate < DateTime.Now.AddYears(-50))
+            {
+                ErrorMessage = NewLine(ErrorMessage);
+                ErrorMessage += "AccountCreationDate cannot be created more than 50 years ago";
             }
 
             //--NumberOfOrders--
             if (NumberOfOrders < 0)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "NumberOfOrders cannot be less than 0";
             }
 
             if (NumberOfOrders > int.MaxValue)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "NumberOfOrders cannot be greater than 2,147,483,647";
             }
 
             //--IsSignedIn-- 'Redundant since bool is never null, however included for consistency'
             if (IsSignedIn == null)
             {
-                NewLine(ErrorMessage);
+                ErrorMessage = NewLine(ErrorMessage);
                 ErrorMessage += "NumberOfOrders cannot be less than 0";
             }
 
