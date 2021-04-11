@@ -48,6 +48,12 @@ public partial class OrderDataEntry : System.Web.UI.Page
         }
     }
 
+    protected void Page_Load(Object s, EventArgs e)
+    {
+        if (!IsPostBack && Convert.ToInt32(Session["OrderID"]) != -1)
+            DisplayOrder();
+    }
+
     /// <summary>
     /// Dirty bit used to determine if the form has invalid inputs. Used as part of input validation to prevent submission of an invalid form.
     /// </summary>
@@ -97,6 +103,12 @@ public partial class OrderDataEntry : System.Web.UI.Page
             "Delivery Note"
         );
 
+        WarnIfInvalid(
+            order.SetPlacedOn(PlacedOn.SelectedDate)
+        ,
+            "Placed On"
+        );
+
         order.PaidFor = chkPaidFor.Checked;             // This shouldn't need validation. #Checked can only be true or false, both values are valid.
 
         if (dirty.isDirty) {                            // If form is dirty, reset dirty bit and return. Don't continue to success.
@@ -104,7 +116,8 @@ public partial class OrderDataEntry : System.Web.UI.Page
             return; 
         }
 
-        #warning This should modify the database to write a record.
+        if (!order.AssertExists())                      // If record does not exists, create it.
+            order.Update();                             // However, if record already exists (or failed to be created), then update it.
 
         Session["Order"] = order;                       // Success! Form can be submitted. For now, Store order on session.
         lblMsg.Text = "Success!";                       // Display success message.
@@ -133,6 +146,16 @@ public partial class OrderDataEntry : System.Web.UI.Page
         try { i = int.Parse(txtID.Text); }
         catch (Exception e) { InvalidID(); }
         return clsOrder.IDIsValid(i) ? i : NO_RECORD;
+    }
+
+    /// <summary>
+    /// Displays an order using the pk found in the session
+    /// </summary>
+    private void DisplayOrder() 
+    {
+        clsOrder order = new clsOrder();
+        order.Find(Convert.ToInt32(Session["OrderID"]));
+        showRecord(order);
     }
 
     /// <summary>
@@ -185,6 +208,7 @@ public partial class OrderDataEntry : System.Web.UI.Page
     }
 
     private void Display(string s) { lblMsg.ForeColor = Color.FromArgb(200, 10, 10); lblMsg.Text = s; }
+
 
     protected void chkPaidFor_CheckedChanged(object sender, EventArgs e)
     {

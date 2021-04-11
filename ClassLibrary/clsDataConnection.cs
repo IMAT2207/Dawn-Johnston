@@ -13,7 +13,7 @@ using System.Data;
 
 public class clsDataConnection
 {
-    private static readonly clsDataConnection dataConnection = new clsDataConnection();
+    public static clsDataConnection dataConnection = new clsDataConnection();
 
     public static clsDataConnection GetDataConnection()
     {

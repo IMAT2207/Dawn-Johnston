@@ -46,9 +46,12 @@ namespace ClassLibrary
         public bool SetOrderID(String ID) => CanCast(ID) && SetOrderID(int.Parse(ID));
         public bool SetOrderID(int ID)
         {
-            if (IntAttributeValid(ID, ORDER_ID_MAX) && !new clsOrder().Find(ID)) // If record with that ID already exists, ignore.
+            if (IntAttributeValid(ID, ORDER_ID_MAX)) // If record with that ID already exists, ignore.
             {
                 OrderID = ID;
+                if (new clsOrder().Find(ID)) // Check in sandbox copy before mutating self
+                    Find(ID);                // If record exists, update self to represent it.
+
                 return true;
             }
             else
@@ -166,6 +169,7 @@ namespace ClassLibrary
         /// <returns>True if <paramref name="ID"/> was valid, record was found, and order was successfully mutated. False if <paramref name="ID"/> is negative, no matches were found, or failed to read the data stored within it.</returns>
         public bool Find(int ID)
         {
+            OrderID = ID;
             if (!IDIsValid(ID, this)) return false;                             // Check ID exists, and fetch matching records. Return false if not valid, or no matches.
 
             try
@@ -198,12 +202,31 @@ namespace ClassLibrary
         /// <param name="ID"></param>
         /// <returns>True if the Id is valid, else false.</returns>
         public static bool IDIsValid(int ID, clsOrder order) {
-            if (ID < 0) return false;                       // Don't fetch if id is low
-            order.db.SQLParams.Clear();
-            order.db.AddParameter("@OrderID", ID);          // Fetch records
-            order.db.Execute(SPROC);
-            return order.db.Count > 0;                      // Return true if there was matches.
+            return (ID >= 0) && order.IDExists(ID);
         }
+
+        public bool IDExists() => IDExists(this.OrderID);
+
+        public bool IDExists(int ID)
+        {
+            db.SQLParams.Clear();
+            db.AddParameter("@OrderID", ID);          // Fetch records
+            db.Execute(SPROC);
+            return db.Count > 0;                      // Return true if there was matches.
+        }
+
+        /// <summary>
+        /// If no record mathing the ID of this one exists, this Order is inserted into the database.
+        /// </summary>
+        /// <returns>True if record did not exist AND was created successfully. False would indicate record exists, or it failed to be created.</returns>
+        public Boolean AssertExists() => IDExists() ? false : new clsOrderCollection(this).Add() != -1;
+
+        /// <summary>
+        /// Updates the record which matches the OrderID of this instance to match this instance.
+        /// </summary>
+        /// <returns>True if updated successfully</returns>
+        public Boolean Update() => IDExists() ? false : new clsOrderCollection(this).Update() == 0;
+
 
         private static bool StringAttributeValid(string str, int MaxLength) => StringAttributeValid(str, 0, MaxLength);
         private static bool StringAttributeValid(string str, int MinLength, int MaxLength) => StringAttributeValid(str, MinLength, MaxLength, ".*");

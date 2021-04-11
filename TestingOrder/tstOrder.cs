@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Text.RegularExpressions;
 using ClassLibrary;
+using System.Collections.Generic;
 
 namespace TestingOrder
 {
@@ -9,14 +10,14 @@ namespace TestingOrder
     public class tstOrder
     {
 
-
-        [TestMethod]
-        public void AttributeProductIDOK()
-        {
-            clsOrderItem order = new clsOrderItem();
-            Assert.IsNotNull(order.ProductID);
-            Assert.IsNotNull(new clsStock().Find(order.ProductID));
-        }
+// order item objects not implemented, they weren't required.
+//       [TestMethod]
+//       public void AttributeProductIDOK()
+//       {
+//           clsOrderItem order = new clsOrderItem(0);
+//           Assert.IsNotNull(order.ProductID);
+//           Assert.IsNotNull(new clsStock().Find(order.ProductID));
+//       }
 
         public clsOrder createOrder()
         {
@@ -129,7 +130,7 @@ namespace TestingOrder
         {
             clsOrder order = createOrder();
             order.PaidFor = false;
-            Assert.IsTrue(order.Valid().Length == 0);
+            Assert.IsTrue(order.Valid().Length != 0);
         }
 
         [TestMethod]
@@ -316,5 +317,129 @@ namespace TestingOrder
         }
         #endregion OrderedBy
 
+        #region orderCollection
+
+        [TestMethod]
+        public void CollectionInstanceOK()
+        {
+            Assert.IsNotNull(new clsOrderCollection());
+        }
+        
+ //       [TestMethod]
+ //       public void CollectionCountPropOK()
+ //       {
+ //           clsOrderCollection collection = new clsOrderCollection();
+ //           Int32 count = 1;
+ //          collection.count = count;
+ //          Assert.AreEqual(count, collection.count);
+ //       }
+       
+        [TestMethod]
+        public void CollectionOrderPropOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+
+            // Create and populate an order with db record #1
+            clsOrder order = new clsOrder(1);
+
+            collection.ThisOrder = order;
+        }
+        
+        [TestMethod]
+        public void CollectionOrderListPropOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            List<clsOrder> OrderList = new List<clsOrder>();
+
+            // Create and populate an order with db record #1
+            OrderList.Add(new clsOrder(1));
+
+            collection.OrderList = OrderList;
+            Assert.AreEqual(collection.OrderList, OrderList);
+        }
+
+// Now that we're accessing the database, this is obsolete. Database may have more than 2 records.
+//        [TestMethod]
+//        public void Collection2RecsPresent()
+//        {
+//            clsOrderCollection collection = new clsOrderCollection();
+//            Assert.AreEqual(collection.count, 2);
+//        }
+
+        [TestMethod]
+        public void CollectionCountOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            List<clsOrder> OrderList = new List<clsOrder>();
+
+            // Create and populate an order with db record #1
+            OrderList.Add(new clsOrder(1));
+            OrderList.Add(new clsOrder(1));
+            OrderList.Add(new clsOrder(1));
+
+
+            collection.OrderList = OrderList;
+            Assert.AreEqual(collection.count, OrderList.Count);
+        }
+
+        [TestMethod]
+        public void CollectionUpdateMethodOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+
+            clsOrder order = new clsOrder();
+            collection.ThisOrder = order;
+
+            order.SetDeliveryNote("This is a test note");
+            order.SetOrderedBy(1);
+            order.PaidFor = false;
+            order.SetPlacedOn(DateTime.Now);
+            order.SetProcessedBy(1);
+
+            order.SetOrderID(collection.Add());
+
+            order.SetDeliveryNote("Different note");
+            order.SetOrderedBy(0);
+            order.PaidFor = true;
+            order.SetPlacedOn(DateTime.Now);
+            order.SetProcessedBy(0);
+
+            collection.Update();
+
+            collection.ThisOrder.Find(collection.ThisOrder.OrderID);
+
+            Assert.AreEqual(collection.ThisOrder, order);
+        }
+
+        [TestMethod]
+        public void FilterOK()
+        {
+            clsOrderCollection filteredCollection = new clsOrderCollection();
+            filteredCollection.FilterByCustomerID("0");
+            Assert.IsTrue
+                (
+                filteredCollection.count == 1 &&
+                filteredCollection.OrderList[0].OrderID == 1
+                );
+        }
+
+        [TestMethod]
+        public void DeleteOK()
+        {
+            clsOrderCollection collection = new clsOrderCollection();
+            clsOrder TestOrder = new clsOrder();
+            TestOrder.PaidFor = true;
+            TestOrder.SetDeliveryNote("note");
+            TestOrder.SetOrderedBy(0);
+            TestOrder.SetOrderID(0);
+            TestOrder.SetOrderState("WIP");
+            TestOrder.SetProcessedBy(0);
+            TestOrder.SetPlacedOn(DateTime.Now);
+
+            TestOrder.PaidFor = true;
+            TestOrder.PaidFor = true;
+            TestOrder.PaidFor = true;
+        }
+        #endregion
     }
 }
