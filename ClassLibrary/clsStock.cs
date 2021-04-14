@@ -91,7 +91,7 @@ namespace ClassLibrary
 
             if (DB.Count == 1)
             {
-                aProductId = Convert.ToInt32(DB.DataTable.Rows[0]["ProductId"]);
+                aProductId = Convert.ToInt32(DB.DataTable.Rows[0]["ProductID"]);
                 aProductName = Convert.ToString(DB.DataTable.Rows[0]["ProductName"]);
                 aProductDescription = Convert.ToString(DB.DataTable.Rows[0]["ProductDescription"]);
                 aIsAvailable = Convert.ToBoolean(DB.DataTable.Rows[0]["IsAvailable"]);

@@ -10,12 +10,6 @@ namespace TestingStock
     public class tstStockCollection
     {
         [TestMethod]
-        public void TestMethod1()
-        {
-
-        }
-
-        [TestMethod]
         public void InstanceOK()
         {
             //create an instance of the class
@@ -49,7 +43,7 @@ namespace TestingStock
         }
 
         [TestMethod]
-        public void CountProductOK()
+        public void CountPropertyOK()
         {
             //create an instance of the class
             clsStockCollection AllStocks = new clsStockCollection();
@@ -93,7 +87,7 @@ namespace TestingStock
             TestItem.ProductName = "Beef";
             TestItem.ProductDescription = "Something Good";
             TestItem.IsAvailable = true;
-            TestItem.QuantityAvailable = 1;
+            TestItem.QuantityAvailable = 11;
             TestItem.RestockDate = DateTime.Now.Date;
             //set ThisStock to the test data
             AllStocks.ThisStock = TestItem;
@@ -116,7 +110,7 @@ namespace TestingStock
             //var to store the primary key
             Int32 PrimaryKey = 0;
             //set its properties
-            TestItem.ProductId = 1;
+            //TestItem.ProductId = 1;
             TestItem.ProductName = "Beef";
             TestItem.ProductDescription = "Something Good";
             TestItem.IsAvailable = true;
@@ -129,7 +123,7 @@ namespace TestingStock
             //set the primary key of the test data
             TestItem.ProductId = PrimaryKey;
             //modify the test data
-            TestItem.ProductId = 3;
+            //TestItem.ProductId = 3;
             TestItem.ProductName = "Chicken";
             TestItem.ProductDescription = "Something Really Good";
             TestItem.IsAvailable = false;
@@ -142,6 +136,77 @@ namespace TestingStock
             //find the record
             AllStocks.ThisStock.Find(PrimaryKey);
             Assert.AreEqual(AllStocks.ThisStock, TestItem);
+        }
+
+        [TestMethod]
+        public void DeleteMethodOK()
+        {
+            //create an instance of the class
+            clsStockCollection AllStocks = new clsStockCollection();
+            //create the tem of test data
+            clsStock TestItem = new clsStock();
+            //var to store the primary key
+            int PrimaryKey = 0;
+            //set its properties
+            TestItem.ProductId = 3;
+            TestItem.ProductName = "Beef";
+            TestItem.ProductDescription = "Something Good";
+            TestItem.IsAvailable = true;
+            TestItem.QuantityAvailable = 1;
+            TestItem.RestockDate = DateTime.Now.Date;
+            //set ThisStock to the test data
+            AllStocks.ThisStock = TestItem;
+            //add the record
+            PrimaryKey = AllStocks.Add();
+            //set the primary key of the test data
+            TestItem.ProductId = PrimaryKey;
+            //find the record
+            AllStocks.ThisStock.Find(PrimaryKey);
+            //delete the record
+            AllStocks.Delete();
+            //find the record
+            Boolean Found = AllStocks.ThisStock.Find(PrimaryKey);
+            Assert.IsFalse(Found);
+        }
+
+        [TestMethod]
+        public void ReportByQuantityOK()
+        {
+            //create an instance of the filtered data
+            clsStockCollection FilteredStocks = new clsStockCollection();
+            //apply a blank string
+            FilteredStocks.ReportByQuantity("x");
+            Assert.AreEqual(0, FilteredStocks.Count);
+        }
+
+        [TestMethod]
+        public void ReportByQuantityTestDataFound()
+        {
+            //create an instance
+            clsStockCollection FilteredStocks = new clsStockCollection();
+            //var to store outcome
+            Boolean OK = true;
+            //apply a quantity that doesn't exist
+            FilteredStocks.ReportByQuantity("x");
+            //check that the correct number of records are found
+            if (FilteredStocks.Count == 2)
+            {
+                //check that the first record is ID 36
+                if (FilteredStocks.StockList[0].ProductId != 36)
+                {
+                    OK = false;
+                }
+                //check that the first record is ID 37
+                if (FilteredStocks.StockList[1].ProductId != 37)
+                {
+                    OK = false;
+                }
+                else
+                {
+                    OK = false;
+                }
+                Assert.IsTrue(OK);
+            }
         }
     }
 }

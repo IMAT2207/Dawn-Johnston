@@ -8,9 +8,36 @@ using ClassLibrary;
 
 public partial class StockDataEntry : System.Web.UI.Page
 {
+    //variable to store the primary key with page level scope
+    Int32 ProductId;
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        //get the number of the product to be processed
+        ProductId = Convert.ToInt32(Session["ProductID"]);
+        if (IsPostBack == false)
+        {
+            //if this is not a new record
+            if (ProductId != -1)
+            {
+                //display the current data for the record
+                DisplayStocks();
+            }
+        }
+    }
+
+    void DisplayStocks()
+    {
+        //create an instance of the stock book
+        clsStockCollection StockBook = new clsStockCollection();
+        //find the record to update
+        StockBook.ThisStock.Find(ProductId);
+        //display the data for the current record
+        txtProductID.Text = StockBook.ThisStock.ProductId.ToString();
+        txtProductName.Text = StockBook.ThisStock.ProductName;
+        txtProductDescription.Text = StockBook.ThisStock.ProductDescription;
+        chkAvailability.Checked = StockBook.ThisStock.IsAvailable;
+        txtQuantity.Text = StockBook.ThisStock.QuantityAvailable.ToString();
+        txtRestockDate.Text = StockBook.ThisStock.RestockDate.ToString();
     }
 
     protected void btnOK_Click(object sender, EventArgs e)
@@ -47,15 +74,30 @@ public partial class StockDataEntry : System.Web.UI.Page
             //capture restock date
             product.RestockDate = Convert.ToDateTime(RestockDate);
             //store the stock in the session object
-            Session["Product Stock"] = product;
+            //Session["Product Stock"] = product;
             //create a new instance of the stock collection
             clsStockCollection StockList = new clsStockCollection();
-            //set the ThisStock
-            StockList.ThisStock = product;
-            //add the new record
-            StockList.Add();
-            //redirect to the viewer page
-            Response.Redirect("StockViewer.aspx");
+
+            //if this is a new record
+            if (product.ProductId == -1)
+            {
+                //set the ThisStock property
+                StockList.ThisStock = product;
+                //add the new record
+                StockList.Add();
+            }
+            //else it must be an update
+            else
+            {
+                //find the record to update
+                StockList.ThisStock.Find(product.ProductId);
+                //set the ThisStock property
+                StockList.ThisStock = product;
+                //update the record
+                StockList.Update();
+            }
+            //redirect back to the listpage
+            Response.Redirect("StockList.aspx");
         }
         else
         {
