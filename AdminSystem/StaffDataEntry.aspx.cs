@@ -8,9 +8,38 @@ using ClassLibrary;
 
 public partial class StaffDataEntry : System.Web.UI.Page
 {
+    // variable to store the primary key with page level scope.
+    int StaffID;
     protected void Page_Load(object sender, EventArgs e)
     {
+        // get the StaffID value to be processed.
+        StaffID = Convert.ToInt32(Session["StaffID"]);
+        if (IsPostBack == false)
+        {
+            // If this is not a new record.
+            if (StaffID != 1)
+            {
+                // Display the current data for the record.
+                DisplayStaffMember();
+            }
+        }
+    }
 
+    void DisplayStaffMember()
+    {
+        // Create an instance of the staff list.
+        clsStaffCollection StaffMembers = new clsStaffCollection();
+
+        // Finds the record to update.
+        StaffMembers.ThisStaff.Find(StaffID);
+
+        // Display the data for the record.
+        txtStaffID.Text = StaffMembers.ThisStaff.StaffID.ToString();
+        txtStaffPassword.Text = StaffMembers.ThisStaff.StaffPassword;
+        chkIsManager.Checked = StaffMembers.ThisStaff.IsManager;
+        txtRecordCreated.Text = StaffMembers.ThisStaff.RecordCreated.ToString();
+        txtFirstName.Text = StaffMembers.ThisStaff.FirstName;
+        txtFamilyName.Text = StaffMembers.ThisStaff.FamilyName;
     }
 
     protected void btnOK_Click(object sender, EventArgs e)
@@ -18,7 +47,7 @@ public partial class StaffDataEntry : System.Web.UI.Page
         // Creates a new instance of the staff class.
         clsStaff StaffMember = new clsStaff();
 
-        // Capture the values.
+        // Capture the data.
         string StaffPassword = txtStaffPassword.Text;
         string RecordCreated = txtRecordCreated.Text;
         string FirstName = txtFirstName.Text;
@@ -30,22 +59,44 @@ public partial class StaffDataEntry : System.Web.UI.Page
         Error = StaffMember.Valid(StaffPassword, RecordCreated, FirstName, FamilyName);
         if (Error == "")
         {
+            // Captures the data.
+            StaffMember.StaffID = StaffID;
             StaffMember.StaffPassword = StaffPassword;
+            StaffMember.IsManager = chkIsManager.Checked;
             StaffMember.RecordCreated = Convert.ToDateTime(RecordCreated);
             StaffMember.FirstName = FirstName;
             StaffMember.FamilyName = FamilyName;
 
-            // Stores the address in the session.
-            Session["StaffMember"] = StaffMember;
-            // Redirect to the StaffViewer page.
-            Response.Redirect("StaffViewer.aspx");
+            // Create a new instance of the staff collection.
+            clsStaffCollection StaffMembers = new clsStaffCollection();
+
+            // If this is a new record, then add data.
+            if (StaffID == -1)
+            {
+                // Set the ThisStaff property.
+                StaffMembers.ThisStaff = StaffMember;
+
+                // Add the record.
+                StaffMembers.Add();
+            }
+            else // Otherwise its a modification.
+            {
+                // Find the record to update.
+                StaffMembers.ThisStaff.Find(StaffID);
+
+                // Set the ThisStaff property.
+                StaffMembers.ThisStaff = StaffMember;
+
+                StaffMembers.Update();
+            }
+            Response.Redirect("StaffList.aspx");
         }
         else
         {
             lblError.Text = Error;
         }
-
     }
+
 
     protected void btnFind_Click(object sender, EventArgs e)
     {

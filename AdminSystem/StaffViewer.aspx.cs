@@ -8,25 +8,33 @@ using ClassLibrary;
 
 public partial class StaffViewer : System.Web.UI.Page
 {
+    // Variable to store the primary key value of the record to be deleted.
+    int StaffID;
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        // Creates a new instance of the staff class.
-        clsStaff StaffMember = new clsStaff();
-        // Obtains the data from the session object.
-        StaffMember = (clsStaff) Session["StaffMember"];
+        // Obtains the StaffID number of the record to be deleted.
+        StaffID = Convert.ToInt32(Session["StaffID"]);
+    }
 
-        // Displays the StaffID for this entry.
-        Response.Write(StaffMember.StaffID);
-        // Displays the staff password for this entry.
-        Response.Write(StaffMember.StaffPassword);
-        // Displays the account creation date for this entry.
-        Response.Write(StaffMember.RecordCreated);
-        // Displays the first name for this entry.
-        Response.Write(StaffMember.FirstName);
-        // Displays the family name for this entry.
-        Response.Write(StaffMember.FamilyName);
-        // Displays the staff is manager status for this entry.
-        Response.Write(StaffMember.IsManager);
-        
+
+    protected void btnYes_Click(object sender, EventArgs e)
+    {
+        // Create a new instance of the staff list.
+        clsStaffCollection StaffList = new clsStaffCollection();
+
+        // Find the record to delete.
+        StaffList.ThisStaff.Find(StaffID);
+
+        // Delete the record.
+        StaffList.Delete();
+
+        // Redirect back to the main page.
+        Response.Redirect("StaffList.aspx");
+    }
+
+    protected void btnNo_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("StaffList.aspx");
     }
 }
