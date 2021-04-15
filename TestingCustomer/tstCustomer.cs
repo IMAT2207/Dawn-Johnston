@@ -141,6 +141,7 @@ namespace TestingCustomer
             Assert.AreEqual(customer.IsSignedIn, TestData);
         }
 
+        #region Validation Testing
         //--Validity Testing TraderId (Int)--
 
         [TestMethod]
@@ -872,6 +873,8 @@ namespace TestingCustomer
             //test to see that the result is correct
             Assert.AreNotEqual(Error, "");
         }
+
+        #endregion
 
         //--Database Connection Test--
 

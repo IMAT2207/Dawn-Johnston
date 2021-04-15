@@ -51,6 +51,7 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
         if (Error == "")
         {
+            //Capture the data
             Customer.TraderId = TraderId;
             Customer.TraderPassword = TraderPassword;
             Customer.BusinessName = BusinessName;
@@ -59,16 +60,34 @@ public partial class CustomerDataEntry : System.Web.UI.Page
             Customer.AccountCreationDate = AccountCreationDate;
             Customer.NumberOfOrders = NumberOfOrders;
             Customer.IsSignedIn = IsSignedIn;
+
+            //Create a new instance of the customer collection
+            clsCustomerCollection collection = new clsCustomerCollection();
+
+            //If this is a new record then add the data
+            if (TraderId == -1)
+            {
+                //Set this customer to property
+                collection.ThisCustomer = Customer;
+                //Add the new record
+                collection.Add();
+            }
+            else //Update
+            {
+                //Find the record to update
+                collection.ThisCustomer.Find(TraderId);
+                //Set this customer to property
+                collection.ThisCustomer = Customer;
+                //Update the record
+                collection.Update();
+            }
+            //Redirect back to the list page
+            Response.Redirect("CustomerList.aspx");
+
         }
         else
         {
             lblErr.Text = Error;
-        }
-
-        Session["Customer"] = Customer;
-        if (Error.Equals(""))
-        {
-            Response.Redirect("CustomerViewer.aspx");
         }
     }
 
@@ -82,19 +101,42 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
         if (Found)
         {
-            txtBusinessName.Text = Customer.BusinessName;
-            txtPassword.Text = Customer.TraderPassword;
-            txtContactEmail.Text = Customer.ContactEmail;
-            txtDeliveryAddr.Text = Customer.DeliveryAddress;
-            calendarAccountCreationDate.SelectedDate = Customer.AccountCreationDate;
-            txtNumberOfOrders.Text = Convert.ToString(Customer.NumberOfOrders);
-            checkIsSignedIn.Checked = Customer.IsSignedIn;
+            DisplayCustomer(Customer);
         }
+    }
+
+    private void DisplayCustomer(clsCustomer Customer)
+    {
+        txtID.Text = Convert.ToString(Customer.TraderId);
+        txtBusinessName.Text = Customer.BusinessName;
+        txtPassword.Text = Customer.TraderPassword;
+        txtContactEmail.Text = Customer.ContactEmail;
+        txtDeliveryAddr.Text = Customer.DeliveryAddress;
+        calendarAccountCreationDate.SelectedDate = Customer.AccountCreationDate;
+        txtNumberOfOrders.Text = Convert.ToString(Customer.NumberOfOrders);
+        checkIsSignedIn.Checked = Customer.IsSignedIn;
     }
 
     protected void btnCancel_Click(object sender, EventArgs e)
     {
-
+        Response.Redirect("CustomerList.aspx");
     }
 
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            //if the session is not null or -1
+            if (Session["TraderID"] != null && ((Int32)Session["TraderID"]) != -1)
+            {
+
+                //Create a customer object
+                clsCustomer customer = new clsCustomer();
+                //Find and link the customer object to the session
+                customer.Find((Int32)Session["TraderID"]);
+                //Display the customer
+                DisplayCustomer(customer);
+            }
+        }
+    }
 }
