@@ -84,7 +84,7 @@ public partial class StaffList : System.Web.UI.Page
             Session["StaffID"] = StaffID;
 
             // Redirect to the edit page.
-            Response.Redirect("StaffViewer.aspx");
+            Response.Redirect("StaffConfirmDelete.aspx");
         }
         else
         {
