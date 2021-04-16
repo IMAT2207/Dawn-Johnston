@@ -140,17 +140,17 @@ namespace ClassLibrary
                 DateTemp = Convert.ToDateTime(recordCreated);
                 if (DateTemp < DateTime.Now.Date)
                 {
-                    Error = Error + "The record cannot be created in the past : ";
+                    Error = Error + "The record cannot be created in the past (DD/MM/YYYY): ";
                 }
 
                 if (DateTemp > DateTime.Now.Date)
                 {
-                    Error = Error + "The record cannot be created in the future : ";
+                    Error = Error + "The record cannot be created in the future (DD/MM/YYYY): ";
                 }
             }
             catch
             {
-                Error = Error + "The date entered is not a valid date : ";
+                Error = Error + "The date entered is not a valid date (DD/MM/YYYY): ";
             }
 
             if (firstName.Length > 50)
