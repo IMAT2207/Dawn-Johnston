@@ -145,36 +145,6 @@ namespace TestingCustomer
         //--Validity Testing TraderId (Int)--
 
         [TestMethod]
-        public void TraderIdExtremeMin()
-        {
-            //create an instance of the class we want to create
-            clsCustomer customer = new clsCustomer();
-            //string variable to store any error message
-            String Error = "";
-            //create some test data to pass to the method
-            customer.TraderId = -9999;
-            //invoke the method
-            Error = customer.Valid();
-            //test to see that the result is correct
-            Assert.AreNotEqual(Error, "");
-        }
-
-        [TestMethod]
-        public void TraderIdMinMinusOne()
-        {
-            //create an instance of the class we want to create
-            clsCustomer customer = new clsCustomer();
-            //string variable to store any error message
-            String Error = "";
-            //create some test data to pass to the method
-            customer.TraderId = -1;
-            //invoke the method
-            Error = customer.Valid();
-            //test to see that the result is correct
-            Assert.AreNotEqual(Error, "");
-        }
-
-        [TestMethod]
         public void TraderIdNoMin()
         {
             //create an instance of the class we want to create
