@@ -66,19 +66,8 @@ The bootstrap front end seems perfectly compatable.
                                     <div class="sb-sidenav-menu-nested nav"><a class="nav-link" href="#">Menu Accordion</a><a class="nav-link" href="#">Menu Accordion</a></div>
                                 </div>
                             </div>
-                            <div><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                    <div class="sb-nav-link-icon"><i class="fa fa-dashboard"></i></div><span>View Order Record</span>
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
-                                </a>
-                                <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#sidenavAccordion">
-                                    <div id="sidenavAccordionPages" class="sb-sidenav-menu-nested nav accordion"><a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth"><span>Menu Item</span>
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fa fa-angle-down"></i></div>
-                                        </a>
-                                        <div id="pagesCollapseAuth" class="collapse" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                            <div class="sb-sidenav-menu-nested nav"><a class="nav-link" href="#">Menu Item</a><a class="nav-link" href="#">Menu Item</a><a class="nav-link" href="#">Menu Item</a></div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div>
+                                    <a class="nav-link" href="OrderList.aspx">View records</a>
                             </div>
                         </div>
                     </div>
@@ -106,11 +95,11 @@ The bootstrap front end seems perfectly compatable.
                                         <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtState">WIP, Finalized, Dispatched, Delivered</asp:TextBox></div>
                                     </div>
                                     <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblProc" runat="server" Text="Processed By"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblProc" runat="server" Text="Processed By (Valid staff ID)"></asp:Label></div>
                                         <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtProc">91</asp:TextBox></div>
                                     </div>
                                     <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">
-                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblCust" runat="server" Text="Ordered By"></asp:Label></div>
+                                        <div class="d-xl-flex justify-content-xl-start align-items-xl-center" style="width: 250px;"><asp:Label ID="lblCust" runat="server" Text="Ordered By (Valid customer ID)"></asp:Label></div>
                                         <div class="d-xl-flex justify-content-xl-end align-items-xl-center" style="width: 250px;"><asp:TextBox runat="server" ID="txtCust">3612</asp:TextBox></div>
                                     </div>
                                     <div class="d-flex d-sm-flex d-md-flex d-lg-flex d-xl-flex flex-row flex-grow-1 flex-fill align-items-center align-content-stretch flex-nowrap justify-content-sm-center align-items-sm-center justify-content-md-center justify-content-lg-center justify-content-xl-center align-items-xl-center" style="width: 500px;margin: 6px;">

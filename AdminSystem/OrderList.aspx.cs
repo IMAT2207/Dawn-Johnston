@@ -28,6 +28,7 @@ public partial class OrderList : System.Web.UI.Page
 
     protected void btnAdd_Click(object sender, EventArgs e)
     {
+        Session["OrderID"] = -1;
         Response.Redirect("OrderDataEntry.aspx");
     }
 
@@ -36,7 +37,7 @@ public partial class OrderList : System.Web.UI.Page
         if (lstOrders.SelectedIndex == -1) return;
         clsOrderCollection collection = new clsOrderCollection();
         collection.ThisOrder = new clsOrder();
-        collection.ThisOrder.Find(lstOrders.SelectedIndex);
+        collection.ThisOrder.Find(Convert.ToInt32(lstOrders.SelectedItem.Value));
         collection.Delete();
         showAll();
     }
