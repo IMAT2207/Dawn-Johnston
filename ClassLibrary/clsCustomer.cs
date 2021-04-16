@@ -167,11 +167,6 @@ namespace ClassLibrary
             string ErrorMessage = "";
 
             //--TraderId--
-            if (TraderId < 0)
-            {
-                ErrorMessage = NewLine(ErrorMessage);
-                ErrorMessage += "TraderId cannot be less than 0";
-            }
 
             if (TraderId > int.MaxValue)
             {

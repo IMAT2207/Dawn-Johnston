@@ -8,6 +8,7 @@ using ClassLibrary;
 
 public partial class CustomerDataEntry : System.Web.UI.Page
 {
+    int TraderId;
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
@@ -15,15 +16,6 @@ public partial class CustomerDataEntry : System.Web.UI.Page
         clsCustomer Customer = new clsCustomer();
 
         string Error = "";
-        int TraderId = 0;
-        try
-        {
-            TraderId = Convert.ToInt32(txtID.Text);
-        }
-        catch (FormatException ex)
-        {
-            Error += "<br> TraderId must be a number";
-        }
         string TraderPassword = txtPassword.Text;
         string BusinessName = txtBusinessName.Text;
         string ContactEmail = txtContactEmail.Text;
@@ -119,15 +111,17 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
     protected void btnCancel_Click(object sender, EventArgs e)
     {
+        //Redirect back to the customer list
         Response.Redirect("CustomerList.aspx");
     }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)
+        if (IsPostBack)
         {
+            TraderId = (Session["TraderID"] == null) ? -1 : (Int32)Session["TraderID"];
             //if the session is not null or -1
-            if (Session["TraderID"] != null && ((Int32)Session["TraderID"]) != -1)
+            if (TraderId != -1)
             {
 
                 //Create a customer object

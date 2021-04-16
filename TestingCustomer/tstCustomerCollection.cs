@@ -174,5 +174,96 @@ namespace Testing_Customer_Collection
 
         }
 
+        [TestMethod]
+        public void DeleteMethodOK()
+        {
+            //Create an instance of the class we want to create
+            clsCustomerCollection collection = new clsCustomerCollection();
+            //Creating an item for use in the list
+            clsCustomer TestItem = new clsCustomer();
+            //Variable to store the primary key
+            Int32 PrimaryKey = 0;
+
+            //Set properties
+            TestItem.TraderId = 3;
+            TestItem.TraderPassword = "DeLeTe";
+            TestItem.BusinessName = "Generic Business";
+            TestItem.ContactEmail = "business@email.com";
+            TestItem.DeliveryAddress = "45 Business Street";
+            TestItem.AccountCreationDate = DateTime.Now;
+            TestItem.IsSignedIn = true;
+            TestItem.NumberOfOrders = 12;
+
+            //Set this item to the test data
+            collection.ThisCustomer = TestItem;
+            //Add to the record
+            PrimaryKey = collection.Add();
+            //Set the primary key to the test data
+            TestItem.TraderId = PrimaryKey;
+            //Find the record
+            collection.ThisCustomer.Find(PrimaryKey);
+            //Delete the record
+            collection.Delete();
+            //Now find the record
+            Boolean Found = collection.ThisCustomer.Find(PrimaryKey);
+            //Test to see if the record was found
+            Assert.IsFalse(Found);
+        }
+
+        [TestMethod]
+        public void ReportByBusinessNameOK()
+        {
+            //Create an instance of the class we want to create
+            clsCustomerCollection collection = new clsCustomerCollection();
+            //Create an instance of the class we want to create
+            clsCustomerCollection filteredCollection = new clsCustomerCollection();
+            //Apply a blank string
+            filteredCollection.ReportByBusinessName("");
+            //Test that values are the same
+            Assert.AreEqual(collection.Count, filteredCollection.Count);
+        }
+
+        [TestMethod]
+        public void ReportByBusinessNameNoneFound()
+        {
+            //Create an instance of the class we want to create
+            clsCustomerCollection filteredCollection = new clsCustomerCollection();
+            //Apply a BusinessName that doesnt exist
+            filteredCollection.ReportByBusinessName("Freds Burgers");
+            //Test to see that there are no records
+            Assert.AreEqual(0, filteredCollection.Count);
+        }
+
+        [TestMethod]
+        public void ReportByBusinessNameTestDataFound()
+        {
+            //Create an instance of the class we want to create
+            clsCustomerCollection filteredCollection = new clsCustomerCollection();
+            //Variable to store outcome
+            Boolean Ok = true;
+            //Apply a Business Name that doesnt exist
+            filteredCollection.ReportByBusinessName("Generic Business");
+            //Check that the correct number of records are found
+            if (filteredCollection.CustomerList.Count == 2)
+            {
+                //Check the first record ID is 18
+                if (filteredCollection.CustomerList[0].TraderId != 18)
+                {
+                    Ok = false;
+                }
+                //Check the first record ID is 19
+                if (filteredCollection.CustomerList[1].TraderId != 19)
+                {
+                    Ok = false;
+                }
+            }
+            else
+            {
+                Ok = false;
+            }
+            //Test to see that there are no records
+            Assert.IsTrue(Ok);
+        }
+
     }
 }
