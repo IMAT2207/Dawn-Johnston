@@ -13,16 +13,10 @@ public partial class CustomerList : System.Web.UI.Page
     Int32 TraderId;
     protected void Page_Load(object sender, EventArgs e)
     {
-        //Get the number of the customer to be processed
-        TraderId = Convert.ToInt32(Session["TraderID"]);
         if (IsPostBack == false)
         {
-            //If This is not a new record
-            if (TraderId != -1)
-            {
                 //Display the current data found in the record
                 DisplayCustomers();
-            }
         }
     }
 
@@ -65,12 +59,58 @@ public partial class CustomerList : System.Web.UI.Page
         else //If no record had been select ed 
         {
             //Display an error
-            lblError.Text = "Please select a record to delete from the list";
+            lblError.Text = "Please select a record to edit from the list";
         }
     }
 
     protected void btnDelete_Click(object sender, EventArgs e)
     {
+        //Variable to store the Primary Key value of the record to be deleted
+        Int32 TraderId;
+        //if a record has been selcted from the list
+        if (lstCustomers.SelectedIndex != -1)
+        {
+            //Get the primary value of the record to edit
+            TraderId = Convert.ToInt32(lstCustomers.SelectedValue);
+            //Store the data in a session object
+            Session["TraderID"] = TraderId;
+            //Redirect to the edit page
+            Response.Redirect("CustomerConfirmDelete.aspx");
+        }
+        else //If no record had been select ed 
+        {
+            //Display an error
+            lblError.Text = "Please select a record to delete from the list";
+        }
+    }
 
+    protected void btnApply_Click(object sender, EventArgs e)
+    {
+        //Create an instance of the customer collection
+        clsCustomerCollection collection = new clsCustomerCollection();
+        collection.ReportByBusinessName(txtBusinessNameSearch.Text);
+        lstCustomers.DataSource = collection.CustomerList;
+        //Set the name of the primary key
+        lstCustomers.DataValueField = "TraderID";
+        //Set the name of the field to display
+        lstCustomers.DataTextField = "BusinessName";
+        //Bind the data to the list
+        lstCustomers.DataBind();
+    }
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        //Create an instance of the customer collection
+        clsCustomerCollection collection = new clsCustomerCollection();
+        collection.ReportByBusinessName("");
+        //Clear any existing filters to tidy up the interface
+        txtBusinessNameSearch.Text = "";
+        lstCustomers.DataSource = collection.CustomerList;
+        //Set the name of the primary key
+        lstCustomers.DataValueField = "TraderID";
+        //Set the name of the field to display
+        lstCustomers.DataTextField = "BusinessName";
+        //Bind the data to the list
+        lstCustomers.DataBind();
     }
 }

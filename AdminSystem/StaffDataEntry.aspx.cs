@@ -97,6 +97,11 @@ public partial class StaffDataEntry : System.Web.UI.Page
         }
     }
 
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("StaffList.aspx");
+    }
+
 
     protected void btnFind_Click(object sender, EventArgs e)
     {

@@ -15,35 +15,12 @@ namespace ClassLibrary
         //Class constructor
         public clsCustomerCollection()
         {
-            //Variable for the index
-            Int32 Index = 0;
-            //Variable to store record count
-            Int32 RecordCount = 0;
-            //Object for data collection
+            //Object for data conneciton
             clsDataConnection DB = new clsDataConnection();
             //Execute the stored procedure
             DB.Execute("sproc_tblCustomer_SelectAll");
-            //Get the count of records
-            RecordCount = DB.Count;
-            //While there are records to process
-            while (Index < RecordCount)
-            {
-                //Create a blank Customer
-                clsCustomer customer = new clsCustomer();
-                //Read the fields in the current record
-                customer.TraderId = Convert.ToInt32(DB.DataTable.Rows[Index]["TraderID"]);
-                customer.TraderPassword = Convert.ToString(DB.DataTable.Rows[Index]["TraderPassword"]);
-                customer.BusinessName = Convert.ToString(DB.DataTable.Rows[Index]["BusinessName"]);
-                customer.ContactEmail = Convert.ToString(DB.DataTable.Rows[Index]["ContactEmail"]);
-                customer.DeliveryAddress = Convert.ToString(DB.DataTable.Rows[Index]["DeliveryAddress"]);
-                customer.AccountCreationDate = Convert.ToDateTime(DB.DataTable.Rows[Index]["AccountCreationDate"]);
-                customer.IsSignedIn = Convert.ToBoolean(DB.DataTable.Rows[Index]["IsSignedIn"]);
-                customer.NumberOfOrders = Convert.ToInt32(DB.DataTable.Rows[Index]["NumberOfOrders"]);
-
-                //Add the record to the private object
-                mCustomerList.Add(customer);
-                Index++;
-            }
+            //Populate the array list with the data table
+            PopulateArray(DB);
         }
 
         public List<clsCustomer> CustomerList
@@ -85,6 +62,8 @@ namespace ClassLibrary
             }
         }
 
+
+
         public int Add()
         {
             //Adds a new record to the database based on the values of mThisCustomer
@@ -105,7 +84,7 @@ namespace ClassLibrary
         public void Update()
         {
             //Adds a new record to the database based on the values of mThisCustomer
-            //Connect to the dayabase
+            //Connect to the database
             clsDataConnection DB = new clsDataConnection();
             //set the parameters for the stored procedure
             DB.AddParameter("@TraderID", mThisCustomer.TraderId);
@@ -118,6 +97,61 @@ namespace ClassLibrary
             DB.AddParameter("@NumberOfOrders", mThisCustomer.NumberOfOrders);
             //Execute the query returning the Primary Key Value
             DB.Execute("sproc_tblCustomer_Update");
+        }
+
+        public void Delete()
+        {
+            //Deletes a record pointed from mThisCustomer
+            //Connect to the database
+            clsDataConnection DB = new clsDataConnection();
+            //set the parameters for the stored procedure
+            DB.AddParameter("@TraderID", mThisCustomer.TraderId);
+            //Execute the stored procedure
+            DB.Execute("sproc_tblCustomer_Delete");
+        }
+
+        public void ReportByBusinessName(string BusinessName)
+        {
+            //Filters records based on the business name
+            //Connect to the database
+            clsDataConnection DB = new clsDataConnection();
+            //set the parameters for the stored procedure
+            DB.AddParameter("@BusinessName", BusinessName);
+            //Execute the stored procedure
+            DB.Execute("sproc_tblCustomer_FilterByBusinessName");
+            //Populate the array list with the data table
+            PopulateArray(DB);
+        }
+
+        void PopulateArray(clsDataConnection DB)
+        {
+            //Variable for the index
+            Int32 Index = 0;
+            //Variable to store record count
+            Int32 RecordCount;
+            //Get the count of records
+            RecordCount = DB.Count; 
+            //Clear the private array list
+            mCustomerList = new List<clsCustomer>();
+            //While there are records to process
+            while (Index < RecordCount)
+            {
+                //Create a blank Customer
+                clsCustomer customer = new clsCustomer();
+                //Read the fields in the current record
+                customer.TraderId = Convert.ToInt32(DB.DataTable.Rows[Index]["TraderID"]);
+                customer.TraderPassword = Convert.ToString(DB.DataTable.Rows[Index]["TraderPassword"]);
+                customer.BusinessName = Convert.ToString(DB.DataTable.Rows[Index]["BusinessName"]);
+                customer.ContactEmail = Convert.ToString(DB.DataTable.Rows[Index]["ContactEmail"]);
+                customer.DeliveryAddress = Convert.ToString(DB.DataTable.Rows[Index]["DeliveryAddress"]);
+                customer.AccountCreationDate = Convert.ToDateTime(DB.DataTable.Rows[Index]["AccountCreationDate"]);
+                customer.IsSignedIn = Convert.ToBoolean(DB.DataTable.Rows[Index]["IsSignedIn"]);
+                customer.NumberOfOrders = Convert.ToInt32(DB.DataTable.Rows[Index]["NumberOfOrders"]);
+
+                //Add the record to the private object
+                mCustomerList.Add(customer);
+                Index++;
+            }
         }
     }
 }
