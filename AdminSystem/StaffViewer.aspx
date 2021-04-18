@@ -8,7 +8,6 @@ It looks dreadful in the Visual Studio preview, but fine when hosted in a browse
 The bootstrap front end seems perfectly compatable.
 -->
 
-
 <!DOCTYPE html>
 <html style="height: 100%;width: 100%;">
 
@@ -20,15 +19,11 @@ The bootstrap front end seems perfectly compatable.
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-
-<body style="height: 100%;width: 100%;background: var(--dark);">
-    <div class="container d-xl-flex justify-content-xl-center align-items-xl-center rubberBand animated" style="width: 100%;height: 100%;background: var(--cyan);">
-        <form method="post" runat="server"><asp:Label ID="lblLogin" runat="server" Text="Login"></asp:Label><asp:TextBox runat="server" ID="txtUserID">Enter your ID</asp:TextBox><asp:TextBox runat="server" ID="txtPasswrod">Enter your password</asp:TextBox>
-            <asp:CheckBox ID="chkRememberMe" runat="server" Text="Remember my ID" OnCheckedChanged="chkRememberMe_CheckedChanged"/><asp:Button ID="btnEnter" runat="server" Text="Enter"  OnClick="btnEnter_Click"></asp:Button>
-        </form>
-    </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<body>
+    <form id="form1" runat="server">
+        <div>
+        </div>
+        <asp:Button ID="btnStaffList" runat="server" OnClick="btnStaffList_Click" Text="Staff List" />
+    </form>
 </body>
-
 </html>

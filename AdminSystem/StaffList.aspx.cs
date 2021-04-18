@@ -98,6 +98,7 @@ public partial class StaffList : System.Web.UI.Page
         // Create an instance of the staff collection.
         clsStaffCollection StaffMembers = new clsStaffCollection();
         StaffMembers.ReportByFirstName(txtFilter.Text);
+        lstStaffList.DataSource = StaffMembers.StaffList;
 
         // Set the name of the primary key.
         lstStaffList.DataValueField = "StaffID";
@@ -117,6 +118,7 @@ public partial class StaffList : System.Web.UI.Page
 
         // Clear any existing filter to empty the interface.
         txtFilter.Text = "";
+        lstStaffList.DataSource = StaffMembers.StaffList;
 
         // Set the name of the primary key.
         lstStaffList.DataValueField = "StaffID";

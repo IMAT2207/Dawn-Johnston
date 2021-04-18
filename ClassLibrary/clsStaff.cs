@@ -87,6 +87,19 @@ namespace ClassLibrary
             }
         }
 
+        private string pFullName;
+        public string FullName
+        {
+            get
+            {
+                return pFirstName + " " + pFamilyName; //+ " " + pFamilyName;
+            }
+            set
+            {
+                pFullName = value;
+            }
+        }
+
          public bool Find(int StaffID)
          {
             // Creates a new instance of the data connection.
