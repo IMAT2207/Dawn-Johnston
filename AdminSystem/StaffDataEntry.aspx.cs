@@ -78,6 +78,7 @@ public partial class StaffDataEntry : System.Web.UI.Page
 
                 // Add the record.
                 StaffMembers.Add();
+
             }
             else // Otherwise its a modification.
             {
@@ -89,7 +90,9 @@ public partial class StaffDataEntry : System.Web.UI.Page
 
                 StaffMembers.Update();
             }
-            Response.Redirect("StaffList.aspx");
+
+            Session["StaffMember"] = StaffMember;
+            Response.Redirect("StaffViewer.aspx");
         }
         else
         {
