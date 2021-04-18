@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ClassLibrary;
 
 public partial class StaffViewer : System.Web.UI.Page
 {
@@ -22,6 +21,6 @@ public partial class StaffViewer : System.Web.UI.Page
 
     protected void btnStaffList_Click(object sender, EventArgs e)
     {
-        Response.Redirect("StaffList.aspx");
+
     }
 }
