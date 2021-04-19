@@ -117,6 +117,7 @@ public partial class StockList : System.Web.UI.Page
         lstStockList.DataValueField = "ProductID";
         //set the name of the field to display
         lstStockList.DataTextField = "ProductName";
+        lstStockList.DataSource = Stocks.StockList;
         //bind the data to the list
         lstStockList.DataBind();
     }
