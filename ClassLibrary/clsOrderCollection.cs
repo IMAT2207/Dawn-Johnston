@@ -72,7 +72,20 @@ namespace ClassLibrary
             DB.Execute("sproc_tblOrder_Delete");
         }
 
-        public int Update() => ThisOrder.Update() ? ThisOrder.OrderID : -1;
+        public int Update()
+        {
+            clsDataConnection DB = new clsDataConnection();
+            DB.SQLParams.Clear();
+            DB.AddParameter("OrderId", ThisOrder.OrderID);
+            DB.AddParameter("ProcessedBy", ThisOrder.ProcessedBy);
+            DB.AddParameter("OrderedBy", ThisOrder.OrderedBy);
+            DB.AddParameter("PlacedOn", ThisOrder.PlacedOn);
+            DB.AddParameter("DeliveryNote", ThisOrder.DeliveryNote);
+            DB.AddParameter("OrderState", ThisOrder.State.ToString());
+            DB.AddParameter("PaidFor", ThisOrder.PaidFor);
+            ThisOrder.SetOrderID(DB.Execute("sproc_tblOrder_Update"));
+            return ThisOrder.OrderID;
+        }
         #endregion
     }
 }

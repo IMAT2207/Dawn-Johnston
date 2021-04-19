@@ -35,11 +35,8 @@ public partial class OrderList : System.Web.UI.Page
     protected void btnDelete_Click(object sender, EventArgs e)
     {
         if (lstOrders.SelectedIndex == -1) return;
-        clsOrderCollection collection = new clsOrderCollection();
-        collection.ThisOrder = new clsOrder();
-        collection.ThisOrder.Find(Convert.ToInt32(lstOrders.SelectedItem.Value));
-        collection.Delete();
-        showAll();
+        Session["orderToDelete"] = new clsOrder(Convert.ToInt32(lstOrders.SelectedItem.Value));
+        Response.Redirect("OrderConfirmDelete.aspx"); 
     }
 
     protected void btnEdit_Click(object sender, EventArgs e)
