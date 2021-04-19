@@ -175,7 +175,7 @@ namespace TestingStock
             //create an instance of the filtered data
             clsStockCollection FilteredStocks = new clsStockCollection();
             //apply a blank string
-            FilteredStocks.ReportByQuantity("x");
+            FilteredStocks.ReportByProductName("x");
             Assert.AreEqual(0, FilteredStocks.Count);
         }
 
@@ -187,7 +187,7 @@ namespace TestingStock
             //var to store outcome
             Boolean OK = true;
             //apply a quantity that doesn't exist
-            FilteredStocks.ReportByQuantity("x");
+            FilteredStocks.ReportByProductName("x");
             //check that the correct number of records are found
             if (FilteredStocks.Count == 2)
             {

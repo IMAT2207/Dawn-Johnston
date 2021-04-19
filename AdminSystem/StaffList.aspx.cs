@@ -127,4 +127,9 @@ public partial class StaffList : System.Web.UI.Page
         // Bind the data to the list.
         lstStaffList.DataBind();
     }
+
+    protected void txtFilter_TextChanged(object sender, EventArgs e)
+    {
+
+    }
 }
