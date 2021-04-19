@@ -21,7 +21,7 @@ namespace TestingCustomer
         {
             clsCustomer customer = new clsCustomer();
             Assert.IsNotNull(customer.TraderPassword);
-            Assert.IsTrue(customer.TraderPassword.Length > 6 && customer.TraderPassword.Length <= 50); //Check if lengh is between 1 and 50
+            Assert.IsTrue(customer.TraderPassword.Length > 5 && customer.TraderPassword.Length <= 50); //Check if lengh is between 6 and 50
         }
 
         [TestMethod]
