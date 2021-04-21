@@ -97,7 +97,7 @@ public partial class StockList : System.Web.UI.Page
             //store the data in the session object
             Session["ProductID"] = ProductId;
             //redirect to the delete page
-            Response.Redirect("StockDelete.aspx");
+            Response.Redirect("StockConfirmDelete.aspx");
         }
         //no record has been selected
         else
