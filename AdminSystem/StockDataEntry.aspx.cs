@@ -9,7 +9,7 @@ using ClassLibrary;
 public partial class StockDataEntry : System.Web.UI.Page
 {
     //variable to store the primary key with page level scope
-    Int32 ProductId;
+    int ProductId;
     protected void Page_Load(object sender, EventArgs e)
     {
         //get the number of the product to be processed
@@ -45,11 +45,12 @@ public partial class StockDataEntry : System.Web.UI.Page
         //create a new instance of clsStock
         clsStock product = new clsStock();
         //capture the Product ID
-        string ProductId = txtProductID.Text;
+        //string ProductId = txtProductID.Text;
         //capture the Product Name
         string ProductName = txtProductName.Text;
         //capture the Product Description
         string ProductDescription = txtProductDescription.Text;
+        string IsAvailability = chkAvailability.Text;
         //capture Quantity Available
         string QuantityAvailable = txtQuantity.Text;
         //capture Restock Date
@@ -61,20 +62,25 @@ public partial class StockDataEntry : System.Web.UI.Page
         if (Error == "")
         {
             //capture the product id
-            product.ProductId = int.Parse(txtProductID.Text);
+            //    product.ProductId = int.Parse(txtProductID.Text);
             //capture the product name
-            product.ProductName = txtProductName.Text;
+            //    product.ProductName = txtProductName.Text;
             //capture the product description
-            product.ProductDescription = txtProductDescription.Text;
+            //    product.ProductDescription = txtProductDescription.Text;
             //capture the availability
-            product.IsAvailable = chkAvailability.Checked;
+            //    product.IsAvailable = chkAvailability.Checked;
             //capture quantity
-            int i = int.Parse(txtQuantity.Text);
-            product.QuantityAvailable = i;
+            //    int i = int.Parse(txtQuantity.Text);
+            //    product.QuantityAvailable = i;
+
+            product.ProductId = ProductId;
+            product.ProductName = ProductName;
+            product.ProductDescription = ProductDescription;
+            product.IsAvailable = chkAvailability.Checked;
+            product.QuantityAvailable = Convert.ToInt32(QuantityAvailable);
+            product.RestockDate = Convert.ToDateTime(RestockDate);
             //capture restock date
             product.RestockDate = Convert.ToDateTime(RestockDate);
-            //store the stock in the session object
-            //Session["Product Stock"] = product;
             //create a new instance of the stock collection
             clsStockCollection StockList = new clsStockCollection();
 
@@ -96,8 +102,11 @@ public partial class StockDataEntry : System.Web.UI.Page
                 //update the record
                 StockList.Update();
             }
+
+            Session["Product"] = product;
             //redirect back to the listpage
-            Response.Redirect("StockList.aspx");
+            Response.Redirect("StockViewer.aspx");
+            
         }
         else
         {
@@ -112,7 +121,7 @@ public partial class StockDataEntry : System.Web.UI.Page
     {
         clsStock product = new clsStock();
 
-        Int32 ProductId;
+        int ProductId;
 
         Boolean Found = false;
 
@@ -120,17 +129,22 @@ public partial class StockDataEntry : System.Web.UI.Page
 
         Found = product.Find(ProductId);
 
-        if(Found == true)
+        if (Found == true)
         {
-            txtProductID.Text = product.ProductName;
+            txtProductName.Text = product.ProductName;
 
-            txtProductID.Text = product.ProductDescription;
+            txtProductDescription.Text = product.ProductDescription;
 
-            txtProductID.Text = product.IsAvailable.ToString();
+            chkAvailability.Checked = product.IsAvailable;
 
-            txtProductID.Text = product.QuantityAvailable.ToString();
+            txtQuantity.Text = product.QuantityAvailable.ToString();
 
-            txtProductID.Text = product.RestockDate.ToString();
+            txtRestockDate.Text = product.RestockDate.ToString();
         }
+    }
+
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("StockList.aspx");
     }
 }

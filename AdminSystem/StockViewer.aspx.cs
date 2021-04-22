@@ -11,9 +11,7 @@ public partial class StockViewer : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        clsStock product = new clsStock();
-
-        product = (clsStock)Session["Product Stock"];
+        clsStock product = (clsStock)Session["Product"]; ;
 
         //Display all entities from Stock Data Entry.aspx.cs
         Response.Write(product.ProductId);
