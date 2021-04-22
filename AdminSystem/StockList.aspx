@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
         <div style="height: 352px; width: 424px">
-            <asp:ListBox ID="lstStockList" runat="server" Height="279px" OnSelectedIndexChanged="ListBox1_SelectedIndexChanged1" style="margin-top: 70px" Width="425px"></asp:ListBox>
+            <asp:ListBox ID="lstStockList" runat="server" Height="279px" style="margin-top: 70px" Width="425px"></asp:ListBox>
         </div>
         <p>
             <asp:Button ID="btnAdd" runat="server" OnClick="btnAdd_Click" Text="Add" />
@@ -17,12 +17,12 @@
             <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" />
         </p>
         <p>
-            <asp:Label ID="lblQuantity" runat="server" Text="Enter a Quantity"></asp:Label>
-            <asp:TextBox ID="txtQuantity" runat="server"></asp:TextBox>
+            <asp:Label ID="lblQuantity" runat="server" Text="Enter a Product Name"></asp:Label>
+            <asp:TextBox ID="txtFilter" runat="server"></asp:TextBox>
         </p>
         <p>
             <asp:Button ID="btnApply" runat="server" OnClick="btnApply_Click" Text="Apply" />
-            <asp:Button ID="btnClear" runat="server" Text="Clear" />
+            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
         </p>
         <p>
             <asp:Label ID="lblError" runat="server" Text="lblError"></asp:Label>

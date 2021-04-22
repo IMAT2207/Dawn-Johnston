@@ -127,15 +127,15 @@ namespace ClassLibrary
             DB.Execute("sproc_tblStock_Delete");
         }
 
-        public void ReportByQuantity(string Quantity)
+        public void ReportByProductName(string ProductName)
         {
             //filters the records
             //connect to the data
             clsDataConnection DB = new clsDataConnection();
             //send the IsAvailable value to the database
-            DB.AddParameter("@QuantityAvailable", Quantity);
+            DB.AddParameter("@ProductName", ProductName);
             //execute the stored procedure
-            DB.Execute("sproc_tblStock_FilterByQuantity");
+            DB.Execute("sproc_tblStock_FilterByProductName");
             //populate the array list with the data table
             PopulateArray(DB);
         }

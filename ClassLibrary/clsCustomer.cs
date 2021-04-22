@@ -147,6 +147,7 @@ namespace ClassLibrary
             }
         }
 
+        //Enters a new line 
         public static string NewLine(string ErrorMessage)
         {
             return ErrorMessage + "<br>";
@@ -154,6 +155,7 @@ namespace ClassLibrary
 
         public string Valid() => Valid(TraderId, TraderPassword, BusinessName, ContactEmail, DeliveryAddress, AccountCreationDate, NumberOfOrders, IsSignedIn);
 
+        //Checks to see that entered information for a customer is valid
         public static string Valid(  int TraderId, 
                                      string TraderPassword,
                                      string BusinessName,

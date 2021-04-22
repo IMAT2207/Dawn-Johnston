@@ -8,14 +8,16 @@ using ClassLibrary;
 
 public partial class CustomerDataEntry : System.Web.UI.Page
 {
+    //Declare an int for a traderID
     int TraderId;
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
-
+        //Create a new instance of clsCustomer
         clsCustomer Customer = new clsCustomer();
 
         string Error = "";
+        //Set variables from the text box data
         string TraderPassword = txtPassword.Text;
         string BusinessName = txtBusinessName.Text;
         string ContactEmail = txtContactEmail.Text;
@@ -32,6 +34,7 @@ public partial class CustomerDataEntry : System.Web.UI.Page
         DateTime AccountCreationDate = calendarAccountCreationDate.SelectedDate;
         bool IsSignedIn = checkIsSignedIn.Checked;
 
+        //Check for validity, any errors fill the error string
         Error += clsCustomer.Valid( TraderId,
                                     TraderPassword,
                                     BusinessName,
@@ -74,23 +77,26 @@ public partial class CustomerDataEntry : System.Web.UI.Page
                 collection.Update();
             }
             //Redirect back to the list page
-            Response.Redirect("CustomerList.aspx");
+            Response.Redirect("CustomerViewer.aspx");
 
         }
         else
         {
+            //Display the error
             lblErr.Text = Error;
         }
     }
 
     protected void btnFind_Click(object sender, EventArgs e)
     {
+        //Create a new instance of customer
         clsCustomer Customer = new clsCustomer();
-        int TraderId;
-        Boolean Found = false;
-        TraderId = Convert.ToInt32(txtID.Text);
-        Found = Customer.Find(TraderId);
+        //Create and set the Trader Id variable
+        int TraderId = Convert.ToInt32(txtID.Text); ;
+        //Create and set theBoolean variable
+        Boolean Found = Customer.Find(TraderId);
 
+        //If data is foind display the customer
         if (Found)
         {
             DisplayCustomer(Customer);
@@ -99,6 +105,7 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
     private void DisplayCustomer(clsCustomer Customer)
     {
+        //Set all text boxes to their respective data
         txtID.Text = Convert.ToString(Customer.TraderId);
         txtBusinessName.Text = Customer.BusinessName;
         txtPassword.Text = Customer.TraderPassword;
@@ -117,13 +124,13 @@ public partial class CustomerDataEntry : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (IsPostBack)
+        //Mutate traderID to -1 if null or set to The session ID if not
+        TraderId = (Session["TraderID"] == null) ? -1 : (Int32)Session["TraderID"];
+        if (!IsPostBack)
         {
-            TraderId = (Session["TraderID"] == null) ? -1 : (Int32)Session["TraderID"];
-            //if the session is not null or -1
+            //if the session is not -1
             if (TraderId != -1)
             {
-
                 //Create a customer object
                 clsCustomer customer = new clsCustomer();
                 //Find and link the customer object to the session
@@ -133,4 +140,5 @@ public partial class CustomerDataEntry : System.Web.UI.Page
             }
         }
     }
+
 }

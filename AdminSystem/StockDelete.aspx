@@ -14,7 +14,7 @@
         </div>
         <p>
             <asp:Button ID="btnYes" runat="server" Text="Yes" />
-            <asp:Button ID="btnNo" runat="server" Text="No" />
+            <asp:Button ID="btnNo" runat="server" Text="No" OnClick="btnNo_Click" />
         </p>
     </form>
 </body>

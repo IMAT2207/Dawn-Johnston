@@ -209,6 +209,7 @@ namespace ClassLibrary
 
         public bool IDExists(int ID)
         {
+            db = new clsDataConnection();
             db.SQLParams.Clear();
             db.AddParameter("@OrderID", ID);          // Fetch records
             db.Execute(SPROC);
@@ -225,7 +226,7 @@ namespace ClassLibrary
         /// Updates the record which matches the OrderID of this instance to match this instance.
         /// </summary>
         /// <returns>True if updated successfully</returns>
-        public Boolean Update() => IDExists() ? false : new clsOrderCollection(this).Update() == 0;
+        public Boolean Update() => !IDExists() ? false : new clsOrderCollection(this).Update() == 0;
 
 
         private static bool StringAttributeValid(string str, int MaxLength) => StringAttributeValid(str, 0, MaxLength);

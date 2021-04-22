@@ -9,6 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <asp:Label ID="lblCustomer" runat="server" Text=""></asp:Label>
+            <br />
+            <asp:Button ID="btnRedirect" runat="server" Text="Customer List" OnClick="btnRedirect_Click" />
         </div>
     </form>
 </body>
